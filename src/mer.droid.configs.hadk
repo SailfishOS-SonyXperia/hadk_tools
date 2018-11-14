@@ -1,0 +1,46 @@
+build_sfos()
+{
+    cd "$ANDROID_ROOT"
+    if [ -z "$(grep community_adaptation $ANDROID_ROOT/hybris/droid-configs/rpm/droid-config-$DEVICE_NUM.spec)" ]; then
+        sed -i '/%include droid-configs-device/i%define community_adaptation 1\n' $ANDROID_ROOT/hybris/droid-configs/rpm/droid-config-$DEVICE_NUM.spec
+    fi
+    if [ -z "$(grep patterns-sailfish-consumer-generic $ANDROID_ROOT/hybris/droid-configs/patterns/jolla-configuration-$DEVICE_NUM.yaml)" ]; then
+        sed -i "/Summary: Jolla Configuration $DEVICE_NUM/i- patterns-sailfish-consumer-generic\n- patterns-sailfish-store-applications\n- pattern:sailfish-porter-tools\n" $ANDROID_ROOT/hybris/droid-configs/patterns/jolla-configuration-$DEVICE_NUM.yaml
+    fi
+
+# avoid a SIGSEGV on exit of libhybris client
+  #  sb2 -t $VENDOR-$DEVICE-$PORT_ARCH -m sdk-install -R ls /system/build.prop > /dev/null
+   # ret=$?
+    #if [ $ret -ne 0 ]; then
+    #sb2 -t $VENDOR-$DEVICE-$PORT_ARCH -m sdk-install -R bash -c "mkdir -p /system; echo ro.build.version.sdk=99 > /system/build.prop"
+    #fi
+ 
+    case  $(sb2 -t $VENDOR-$DEVICE-$PORT_ARCH -m sdk-install -R zypper se -i community-adaptation  )
+    in
+        community-adaptation-*) : ;;
+        *)
+            ./rpm/dhd/helpers/build_packages.sh \
+                --mw=https://github.com/mer-hybris/community-adaptation.git \
+                -s rpm/community-adaptation-localbuild.spec 
+
+            ;;
+    esac
+        
+    
+    ./rpm/dhd/helpers/build_packages.sh \
+        -b "$ANDROID_ROOT"/hybris/droid-configs \
+        -s rpm/droid-config-$DEVICE_NUM.spec \
+        --dont-install
+
+    rm -rf hybris/droid-configs/installroot/installroot
+    mkdir -p hybris/droid-configs/installroot/installroot
+    (
+        cd hybris/droid-configs/installroot
+        rpm2cpio $ANDROID_ROOT/droid-local-repo/$DEVICE/droid-configs/droid-config-$DEVICE_NUM-ssu-kickstarts-1-1.armv7hl.rpm | cpio -idv &> /dev/null
+    )
+
+    ./rpm/dhd/helpers/build_packages.sh \
+        -b "$ANDROID_ROOT"/hybris/droid-hal-version-$VENDOR-$FAMILY \
+        -s rpm/droid-hal-version-$DEVICE_NUM.spec \
+        --dont-install 
+}

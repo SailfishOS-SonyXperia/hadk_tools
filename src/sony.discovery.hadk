@@ -1,0 +1,16 @@
+RELEASE=3.0.0.5
+HYBRIS_ANDROID_BRANCH=hybris-sony-aosp-8.1.0_r35_20180714
+HYBRIS_SYSPART_BRANCH=droid-src-sony-aosp-8.1.0_r35_20180714
+
+
+export VENDOR=sony
+export DEVICE=discovery
+export DEVICE_KERNEL_NUM=h4213
+export PORT_ARCH="armv7hl"
+export LC_ALL=C
+export LANG=C
+export LANGUAGE=C
+export FAMILY=nile
+export HABUILD_DEVICE=nile
+export EDGE=cutting
+

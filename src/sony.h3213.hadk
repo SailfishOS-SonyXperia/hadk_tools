@@ -1,0 +1,8 @@
+# -*- sh -*-
+depend sony.h3213.base.hadk
+depend local.base.hadk
+depend mer.hybris.hal.hadk
+depend mer.mw.hadk
+depend mer.droidmedia.hadk
+depend mer.droid.configs.hadk
+depend mk.image.hadk

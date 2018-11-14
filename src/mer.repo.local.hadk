@@ -1,0 +1,13 @@
+build_sfos()
+{
+    set -x
+    cd "$ANDROID_ROOT"
+    HA_REPO="repo --name=adaptation-community-common-$DEVICE_NUM-@RELEASE@"
+    HA_DEV="repo --name=adaptation-community-$DEVICE_NUM-@RELEASE@"
+    KS="Jolla-@RELEASE@-$DEVICE_NUM-@ARCH@.ks"
+    sed -e \
+        "/$HA_REPO/i$HA_DEV --baseurl=file:\/\/$ANDROID_ROOT\/droid-local-repo\/$DEVICE" \
+        -e "/$HA_REPO/irepo --name=home_thaodan_testing_mw --baseurl=http:\/\/repo.merproject.org\/obs\/home:\/Thaodan:\/testing:\/mw\/sailfishos_latest" \
+        $ANDROID_ROOT/hybris/droid-configs/installroot/usr/share/kickstarts/$KS \
+        > $KS
+}

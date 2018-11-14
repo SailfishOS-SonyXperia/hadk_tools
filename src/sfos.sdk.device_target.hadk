@@ -1,0 +1,20 @@
+build_sfos()
+{
+    sdk-manage --target --install $VENDOR-$DEVICE-$PORT_ARCH \
+               http://releases.sailfishos.org/sdk/latest/Jolla-latest-Sailfish_SDK_Target-armv7hl.tar.bz2 \
+               --tooling SailfishOS-latest \
+               --tooling-url \
+               http://releases.sailfishos.org/sdk/latest/Jolla-latest-Sailfish_SDK_Tooling-i486.tar.bz2 || true
+
+    sb2 -t $VENDOR-$DEVICE-$PORT_ARCH -m sdk-install \
+        -R ssu release $RELEASE
+    sb2 -t $VENDOR-$DEVICE-$PORT_ARCH -m sdk-install \
+        -R zypper ref
+    sb2 -t $VENDOR-$DEVICE-$PORT_ARCH -m sdk-install  \
+        -R zypper -n dup
+    
+   sb2 -t $VENDOR-$DEVICE-$PORT_ARCH -m sdk-install \
+        -R ssu ar home_thaodan_test_mw \
+        http://repo.merproject.org/obs/home:/Thaodan:/testing:/mw/sailfishos_latest/
+    sb2 -t  $VENDOR-$DEVICE-$PORT_ARCH -m sdk-install -R zypper ref 
+}

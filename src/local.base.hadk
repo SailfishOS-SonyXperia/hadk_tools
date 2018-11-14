@@ -1,0 +1,10 @@
+# -*- sh -*-
+
+ANDROID_ROOT=$HOME/dev/sailfish/sources/android
+export ANDROID_ROOT
+CHRTDIR=$HOME/dev/vms/sfos
+SFOSSDK_DIR="$CHRTDIR"/sdks/sfossdk
+UBUCHRT_DIR="$CHRTDIR"/sdks/ubuchrt
+
+
+export USE_CCACHE=1

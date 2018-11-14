@@ -1,0 +1,2 @@
+export DEVICE_NUM=h3213
+depend sony.discovery.hadk
