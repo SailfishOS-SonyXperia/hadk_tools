@@ -15,10 +15,11 @@ $appname - help
 EOF
 }
 
-while getopts f:c:h arg ; do 
+while getopts f:c:hV arg ; do
     case $arg in
         f) device_file=$OPTARG;;
         h) show_help; exit 0;;
+        V) verbose=t;;
         *) : ;;
     esac
 done
