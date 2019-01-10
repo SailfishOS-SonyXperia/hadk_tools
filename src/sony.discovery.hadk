@@ -1,6 +1,6 @@
-RELEASE=3.0.0.5
+RELEASE=3.0.0.8
 HYBRIS_ANDROID_BRANCH=hybris-sony-aosp-8.1.0_r35_20180714
-HYBRIS_SYSPART_BRANCH=droid-src-sony-aosp-8.1.0_r35_20180714
+HYBRIS_SYSPART_BRANCH=droid-src-sony-aosp-8.1.0_r47_20180714
 
 
 export VENDOR=sony
