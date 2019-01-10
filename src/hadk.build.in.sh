@@ -86,6 +86,9 @@ case $1 in
         case $2 in
             ubuntu) ubu_chrt_run "$0" -f "$device_file" enter_shell;;
             sfos) sfos_sdk_run "$0" -f "$device_file" enter_shell ;;
+            host)
+                cd "$ANDROID_ROOT"
+                "${SHELL:-/bin/sh}"
         esac
         ;;
     enter_shell)
