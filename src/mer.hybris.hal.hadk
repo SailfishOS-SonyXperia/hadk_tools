@@ -1,7 +1,7 @@
 # -*- sh -*-
-HYBRIS_ANDROID_URL=git://github.com/Thaodan/android.git
-#depend sfos.sdk.device_target.hadk
-#depend createrepo_local.hadk
+HYBRIS_ANDROID_URL=git://github.com/mer-hybris/android.git
+depend sfos.sdk.device_target.hadk
+
 
 check()
 {
@@ -47,15 +47,15 @@ sync()
          -m tagged-manifest.xml
 
     repo  sync -j8 --fetch-submodules
-
-    git_clone_or_update https://github.com/Thaodan/droid-config-$VENDOR-$HABUILD_DEVICE hybris/droid-configs -b h3213
-
-    git_clone_or_update https://github.com/Thaodan/droid-hal-img-boot-$VENDOR-$HABUILD_DEVICE \
-                        hybris/mw/droid-hal-img-boot-$VENDOR-$HABUILD_DEVICE -b h3213
-    git_clone_or_update https://github.com/Thaodan/droid-hal-version-$VENDOR-$HABUILD_DEVICE \
-                        hybris/droid-hal-version-$VENDOR-$HABUILD_DEVICE -b h3213
-
-    
+    git_clone_or_update \
+        https://github.com/mer-hybris/droid-config-$VENDOR-$HABUILD_DEVICE \
+        hybris/droid-configs -b master
+    git_clone_or_update \
+        https://github.com/Thaodan/droid-hal-img-boot-$VENDOR-$HABUILD_DEVICE \
+        hybris/mw/droid-hal-img-boot-$VENDOR-$HABUILD_DEVICE -b embed_recovery
+    git_clone_or_update \
+        https://github.com/mer-hybris//droid-hal-version-$VENDOR-$HABUILD_DEVICE \
+        hybris/droid-hal-version-$VENDOR-$HABUILD_DEVICE -b master
 }
 
 
@@ -75,7 +75,7 @@ build_sfos()
 {
     export ANDROID_ROOT
     cd $ANDROID_ROOT
-    
+
     ./rpm/dhd/helpers/build_packages.sh --droid-hal
     
     sb2 -t $VENDOR-$DEVICE-$PORT_ARCH -m sdk-install \
