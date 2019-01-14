@@ -68,11 +68,6 @@ init_sfos()
     ${AGENT:-curl} "$SFOSSDK_URL" > "$SFOSSDK_DIR/${SFOSSDK_URL##*/}"
     sudo tar --numeric-owner -p -xjf "$SFOSSDK_DIR/${SFOSSDK_URL##*/}" -C "$SFOSSDK_DIR"
 
-    sfos_sdk_run sudo ssu \
-                 ar \
-                 unbreakmic \
-                 http://repo.merproject.org/obs/home:/sledge:/branches:/mer-tools:/devel/latest_i486/
-
     sfos_sdk_run sdk-manage target install \
                  SailfishOS-latest-armv7hl \
                  http://releases.sailfishos.org/sdk/latest/Jolla-latest-Sailfish_SDK_Target-armv7hl.tar.bz2 \
@@ -92,8 +87,7 @@ update_sfos()
 {
 
     sfos_sdk_run sudo zypper refresh unbreakmic
-    #sudo zypper rm droid-tools # it's ok if you hadn't any
-    #sudo zypper in android-tools
+    sfos_sdk_run sudo zypper in android-tools
     
     echo c | sfos_sdk_run sudo zypper -n in android-tools-hadk \
                           createrepo_c \
@@ -110,9 +104,7 @@ update_sfos()
     #FIXME
     sfos_sdk_run sudo ssu re $RELEASE
     sfos_sdk_run sudo zypper ref
-   echo c| sfos_sdk_run sudo zypper -n dup 
-
-
+   echo c| sfos_sdk_run sudo zypper -n dup
 }
 
 update_ubu()
