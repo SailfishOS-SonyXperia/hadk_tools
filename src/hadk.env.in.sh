@@ -166,6 +166,22 @@ case $1 in
     init) init $2;;
     update) update $2 ;;
     verify) verify ;;
-    shell) $2;;
+    enter|shell) 
+        case $2 in
+            ubuntu) ubu_chrt_run "$0" -f "$device_file" enter_shell;;
+            sfos) sfos_sdk_run "$0" -f "$device_file" enter_shell ;;
+            host)
+                cd "$ANDROID_ROOT"
+                "${SHELL:-/bin/sh}"
+        esac
+        ;;
+    enter_shell)
+        export LC_COLLATE=POSIX
+        export LC_NUMERIC=POSIX
+        [ -e /parentroot/usr/share/ubu-chroot/mer-ubusdk-bash-setup ] && \
+            shellrc=/parentroot/usr/share/ubu-chroot/mer-ubusdk-bash-setup
+        cd "$ANDROID_ROOT"
+        bash --init-file ${shellrc:-/mer-bash-setup} -i
+        ;;
     *) error 'No mode suplied'; show_help; exit 1;;
 esac

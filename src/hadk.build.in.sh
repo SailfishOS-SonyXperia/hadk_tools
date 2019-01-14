@@ -83,21 +83,7 @@ case $1 in
         depend "$device_file" run_job
         ;;
     shell)
-        case $2 in
-            ubuntu) ubu_chrt_run "$0" -f "$device_file" enter_shell;;
-            sfos) sfos_sdk_run "$0" -f "$device_file" enter_shell ;;
-            host)
-                cd "$ANDROID_ROOT"
-                "${SHELL:-/bin/sh}"
-        esac
-        ;;
-    enter_shell)
-        export LC_COLLATE=POSIX
-        export LC_NUMERIC=POSIX
-        [ -e /parentroot/usr/share/ubu-chroot/mer-ubusdk-bash-setup ] && \
-            shellrc=/parentroot/usr/share/ubu-chroot/mer-ubusdk-bash-setup
-        cd "$ANDROID_ROOT"
-        bash --init-file ${shellrc:-/mer-bash-setup} -i
+        hadk.env "$@"
         ;;
     *)
         if ! depend "$device_file" seperate_chainload  ; then
