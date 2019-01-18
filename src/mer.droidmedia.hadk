@@ -48,13 +48,6 @@ build_sfos()
     mv hybris/mw/audioflingerglue-0.0.1.tgz hybris/mw/audioflingerglue-localbuild
     rpm/dhd/helpers/build_packages.sh --build=hybris/mw/audioflingerglue-localbuild
     rpm/dhd/helpers/build_packages.sh --mw=https://github.com/mer-hybris/pulseaudio-modules-droid-glue.git
-
-    sb2 -t $VENDOR-$DEVICE-$PORT_ARCH -R sh -c 'rm /var/lib/rpm/__db*'
-    sb2 -t $VENDOR-$DEVICE-$PORT_ARCH -R zypper -n in  --force-resolution bluez5-libs-devel
-    rpm/dhd/helpers/build_packages.sh \
-        --mw=https://github.com/mer-hybris/bluetooth-rfkill-event \
-        --spec=rpm/bluetooth-rfkill-event-hciattach.spec
-
 }
 
 
