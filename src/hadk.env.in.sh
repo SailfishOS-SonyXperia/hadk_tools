@@ -67,13 +67,6 @@ init_sfos()
     mkdir -p "$SFOSSDK_DIR"
     ${AGENT:-curl} "$SFOSSDK_URL" > "$SFOSSDK_DIR/${SFOSSDK_URL##*/}"
     sudo tar --numeric-owner -p -xjf "$SFOSSDK_DIR/${SFOSSDK_URL##*/}" -C "$SFOSSDK_DIR"
-
-    sfos_sdk_run sdk-manage target install \
-                 SailfishOS-latest-armv7hl \
-                 http://releases.sailfishos.org/sdk/latest/Jolla-latest-Sailfish_SDK_Target-armv7hl.tar.bz2 \
-                 --tooling SailfishOS-latest \
-                 --tooling-url \
-                 http://releases.sailfishos.org/sdk/latest/Jolla-latest-Sailfish_SDK_Tooling-i486.tar.bz2
 }
 
 init_ubu()
