@@ -60,6 +60,10 @@ seperate_chainload()
                 host)
                     "$0" -f "$device_file" job $job_func "$1";;
             esac
+            exit_status=$?
+            if [ ! $exit_status = 0 ] ; then
+                die "Error exit status $exit_status in $device_file:$1:$job_func()"
+            fi
         fi
     done
 }

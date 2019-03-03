@@ -17,7 +17,7 @@ hadk_config_valid()
 }
 
 is_function() {
-    case "$(type -- "$1" 2>/dev/null)" in
+    case "$(LANG=C type -- "$1" 2>/dev/null)" in
         *function*) return 0 ;;
     esac
     return 1
