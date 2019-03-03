@@ -1,10 +1,10 @@
 build_sfos()
 {
     sdk-manage --target --install $VENDOR-$DEVICE-$PORT_ARCH \
-               http://releases.sailfishos.org/sdk/latest/Jolla-latest-Sailfish_SDK_Target-armv7hl.tar.bz2 \
+               http://releases.sailfishos.org/sdk/targets/Sailfish_OS-latest-Sailfish_SDK_Target-armv7hl.tar.7z \
                --tooling SailfishOS-latest \
                --tooling-url \
-               http://releases.sailfishos.org/sdk/latest/Jolla-latest-Sailfish_SDK_Tooling-i486.tar.bz2 || true
+               http://releases.sailfishos.org/sdk/targets/Sailfish_OS-latest-Sailfish_SDK_Tooling-i486.tar.7z || true
 
     sb2 -t $VENDOR-$DEVICE-$PORT_ARCH -m sdk-install \
         -R ssu release $RELEASE
