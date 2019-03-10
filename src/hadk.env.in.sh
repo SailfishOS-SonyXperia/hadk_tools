@@ -78,8 +78,6 @@ init_ubu()
 
 update_sfos()
 {
-
-    sfos_sdk_run sudo zypper refresh unbreakmic
     sfos_sdk_run sudo zypper in android-tools
     
     echo c | sfos_sdk_run sudo zypper -n in android-tools-hadk \
