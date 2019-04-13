@@ -1,0 +1,2 @@
+export DEVICE_NUM=h4413
+depend sony.voyager.hadk
