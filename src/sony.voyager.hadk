@@ -1,0 +1,6 @@
+export DEVICE=voyager
+export DEVICE_KERNEL_NUM=h4413
+
+
+depend sony.nile.hadk
+
