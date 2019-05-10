@@ -151,8 +151,8 @@ case $1 in
     verify) verify ;;
     enter|shell) 
         case $2 in
-            ubuntu) ubu_chrt_run "$0" -f "$device_file" enter_shell;;
-            sfos) sfos_sdk_run "$0" -f "$device_file" enter_shell ;;
+            ubuntu) ubu_chrt_run "$0" -f "$env_config" enter_shell;;
+            sfos) sfos_sdk_run "$0" -f "$env_config" enter_shell ;;
             host)
                 cd "$ANDROID_ROOT"
                 "${SHELL:-/bin/sh}"
