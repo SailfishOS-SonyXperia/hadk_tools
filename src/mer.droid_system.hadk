@@ -3,10 +3,10 @@ build_sfos()
 {
     cd "$ANDROID_ROOT"
     rpm/dhd/helpers/build_packages.sh \
-        --mw=https://github.com/mer-hybris/droid-vendor-$VENDOR-$HABUILD_DEVICE-$DEVICE \
-        --dont-install
+        --mw=https://github.com/mer-hybris/droid-vendor-$VENDOR-$DEVICE-$HABUILD_DEVICE \
+        --do-not-install
 
     rpm/dhd/helpers/build_packages.sh \
-        --mw=https://github.com/mer-hybris/droid-system-$VENDOR-$HABUILD_DEVICE-$DEVICE \
-         --dont-install
+        --mw=https://github.com/mer-hybris/droid-system-$VENDOR-$DEVICE-$HABUILD_DEVICE \
+         --do-not-install
 }
