@@ -48,14 +48,14 @@ sync()
 
     repo  sync -j8 --fetch-submodules
     git_clone_or_update \
-        https://github.com/mer-hybris/droid-config-$VENDOR-$HABUILD_DEVICE \
+        https://github.com/mer-hybris/droid-config-$VENDOR-$DEVICE \
         hybris/droid-configs -b master
     git_clone_or_update \
-        https://github.com/Thaodan/droid-hal-img-boot-$VENDOR-$HABUILD_DEVICE \
-        hybris/mw/droid-hal-img-boot-$VENDOR-$HABUILD_DEVICE -b embed_recovery
+        https://github.com/Thaodan/droid-hal-img-boot-$VENDOR-$DEVICE \
+        hybris/mw/droid-hal-img-boot-$VENDOR-$DEVICE -b embed_recovery
     git_clone_or_update \
-        https://github.com/mer-hybris//droid-hal-version-$VENDOR-$HABUILD_DEVICE \
-        hybris/droid-hal-version-$VENDOR-$HABUILD_DEVICE -b master
+        https://github.com/mer-hybris//droid-hal-version-$VENDOR-$DEVICE \
+        hybris/droid-hal-version-$VENDOR-$DEVICE -b master
 }
 
 
@@ -76,19 +76,19 @@ build_sfos()
     export ANDROID_ROOT
     cd $ANDROID_ROOT
 
-    ./rpm/dhd/helpers/build_packages.sh --droid-hal
+    #DEVICE=$HABUILD_DEVICE
+    bash -xv ./rpm/dhd/helpers/build_packages.sh --droid-hal
     
     sb2 -t $VENDOR-$DEVICE-$PORT_ARCH -m sdk-install \
-        -R zypper -n in droid-hal-$DEVICE-kernel
+        -R zypper -n in droid-hal-$HABUILD_DEVICE-kernel
     sb2 -t $VENDOR-$DEVICE-$PORT_ARCH -m sdk-install \
-        -R zypper -n in --force-resolution droid-hal-$DEVICE-kernel-modules
+        -R zypper -n in --force-resolution droid-hal-$HABUILD_DEVICE-kernel-modules
     
-    rpm/dhd/helpers/build_packages.sh --mw=https://github.com/sailfishos/initrd-helpers
-    rpm/dhd/helpers/build_packages.sh --mw=https://github.com/sailfishos/hw-ramdisk
-    rpm/dhd/helpers/build_packages.sh --mw=https://github.com/sailfishos/yamui
-    rpm/dhd/helpers/build_packages.sh \
-        --mw=https://github.com/mer-hybris/droid-hal-img-boot-$VENDOR-$HABUILD_DEVICE \
-        --spec=rpm/droid-hal-$DEVICE-img-boot.spec
+    buildmw https://github.com/sailfishos/initrd-helpers
+    buildmw https://github.com/sailfishos/hw-ramdisk
+    buildmw https://github.com/sailfishos/yamui
+    buildmw https://github.com/mer-hybris/droid-hal-img-boot-$VENDOR-$DEVICE \
+        rpm/droid-hal-$HABUILD_DEVICE-img-boot.spec
 
 }
 
