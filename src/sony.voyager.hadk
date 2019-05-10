@@ -1,4 +1,4 @@
-export DEVICE=voyager
+export HABUILD_DEVICE=voyager
 export DEVICE_KERNEL_NUM=h4413
 
 
