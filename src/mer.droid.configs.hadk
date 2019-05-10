@@ -15,7 +15,7 @@ build_sfos()
     #sb2 -t $VENDOR-$DEVICE-$PORT_ARCH -m sdk-install -R bash -c "mkdir -p /system; echo ro.build.version.sdk=99 > /system/build.prop"
     #fi
  
-    case  $(sb2 -t $VENDOR-$DEVICE-$PORT_ARCH -m sdk-install -R zypper se -i community-adaptation  )
+    case  $(sb2 -t $VENDOR-$HABUILD_DEVICE-$PORT_ARCH -m sdk-install -R zypper se -i community-adaptation  )
     in
         community-adaptation-*) : ;;
         *)
