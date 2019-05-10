@@ -1,16 +1,16 @@
 build_sfos()
 {
     sdk-manage --target --install $VENDOR-$DEVICE-$PORT_ARCH \
-               http://releases.sailfishos.org/sdk/targets/Sailfish_OS-latest-Sailfish_SDK_Target-armv7hl.tar.7z \
+               http://releases.sailfishos.org/sdk/targets/Sailfish_OS-$RELEASE-Sailfish_SDK_Target-armv7hl.tar.7z \
                --tooling SailfishOS-latest \
                --tooling-url \
-               http://releases.sailfishos.org/sdk/targets/Sailfish_OS-latest-Sailfish_SDK_Tooling-i486.tar.7z || true
+               http://releases.sailfishos.org/sdk/targets/Sailfish_OS-$RELEASE-Sailfish_SDK_Tooling-i486.tar.7z || true
 
     sb2 -t $VENDOR-$DEVICE-$PORT_ARCH -m sdk-install \
         -R ssu release $RELEASE
     sb2 -t $VENDOR-$DEVICE-$PORT_ARCH -m sdk-install \
         -R zypper ref
-    sb2 -t $VENDOR-$DEVICE-$PORT_ARCH -m sdk-install  \
+    yes 1 |sb2 -t $VENDOR-$DEVICE-$PORT_ARCH -m sdk-install  \
         -R zypper -n dup
     
    sb2 -t $VENDOR-$DEVICE-$PORT_ARCH -m sdk-install \
