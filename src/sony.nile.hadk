@@ -1,12 +1,11 @@
-RELEASE=3.0.1.14
+RELEASE=3.0.2.8
 
-HYBRIS_ANDROID_BRANCH=hybris-sony-aosp-8.1.0_r52_20180714
-HYBRIS_SYSPART_BRANCH=droid-src-sony-aosp-8.1.0_r52_20180714
+HYBRIS_ANDROID_BRANCH=hybris-sony-aosp-8.1.0_r52_20190206
+HYBRIS_SYSPART_BRANCH=droid-src-sony-aosp-8.1.0_r52_20190206
 
 export VENDOR=sony
 export FAMILY=nile
-export HABUILD_DEVICE=nile
-
+export DEVICE=nile
 export PORT_ARCH="armv7hl"
 export LC_ALL=C
 export LANG=C
