@@ -1,3 +1,5 @@
+depend sfos.sdk.device_target.hadk
+
 build_sfos()
 {
     cd "$ANDROID_ROOT"

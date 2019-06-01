@@ -1,6 +1,5 @@
 # -*- sh -*-
 HYBRIS_ANDROID_URL=git://github.com/mer-hybris/android.git
-depend sfos.sdk.device_target.hadk
 
 
 check()
