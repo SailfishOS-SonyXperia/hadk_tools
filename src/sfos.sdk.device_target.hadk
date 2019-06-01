@@ -10,6 +10,8 @@ build_sfos()
         -R ssu release $RELEASE
     sb2 -t $VENDOR-$DEVICE-$PORT_ARCH -m sdk-install \
         -R zypper ref
+    sb2 -t $VENDOR-$DEVICE-$PORT_ARCH -m sdk-install \
+        -R zypper -n rm bluez5-configs-mer || true
     yes 1 |sb2 -t $VENDOR-$DEVICE-$PORT_ARCH -m sdk-install  \
         -R zypper -n dup
     
