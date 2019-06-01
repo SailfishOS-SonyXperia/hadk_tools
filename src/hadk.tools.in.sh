@@ -5,6 +5,10 @@ sfos_sdk_run()
     "$SFOSSDK_DIR//mer-sdk-chroot" "$@"
 }
 
+sfos_tooling_run()
+{
+    "$CHRTDIR"/toolings/SailfishOS-latest/mer-tooling-chroot
+}
 
 ubu_chrt_run()
 {
