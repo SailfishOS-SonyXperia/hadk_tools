@@ -1,4 +1,4 @@
-export DEVICE=discovery
+export HABUILD_DEVICE=discovery
 export DEVICE_KERNEL_NUM=h4213
 
 depend sony.nile.hadk
