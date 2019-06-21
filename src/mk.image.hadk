@@ -12,9 +12,10 @@ build_sfos()
     cd "$ANDROID_ROOT"
     ./hybris/droid-configs/droid-configs-device/helpers/process_patterns.sh
 
-    sb2 -t $VENDOR-$HABUILD_DEVICE-armv7hl -m sdk-install -R zypper ref
-    
-    
+
+    sb2 -t $VENDOR-$DEVICE-armv7hl -m sdk-install -R zypper ref
+
+
     sudo mic create loop --arch=$PORT_ARCH \
          --tokenmap=ARCH:$PORT_ARCH,RELEASE:$RELEASE,EXTRA_NAME:$EXTRA_NAME,DEVICE:$DEVICE_NUM \
          --record-pkgs=name,url     --outdir=sfe-$HABUILD_DEVICE-$RELEASE$EXTRA_NAME \
