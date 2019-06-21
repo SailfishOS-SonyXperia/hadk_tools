@@ -5,5 +5,6 @@ depend mer.droid.configs.hadk
 depend mer.hybris.hal.hadk
 depend mer.mw.hadk
 depend mer.droidmedia.hadk
+depend mer.droid_system.hadk
 depend mer.droid.version.hadk
 depend mk.image.hadk
