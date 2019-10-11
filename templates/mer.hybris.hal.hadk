@@ -1,6 +1,6 @@
 # -*- sh -*-
-HYBRIS_ANDROID_URL=git://github.com/mer-hybris/android.git
-
+[ -z $HYBRIS_ANDROID_URL ] && HYBRIS_ANDROID_URL=git://github.com/mer-hybris/android.git
+[ -z $HYBRIS_REMOTE ] && HYBRIS_REMOTE=git://github.com/mer-hybris
 
 check()
 {
@@ -43,17 +43,17 @@ sync()
     cd "$ANDROID_ROOT"
     repo init -u "$HYBRIS_ANDROID_URL" \
          -b "$HYBRIS_ANDROID_BRANCH" \
-         -m tagged-manifest.xml
+         -m default.xml
 
     repo  sync -j8 --fetch-submodules
     git_clone_or_update \
-        https://github.com/mer-hybris/droid-config-$VENDOR-$DEVICE \
+        $HYBRIS_REMOTE/droid-config-$VENDOR-$DEVICE \
         hybris/droid-configs -b master
     git_clone_or_update \
-        https://github.com/Thaodan/droid-hal-img-boot-$VENDOR-$DEVICE \
-        hybris/mw/droid-hal-img-boot-$VENDOR-$DEVICE -b embed_recovery
+        $HYBRIS_REMOTE/droid-hal-img-boot-$VENDOR-$DEVICE \
+        hybris/mw/droid-hal-img-boot-$VENDOR-$DEVICE -b master
     git_clone_or_update \
-        https://github.com/mer-hybris//droid-hal-version-$VENDOR-$DEVICE \
+        $HYBRIS_REMOTE/droid-hal-version-$VENDOR-$DEVICE \
         hybris/droid-hal-version-$VENDOR-$DEVICE -b master
 }
 
