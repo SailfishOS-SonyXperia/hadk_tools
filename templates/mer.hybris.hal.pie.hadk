@@ -1,0 +1,45 @@
+# -*- sh -*-
+
+depend mer.hybris.hal.hadk
+
+sync()
+{
+    mkdir -p "$ANDROID_ROOT"
+
+    cd "$ANDROID_ROOT"
+
+    git_clone_or_update \
+        $HYBRIS_REMOTE/droid-hal-$VENDOR-$FAMILY \
+        ../droid-hal-$VENDOR-$FAMILY \
+        --recursive
+    rm -rf patches
+    ln -sf droid-src/patches patches
+    droid-src/apply-patches.sh --mb
+
+    for file in ../droid-hal-$VENDOR-$FAMILY/*; do
+        base_file=$(basename $file)
+        if [ ! "$base_file" = 'hybris' ] && [ ! "$base_file" = 'kernel' ] ; then
+            rm -rf "$base_file"
+            ln -sf  "$file" "$base_file"
+        fi
+    done
+    for dir in 'hybris'; do
+        if [ -e ../droid-hal-$VENDOR-$FAMILY/$dir ] ; then
+            for file in ../droid-hal-$VENDOR-$FAMILY/$dir/*; do
+                base_file=$(basename $file)
+                rm -rf $dir/"$base_file"
+                ln -sf ../../droid-hal-$VENDOR-$FAMILY/$dir/"$base_file" $dir/"$base_file"
+            done
+        fi
+    done
+        if [ -e ../droid-hal-$VENDOR-$FAMILY/kernel ] ; then
+            for file in ../droid-hal-$VENDOR-$FAMILY/kernel/$VENDOR/*/*; do
+                sub_dir=$(dirname $file)
+                sub_dir=$(basename $sub_dir)
+                base_file=$(basename $file)
+                rm -rf kernel/$sub_dir/"$base_file"
+                ln -sf ../../../../droid-hal-$VENDOR-$FAMILY/kernel/$VENDOR/$sub_dir/"$base_file" kernel/$VENDOR/$sub_dir/"$base_file"
+            done
+        fi
+    ./setup-sources.sh --mb
+}
