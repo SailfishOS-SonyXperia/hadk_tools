@@ -22,7 +22,7 @@ check()
     fi
 
     if [ ! $HABUILD_DEVICE ] ; then
-        return 1    
+        return 1
     fi
 
     if [ ! $EDGE ] ; then
@@ -39,13 +39,17 @@ check()
 sync()
 {
     mkdir -p "$ANDROID_ROOT"
-    
+
     cd "$ANDROID_ROOT"
     repo init -u "$HYBRIS_ANDROID_URL" \
          -b "$HYBRIS_ANDROID_BRANCH" \
          -m default.xml
 
+    repo forall -c git reset --hard HEAD
+    repo forall -c git am --abort
+    repo forall -c git clean -d -x -f
     repo  sync -j8 --fetch-submodules
+    mkdir -p hybris
     git_clone_or_update \
         $HYBRIS_REMOTE/droid-config-$VENDOR-$DEVICE \
         hybris/droid-configs -b master
@@ -77,12 +81,12 @@ build_sfos()
 
     #DEVICE=$HABUILD_DEVICE
     bash -xv ./rpm/dhd/helpers/build_packages.sh --droid-hal
-    
+
     sb2 -t $VENDOR-$DEVICE-$PORT_ARCH -m sdk-install \
         -R zypper -n in droid-hal-$HABUILD_DEVICE-kernel
     sb2 -t $VENDOR-$DEVICE-$PORT_ARCH -m sdk-install \
         -R zypper -n in --force-resolution droid-hal-$HABUILD_DEVICE-kernel-modules
-    
+
     buildmw https://github.com/sailfishos/initrd-helpers
     buildmw https://github.com/sailfishos/hw-ramdisk
     buildmw https://github.com/sailfishos/yamui
@@ -90,4 +94,3 @@ build_sfos()
         rpm/droid-hal-$HABUILD_DEVICE-img-boot.spec
 
 }
-
