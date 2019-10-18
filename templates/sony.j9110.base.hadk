@@ -1,0 +1,2 @@
+export DEVICE_NUM=j9110
+depend sony.griffin.hadk

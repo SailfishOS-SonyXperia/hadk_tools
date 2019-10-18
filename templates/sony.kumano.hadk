@@ -1,0 +1,26 @@
+# -*- sh -*-
+
+RELEASE=4.0.1.48
+
+
+export SOURCE_ROOT="$SOURCE_ROOT/kumano"
+mkdir -p "$SOURCE_ROOT"
+
+HYBRIS_REMOTE_DEVICE=ssh://git@github.com/Thaodan
+HYBRIS_ANDROID_BRANCH=sony-aosp-10
+HYBRIS_SYSPART_BRANCH=$HYBRIS_ANDROID_BRANCH
+HYBRIS_ANDROID_MANIFEST=tagged-localbuild.xml
+
+export VENDOR=sony
+export FAMILY=kumano
+export PORT_ARCH="aarch64"
+
+export DROID_TARGET_KERNEL_ARCH=arm64 # FIXME
+export KERNEL_DEFCONFIG=aosp_${DEVICE}_${HABUILD_DEVICE}_defconfig
+export KERNEL_SOURCE="$SOURCE_ROOT"/kernel/$VENDOR/msm-4.14/kernel
+#export CROSS_COMPILE=$SOURCE_ROOT/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/bin/aarch64-linux-android- #FIXME
+export CROSS_COMPILE=$SOURCE_ROOT/gcc_build/toolchain/bin/aarch64-linux-gnu-
+export CROSS_COMPILE_ARM32=$SOURCE_ROOT/gcc_build/toolchain/bin/arm-linux-androideabi-
+DROID_TARGET_KERNEL_DTB=t
+
+#depend mer.bluez4_remove.hadk
