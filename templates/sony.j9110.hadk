@@ -1,0 +1,18 @@
+# -*- sh -*-
+depend local.base.hadk
+
+export DEVICE=j9110
+export DEVICE_NUM=$DEVICE
+
+depend sony.griffin.hadk
+
+depend sfos.hybris.hal.sony.kernel.hadk
+depend mer.hybris.hal.pie.hadk
+depend sfos.sdk.device_target.repo.hadk
+depend mer.hybris.hal.img.boot.hadk
+depend mer.droid.configs.hadk
+depend mer.mw.hadk
+depend mer.droidmedia.audiopolicy.hadk
+depend mer.droid.syspart.hadk
+depend mer.droid.version.hadk
+depend mk.image.hadk
