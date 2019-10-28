@@ -1,0 +1,25 @@
+# -*- sh -*-
+[ -z $HYBRIS_ANDROID_URL ] && HYBRIS_ANDROID_URL=git://github.com/mer-hybris/android.git
+[ -z $HYBRIS_REMOTE ] && HYBRIS_REMOTE=git://github.com/mer-hybris
+
+
+
+
+build_sfos()
+{
+        set -x
+    export ANDROID_ROOT
+    cd $ANDROID_ROOT
+
+    sb2 -t $VENDOR-$DEVICE-$PORT_ARCH -m sdk-install \
+        -R zypper -n in droid-hal-$HABUILD_DEVICE-kernel
+    sb2 -t $VENDOR-$DEVICE-$PORT_ARCH -m sdk-install \
+        -R zypper -n in --force-resolution droid-hal-$HABUILD_DEVICE-kernel-modules
+
+    buildmw https://github.com/sailfishos/initrd-helpers
+    buildmw https://github.com/sailfishos/hw-ramdisk
+    buildmw https://github.com/sailfishos/yamui
+    buildmw https://github.com/mer-hybris/droid-hal-img-boot-$VENDOR-$DEVICE \
+        rpm/droid-hal-$HABUILD_DEVICE-img-boot.spec --do-not-install
+
+}
