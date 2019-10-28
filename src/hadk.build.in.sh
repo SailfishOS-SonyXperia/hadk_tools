@@ -11,6 +11,12 @@ buildmw()
         shift;
     fi
 
+    case "$1" in
+        *.spec) local SPEC="$1"
+                shift
+                ;;
+    esac
+
     local PKG="$(basename ${GIT_URL%.git})"
 
     local pkgdir=hybris/mw/$PKG
@@ -41,7 +47,8 @@ buildmw()
 
     ./rpm/dhd/helpers/build_packages.sh \
         -b "$pkgdir" \
-        -s "$1"
+        -s "$SPEC" \
+        "$@"
     
 
 }
