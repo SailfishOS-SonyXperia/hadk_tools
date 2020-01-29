@@ -43,8 +43,8 @@ build_sfos()
     simg2img out/target/product/$HABUILD_DEVICE/system.img /tmp/system.img.raw
     sudo mount /tmp/system.img.raw $ANDROID_ROOT-mnt
     git_clone_or_update "$HYBRIS_REMOTE"/$droid-system-$VENDOR-q-template \
-                        $ANDROID_ROOT/hybris/mw/$droid-system-$VENDOR-q-template
-    cd $ANDROID_ROOT/hybris/mw/$droid-system-$VENDOR-q-template
+                        $ANDROID_ROOT/hybris/mw/droid-system-$VENDOR-q-template
+    cd $ANDROID_ROOT/hybris/mw/droid-system-$VENDOR-q-template
     sudo ./droid-system-device/helpers/copy_system.sh \
          $ANDROID_ROOT-mnt/system rpm/droid-system-$HABUILD_DEVICE.spec
     # please do not commit the binaries nor push them to github repo,
