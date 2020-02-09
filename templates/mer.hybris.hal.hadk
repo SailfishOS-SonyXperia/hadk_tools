@@ -45,9 +45,9 @@ sync()
          -b "$HYBRIS_ANDROID_BRANCH" \
          -m default.xml
 
-    repo forall -c git reset --hard HEAD
-    repo forall -c git am --abort
-    repo forall -c git clean -d -x -f
+    repo forall -c git reset --hard HEAD || true
+    repo forall -c git am --abort || true
+    repo forall -c git clean -d -x -f || true
     repo  sync -j8 --fetch-submodules
     mkdir -p hybris
     git_clone_or_update \
