@@ -12,12 +12,14 @@ show_help()
     cat <<EOF
 $appname - help
 -f supply config via device config file
+-t        add custom template path
 EOF
 }
 
-while getopts f:c:hV arg ; do
+while getopts f:c:hVt: arg ; do
     case $arg in
         f) device_file=$OPTARG;;
+        t) depend_path="$OPTARG:$depend_path";;
         h) show_help; exit 0;;
         V) verbose=t;;
         *) : ;;

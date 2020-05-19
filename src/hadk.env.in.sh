@@ -13,7 +13,8 @@ $appname - help
 usage: $appname [<options>] mode
 
 -h --help show help
--f        custom environment 
+-f        custom environment
+-t        add custom template path
 modes: 
 init - download env and initialise
 update - update sdk against latest changes
@@ -130,9 +131,10 @@ EOF_1
 sfos_sdk_run "sb2 gcc /tmp/sb2_hello_world.c -o /tmp/sb2_hello_world && sb2 /tmp/sb2_hello_world" | grep 'SB2 TEST OK'
 }
 
-while getopts hf:  arg ; do 
+while getopts hf:t:  arg ; do 
     case $arg in
         h) show_help; exit 0;;
+        t) depend_path="$OPTARG:$depend_path";;
         f) env_config=$OPTARG ;;
         *) : ;;
     esac
