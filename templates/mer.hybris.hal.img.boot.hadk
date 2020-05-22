@@ -7,19 +7,28 @@
 
 build_sfos()
 {
-        set -x
     export ANDROID_ROOT
     cd $ANDROID_ROOT
 
     sb2 -t $VENDOR-$DEVICE-$PORT_ARCH -m sdk-install \
         -R zypper -n in droid-hal-$HABUILD_DEVICE-kernel
     sb2 -t $VENDOR-$DEVICE-$PORT_ARCH -m sdk-install \
-        -R zypper -n in --force-resolution droid-hal-$HABUILD_DEVICE-kernel-modules
+        -R zypper -n in --force-resolution droid-hal-$HABUILD_DEVICE-kernel-modules \
+        droid-hal-$HABUILD_DEVICE-tools
 
     buildmw https://github.com/sailfishos/initrd-helpers
     buildmw https://github.com/sailfishos/hw-ramdisk
     buildmw https://github.com/sailfishos/yamui
-    buildmw https://github.com/mer-hybris/droid-hal-img-boot-$VENDOR-$DEVICE \
+
+
+    sb2 -t $VENDOR-$DEVICE-$PORT_ARCH -m sdk-install \
+        -R zypper -n in --force-resolution cryptsetup \
+        openssh-server \
+        openssh-clients
+
+
+
+    buildmw https://github.com/mer-hybris/droid-hal-img-boot-$VENDOR-$FAMILY \
         rpm/droid-hal-$HABUILD_DEVICE-img-boot.spec --do-not-install
 
 }
