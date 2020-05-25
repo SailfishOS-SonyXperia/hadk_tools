@@ -54,14 +54,14 @@ sync()
     repo  sync -j8 --fetch-submodules
     mkdir -p hybris
     git_clone_or_update \
-        $HYBRIS_REMOTE/droid-config-$VENDOR-$DEVICE \
+        $HYBRIS_REMOTE/droid-config-$VENDOR-$FAMILY \
         hybris/droid-configs -b master
     git_clone_or_update \
-        $HYBRIS_REMOTE/droid-hal-img-boot-$VENDOR-$DEVICE \
-        hybris/mw/droid-hal-img-boot-$VENDOR-$DEVICE -b master
+        $HYBRIS_REMOTE/droid-hal-img-boot-$VENDOR-$FAMILY \
+        hybris/mw/droid-hal-img-boot-$VENDOR-$FAMILY -b master
     git_clone_or_update \
-        $HYBRIS_REMOTE/droid-hal-version-$VENDOR-$DEVICE \
-        hybris/droid-hal-version-$VENDOR-$DEVICE -b master
+        $HYBRIS_REMOTE/droid-hal-version-$VENDOR-$FAMILY \
+        hybris/droid-hal-version-$VENDOR-$FAMILY -b master
 }
 
 
