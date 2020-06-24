@@ -158,13 +158,18 @@ case $1 in
     init) init $2;;
     update) update $2 ;;
     verify) verify ;;
-    enter|shell) 
+    enter|shell)
+        # shellcheck disable=SC2145,SC2068
+        # note: warnings not valid as it errors out because of the macro below
         case $2 in
             ubuntu) ubu_chrt_run "$0" \
                                  -f "${env_config:-local.base.hadk}" \
-                                 enter_shell;;
+                                 ${@EXPORT_VAR_PREFIX@_DEPEND_PATH+ -t "${@EXPORT_VAR_PREFIX@_DEPEND_PATH}"} \
+                                 enter_shell
+                    ;;
             sfos) sfos_sdk_run "$0" \
                                -f "${env_config:-local.base.hadk}" \
+                               ${@EXPORT_VAR_PREFIX@_DEPEND_PATH+ -t "${@EXPORT_VAR_PREFIX@_DEPEND_PATH}"} \
                                enter_shell ;;
             host)
                 cd "$ANDROID_ROOT"
