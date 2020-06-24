@@ -134,7 +134,12 @@ sfos_sdk_run "sb2 gcc /tmp/sb2_hello_world.c -o /tmp/sb2_hello_world && sb2 /tmp
 while getopts hf:t:  arg ; do 
     case $arg in
         h) show_help; exit 0;;
-        t) depend_path="$OPTARG:$depend_path";;
+        t)
+            depend_path="$OPTARG:$depend_path"
+            # shellcheck disable=SC2145,SC2068
+            # note: warnings not valid as it errors out because of the macro below
+            @EXPORT_VAR_PREFIX@_DEPEND_PATH="$OPTARG":$@EXPORT_VAR_PREFIX@_DEPEND_PATH
+            ;;
         f) env_config=$OPTARG ;;
         *) : ;;
     esac
