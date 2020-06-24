@@ -61,11 +61,24 @@ seperate_chainload()
         if is_function $job_func ; then
             case $job_func in
                 build)
-                    ubu_chrt_run "$0" -f "$device_file" job $job_func "$1";;
+                    ubu_chrt_run "$0" \
+                                 -f "$device_file" \
+                                 job \
+                                 $job_func \
+                                 "$1"
+                    ;;
                 build_sfos)
-                    sfos_sdk_run "$0" -f "$device_file" job $job_func "$1";;
+                    sfos_sdk_run "$0" \
+                                 -f "$device_file" \
+                                 job $job_func \
+                                 "$1"
+                    ;;
                 host)
-                    "$0" -f "$device_file" job $job_func "$1";;
+                    "$0" -f "$device_file" \
+                         job \
+                         $job_func \
+                         "$1"
+                    ;;
             esac
             exit_status=$?
             if [ ! $exit_status = 0 ] ; then
