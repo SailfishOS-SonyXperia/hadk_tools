@@ -1,0 +1,13 @@
+#+TITLE: README
+
+This repository contains several tools to make working
+with the HADK and the Sailfish OS Platform SDK easier.
+
+
+
+These are:
++ hadk.env :: Create, Update and enter the Platform SDK
++ hadk.source :: Sync adaption sources
++ hadk.build :: Build adaption
+
+For more information see [[./doc/.]]
