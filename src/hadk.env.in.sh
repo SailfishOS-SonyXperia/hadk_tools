@@ -134,7 +134,12 @@ sfos_sdk_run "sb2 gcc /tmp/sb2_hello_world.c -o /tmp/sb2_hello_world && sb2 /tmp
 while getopts hf:t:  arg ; do 
     case $arg in
         h) show_help; exit 0;;
-        t) depend_path="$OPTARG:$depend_path";;
+        t)
+            depend_path="$OPTARG:$depend_path"
+            # shellcheck disable=SC2145,SC2068
+            # note: warnings not valid as it errors out because of the macro below
+            @EXPORT_VAR_PREFIX@_DEPEND_PATH="$OPTARG":$@EXPORT_VAR_PREFIX@_DEPEND_PATH
+            ;;
         f) env_config=$OPTARG ;;
         *) : ;;
     esac
@@ -153,10 +158,19 @@ case $1 in
     init) init $2;;
     update) update $2 ;;
     verify) verify ;;
-    enter|shell) 
+    enter|shell)
+        # shellcheck disable=SC2145,SC2068
+        # note: warnings not valid as it errors out because of the macro below
         case $2 in
-            ubuntu) ubu_chrt_run "$0" -f "${env_config:-local.base.hadk}" enter_shell;;
-            sfos) sfos_sdk_run "$0" -f "${env_config:-local.base.hadk}" enter_shell ;;
+            ubuntu) ubu_chrt_run "$0" \
+                                 -f "${env_config:-local.base.hadk}" \
+                                 ${@EXPORT_VAR_PREFIX@_DEPEND_PATH+ -t "${@EXPORT_VAR_PREFIX@_DEPEND_PATH}"} \
+                                 enter_shell
+                    ;;
+            sfos) sfos_sdk_run "$0" \
+                               -f "${env_config:-local.base.hadk}" \
+                               ${@EXPORT_VAR_PREFIX@_DEPEND_PATH+ -t "${@EXPORT_VAR_PREFIX@_DEPEND_PATH}"} \
+                               enter_shell ;;
             host)
                 cd "$ANDROID_ROOT"
                 "${SHELL:-/bin/sh}"

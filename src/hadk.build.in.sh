@@ -59,13 +59,31 @@ seperate_chainload()
 
     for job_func  in build build_sfos host ; do
         if is_function $job_func ; then
+            # shellcheck disable=SC2145,SC2068
+            # note: warnings not valid as it errors out because of the macro below
             case $job_func in
                 build)
-                    ubu_chrt_run "$0" -f "$device_file" job $job_func "$1";;
+                    ubu_chrt_run "$0" \
+                                 -f "$device_file" \
+                                 job \
+                                 $job_func \
+                                 ${@EXPORT_VAR_PREFIX@_DEPEND_PATH+ -t "${@EXPORT_VAR_PREFIX@_DEPEND_PATH}"} \
+                                 "$1"
+                    ;;
                 build_sfos)
-                    sfos_sdk_run "$0" -f "$device_file" job $job_func "$1";;
+                    sfos_sdk_run "$0" \
+                                 -f "$device_file" \
+                                 job $job_func \
+                                 ${@EXPORT_VAR_PREFIX@_DEPEND_PATH+ -t "${@EXPORT_VAR_PREFIX@_DEPEND_PATH}"} \
+                                 "$1"
+                    ;;
                 host)
-                    "$0" -f "$device_file" job $job_func "$1";;
+                    "$0" -f "$device_file" \
+                         job \
+                         $job_func \
+                         ${@EXPORT_VAR_PREFIX@_DEPEND_PATH+ -t "${@EXPORT_VAR_PREFIX@_DEPEND_PATH}"} \
+                         "$1"
+                    ;;
             esac
             exit_status=$?
             if [ ! $exit_status = 0 ] ; then

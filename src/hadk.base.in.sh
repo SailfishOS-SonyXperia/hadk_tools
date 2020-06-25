@@ -19,7 +19,12 @@ EOF
 while getopts f:c:hVt: arg ; do
     case $arg in
         f) device_file=$OPTARG;;
-        t) depend_path="$OPTARG:$depend_path";;
+        t)
+            depend_path="$OPTARG:$depend_path"
+            # shellcheck disable=SC2145,SC2068
+            # note: warnings not valid as it errors out because of the macro below
+            @EXPORT_VAR_PREFIX@_DEPEND_PATH="$OPTARG":$@EXPORT_VAR_PREFIX@_DEPEND_PATH
+            ;;
         h) show_help; exit 0;;
         V) verbose=t;;
         *) : ;;
