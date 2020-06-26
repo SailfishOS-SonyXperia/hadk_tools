@@ -1,0 +1,27 @@
+#+TITLE: HADK Depends
+
+* Introduction
+HADK Tools works by chaining different actions together so that they get executed in the proper order of dependency.
+These depends can contain any shell code but only should really do any work in the following functions.
+When using /hadk.build/ important to note that they are not executed as soon as they are loaded but only after every depend was chainloaded. 
+The order where each method is executed is the order that they are mentioned. All methods only are used in one tool that is mentioned before.
+
+
+* hadk.build
+** check
+   Checks the environment and should return any errors if the environment was not correctly setup e.g. checking if the 
+   required variables are set and so on.
+** build
+   Runs commands inside the Ubuntu-Chroot like for example compiling the hybris-hal target inside the /ANDROID_ROOT/ 
+
+** build_sfos
+   Just like the previous method but inside the Sailfish OS Platform SDK
+
+** Host
+   The same again but inside the host environment where we are in. Note this host and change very from machine to machine.
+   It should be only really used where nesesary 
+   
+* hadk.source
+  
+** sync
+   Sync sources needed for the device adaption
