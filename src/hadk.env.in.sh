@@ -131,6 +131,8 @@ EOF_1
 sfos_sdk_run "sb2 gcc /tmp/sb2_hello_world.c -o /tmp/sb2_hello_world && sb2 /tmp/sb2_hello_world" | grep 'SB2 TEST OK'
 }
 
+env_config=local.base.hadk
+
 while getopts hf:t:  arg ; do 
     case $arg in
         h) show_help; exit 0;;
@@ -150,7 +152,7 @@ shift $(( $OPTIND - 1 ))
 #FIXME
 depend_path=$depend_path:"$PWD"
 
-depend "${env_config:-local.base.hadk}"
+depend "${env_config}"
 depend hadk.env.src.hadk
 
 
@@ -163,12 +165,12 @@ case $1 in
         # note: warnings not valid as it errors out because of the macro below
         case $2 in
             ubuntu) ubu_chrt_run "$0" \
-                                 -f "${env_config:-local.base.hadk}" \
+                                 -f "${env_config}" \
                                  ${@EXPORT_VAR_PREFIX@_DEPEND_PATH+ -t "${@EXPORT_VAR_PREFIX@_DEPEND_PATH}"} \
                                  enter_shell
                     ;;
             sfos) sfos_sdk_run "$0" \
-                               -f "${env_config:-local.base.hadk}" \
+                               -f "${env_config}" \
                                ${@EXPORT_VAR_PREFIX@_DEPEND_PATH+ -t "${@EXPORT_VAR_PREFIX@_DEPEND_PATH}"} \
                                enter_shell ;;
             host)
