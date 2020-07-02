@@ -8,12 +8,10 @@ hadk_config_valid()
     fi
 
 
-    set -x 
     if ! depend "$device_file" check ; then
         error "$HADK_FILE_NOT_FOUND not found"
         exit 1
     fi
-    set +x
 }
 
 is_function() {
