@@ -1,0 +1,41 @@
+# -*- sh -*-
+mkdtimg="$SOURCE_ROOT/out/host/linux-x86/bin/mkdtimg"
+avbtool="$SOURCE_ROOT/out/host/linux-x86/bin/avbtool"
+droid_target_dir="$SOURCE_ROOT/out/target/product/${HABUILD_DEVICE:-$DEVICE}"
+kernel_build_dir="$droid_target_dir/obj/KERNEL_OBJ"
+export DROID_TARGET_KERNEL_ARCH=arm64 # FIXME
+
+sync()
+{
+    git_clone_or_update $HYBRIS_REMOTE/droid-hal-img-dtbo-sony-$FAMILY-$ANDROID_FLAVOUR \
+                        hybris/mw/droid-hal-img-dtbo-sony-$FAMILY-$ANDROID_FLAVOUR
+}
+
+build()
+{
+    source build/envsetup.sh
+    export USE_CCACHE=1
+    lunch aosp_${DEVICE_KERNEL_NUM:-$DEVICE_NUM}-userdebug
+    make verity_key mkdtimg
+    "$mkdtimg" create "$droid_target_dir"/dtbo.img $(find "out/target/product/$HABUILD_DEVICE" -name "*.dtbo")
+    "$avbtool" add_hash_footer --image "$droid_target_dir"/dtbo.img --partition_size 8388608 --partition_name dtbo
+}
+
+
+build_sfos()
+{
+    export ANDROID_ROOT
+    cd $ANDROID_ROOT
+    sb2 -t $VENDOR-$DEVICE-$PORT_ARCH -m sdk-install \
+        -R zypper -n in droid-hal-$HABUILD_DEVICE-kernel
+    sb2 -t $VENDOR-$DEVICE-$PORT_ARCH -m sdk-install \
+        -R zypper -n in --force-resolution droid-hal-$HABUILD_DEVICE-kernel-modules \
+        droid-hal-$HABUILD_DEVICE-tools
+
+    mkdir -p hybris/mw/droid-hal-img-dtbo-sony-tama-pie
+    cp $droid_target_dir/dtbo.img hybris/mw/droid-hal-img-dtbo-sony-tama-pie/dtbo-$HABUILD_DEVICE.img
+    rpm/dhd/helpers/build_packages.sh --mw=droid-hal-img-dtbo-sony-$FAMILY-$ANDROID_FLAVOUR \
+                                      --do-not-install \
+                                      --spec=rpm/droid-hal-$HABUILD_DEVICE-img-dtbo.spec
+
+}
