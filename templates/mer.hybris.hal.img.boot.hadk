@@ -28,7 +28,7 @@ build_sfos()
 
 
 
-    buildmw https://github.com/mer-hybris/droid-hal-img-boot-$VENDOR-$FAMILY \
+    buildmw $HYBRIS_REMOTE/droid-hal-img-boot-$VENDOR-$FAMILY \
         rpm/droid-hal-$HABUILD_DEVICE-img-boot.spec --do-not-install
 
 }
