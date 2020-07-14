@@ -1,0 +1,23 @@
+# -*- sh -*-
+
+sync()
+{
+    git_clone_or_update https://github.com/piggz/sailfish-fpd-community.git hybris/mw/sailfish-fpd-community
+}
+build()
+{
+    export ANDROID_ROOT
+    cd $ANDROID_ROOT
+    source build/envsetup.sh
+    export USE_CCACHE=1
+    lunch aosp_$DEVICE-user (or appropriate name)
+    make libbiometry_fp_api_32
+    hybris/mw/sailfish-fpd-community/rpm/copy-hal.sh
+}
+
+build_sfos()
+{
+    export ANDROID_ROOT
+    cd $ANDROID_ROOT
+    rpm/dhd/helpers/build_packages.sh --build=hybris/mw/sailfish-fpd-community --spec=rpm/droid-biometry-fp.spec --do-not-install
+}
