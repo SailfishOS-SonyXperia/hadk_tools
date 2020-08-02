@@ -1,12 +1,14 @@
 include ../rules.mk
 # app config
 APPNAME			= hadk
-SCRIPTS 		= hadk.env \
+SCRIPTS			= hadk.env \
 				hadk.source \
 				hadk.build
 
-SUB_SCRIPTS 		= hadk.config \
+SUB_SCRIPTS		= hadk.config \
 				hadk.tools \
+				hadk.base.env \
+				hadk.base \
 				msg \
 				config
 
