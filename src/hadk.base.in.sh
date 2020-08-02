@@ -11,8 +11,10 @@ show_help()
 {
     cat <<EOF
 $appname - help
--f supply config via device config file
--t        add custom template path
+-f        Supply config via device config file
+-t        Add custom template path
+
+-h        Show this help
 EOF
 }
 
