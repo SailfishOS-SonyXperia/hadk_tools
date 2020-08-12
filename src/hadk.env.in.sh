@@ -15,6 +15,8 @@ usage: $appname [<options>] mode
 -h --help show help
 -f        custom environment
 -t        add custom template path
+-s        Supply custom hadk file when initialising the sdk
+
 modes: 
 init - download env and initialise
 update - update sdk against latest changes
@@ -132,8 +134,10 @@ sfos_sdk_run "sb2 gcc /tmp/sb2_hello_world.c -o /tmp/sb2_hello_world && sb2 /tmp
 }
 
 env_config=local.base.hadk
+env_src_hadk=hadk.env.src.hadk
 
-while getopts hf:t:  arg ; do 
+
+while getopts hf:t:s:  arg ; do
     case $arg in
         h) show_help; exit 0;;
         t)
@@ -143,6 +147,7 @@ while getopts hf:t:  arg ; do
             @EXPORT_VAR_PREFIX@_DEPEND_PATH="$OPTARG":$@EXPORT_VAR_PREFIX@_DEPEND_PATH
             ;;
         f) env_config=$OPTARG ;;
+        s) env_src_hadk=$OPTARG ;;
         *) : ;;
     esac
 done
@@ -153,7 +158,7 @@ shift $(( $OPTIND - 1 ))
 depend_path=$depend_path:"$PWD"
 
 depend "${env_config}"
-depend hadk.env.src.hadk
+depend "${env_src_hadk}"
 
 
 case $1 in
