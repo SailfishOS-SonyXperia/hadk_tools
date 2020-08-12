@@ -40,7 +40,6 @@ if [ ! "$device_file" ] ; then
     exit 1
 fi
 
-depend_path=$depend_path:"$CONFIGDIR"/devices
 
 
 
