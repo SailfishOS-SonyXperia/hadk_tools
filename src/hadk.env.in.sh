@@ -174,11 +174,12 @@ shift $(( $OPTIND - 1 ))
 depend_path=$depend_path:"$PWD"
 
 depend "${env_config}"
-depend "${env_src_hadk}"
 
 
 case $1 in
-    init) init $2;;
+    init)
+        depend "${env_src_hadk}"
+        init $2;;
     update) update $2 ;;
     verify) verify ;;
     enter|shell)
