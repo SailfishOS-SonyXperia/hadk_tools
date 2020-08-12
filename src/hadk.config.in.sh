@@ -59,7 +59,7 @@ depend()
             IFS=:
             # shellcheck disable=SC2145,SC2068
             # note: warnings not valid as it errors out because of the macro below
-            for dir in $depend_path:${@EXPORT_VAR_PREFIX@_DEPEND_PATH} ; do
+            for dir in $depend_path${@EXPORT_VAR_PREFIX@_DEPEND_PATH+:${@EXPORT_VAR_PREFIX@_DEPEND_PATH}} ; do
                 unset IFS
 
                 if [ -e "$dir/$file" ] ;then
