@@ -65,18 +65,34 @@ update()
 }
 
 
+is_local() {
+    case $1  in
+        *://*) return 1 ;;
+    esac
+}
+
+
 init_sfos()
 {
+    local sfossdk_src_url="$SFOSSDK_URL"
     mkdir -p "$SFOSSDK_DIR"
-    ${AGENT:-curl} "$SFOSSDK_URL" > "$SFOSSDK_DIR/${SFOSSDK_URL##*/}"
-    sudo tar --numeric-owner -p -xjf "$SFOSSDK_DIR/${SFOSSDK_URL##*/}" -C "$SFOSSDK_DIR"
+    if ! is_local "$SFOSSDK_URL" ; then
+        ${AGENT:-curl} "$SFOSSDK_URL" > "$SFOSSDK_DIR/${SFOSSDK_URL##*/}"
+        sfossdk_src_url="$SFOSSDK_DIR/${SFOSSDK_URL##*/}"
+    fi
+    sudo tar --numeric-owner -p -xjf "$sfossdk_src_url" -C "$SFOSSDK_DIR"
 }
 
 init_ubu()
 {
+
+    local ubuchrt_src_url="$UBUCHRT_URL"
     mkdir -p "$UBUCHRT_DIR"
-    curl "$UBUCHRT_URL" > "$UBUCHRT_DIR/${UBUCHRT_URL##*/}"
-    sudo tar --numeric-owner -xjf "$UBUCHRT_DIR/${UBUCHRT_URL##*/}" -C "$UBUCHRT_DIR"
+    if ! is_local "$UBUCHRT_URL" ; then
+        ${AGENT:-curl} "$UBUCHRT_URL" > "$UBUCHRT_DIR/${UBUCHRT_URL##*/}"
+        ubuchrt_src_url="$UBUCHRT_DIR/${UBUCHRT_URL##*/}"
+    fi
+    sudo tar --numeric-owner -xjf "$ubuchrt_src_url" -C "$UBUCHRT_DIR"
 }
 
 update_sfos()
