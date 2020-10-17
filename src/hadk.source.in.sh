@@ -7,6 +7,7 @@ seperate_chainload()
 # desc: seperate each chainload by running in a seperate instance for each job
 {
     if is_function sync ; then
+        cd_source_root
         if ! sync ; then
             die "Error exit status $exit_status in $device_file:$1:sync()"
         fi
