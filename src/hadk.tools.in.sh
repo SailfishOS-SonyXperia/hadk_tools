@@ -39,3 +39,17 @@ git_clone_or_update()
         git clone --recursive "$git_url" "$git_name" "$@"
     fi
 }
+
+
+cd_source_root()
+{
+    local SOURCE_ROOT="${SOURCE_ROOT:-$ANDROID_ROOT}"
+
+    if [ "$ANDROID_ROOT" ] ; then
+        # shellcheck disable=SC2154
+        # note: We set $file somewhere else
+        msg "$file: Please rename \$ANDROID_ROOT to \$SOURCE_ROOT"
+    fi
+    export ANDROID_ROOT="$SOURCE_ROOT"
+    cd "$SOURCE_ROOT" || exit $?
+}
