@@ -196,7 +196,7 @@ case $1 in
                                ${@EXPORT_VAR_PREFIX@_DEPEND_PATH+ -t "${@EXPORT_VAR_PREFIX@_DEPEND_PATH}"} \
                                enter_shell ;;
             host)
-                cd "$ANDROID_ROOT"
+                cd "${SOURCE_ROOT:-$ANDROID_ROOT}"
                 "${SHELL:-/bin/sh}"
         esac
         ;;
@@ -205,7 +205,7 @@ case $1 in
         export LC_NUMERIC=POSIX
         [ -e /parentroot/usr/share/ubu-chroot/mer-ubusdk-bash-setup ] && \
             shellrc=/parentroot/usr/share/ubu-chroot/mer-ubusdk-bash-setup
-        [ "$ANDROID_ROOT" ] && cd "$ANDROID_ROOT"
+        [ "${SOURCE_ROOT:-$ANDROID_ROOT}" ] && cd "${SOURCE_ROOT:-$ANDROID_ROOT}"
         bash --init-file ${shellrc:-/mer-bash-setup} -i
         ;;
     *) error 'No mode suplied'; show_help; exit 1;;
