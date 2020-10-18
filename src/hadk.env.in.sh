@@ -81,6 +81,11 @@ init_sfos()
         sfossdk_src_url="$SFOSSDK_DIR/${SFOSSDK_URL##*/}"
     fi
     sudo tar --numeric-owner -p -xjf "$sfossdk_src_url" -C "$SFOSSDK_DIR"
+    case ${SFOSSDK_URL##*/} in
+        *devel*)
+            sfos_sdk_run sudo ssu r
+            ;;
+    esac
 }
 
 init_ubu()
