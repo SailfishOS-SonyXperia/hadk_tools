@@ -116,12 +116,9 @@ update_sfos()
                           rpm-python   # not auto-installed dep of mic
     
 
-    #FIXME#
-    #sfos_sdk_run sdk-assistant update tooling SailfishOS-latest
     sfos_sdk_run sudo ssu re $RELEASE
     sfos_sdk_run sudo zypper ref
     echo c| sfos_sdk_run sudo zypper -n dup
-    yes y| sfos_sdk_run sdk-assistant tooling update  SailfishOS-latest
 }
 
 update_ubu()
