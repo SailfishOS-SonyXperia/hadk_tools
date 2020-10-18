@@ -33,15 +33,29 @@ reset_job_funcs()
 
 
 depend()
+# usage: depend <file> [<chainload>]
+# desc:  Load file an execute chainload if defend
+#        Chainload is executed for all following depends.
+#        The chainload is tried to be executed by the next dependend
+#        if there is none its executed in the same depend is ince.
 {
-    local file=$1; shift
+    if [ "$chainload" ] ; then
+        verbose "$file: $chainload"
+        "$chainload" "$abs_file"
+        # Ok so we had something to execute lets blow up a counter unit
+        [ $depth_counter -gt 0 ] && depth_counter=$((${depth_counter:-1}-1))
+        # depth_counter should never go below zero
+    fi
+    reset_job_funcs
+
+    file=$1; shift
     if [ $1 ] ; then
-        chainload=$1
+        local chainload=$1
         shift
     fi
-    
-    local IFS dir chainload_stat abs_file
-    
+
+    local IFS dir
+
     case $file in
         ./*)
             depend_path=$depend_path:"$PWD"
@@ -66,21 +80,20 @@ depend()
                     abs_file="$dir/$file"
                     
                     verbose "Loading $file"
-                    if [ $chainload ] ; then
-                        reset_job_funcs
-                    fi
-                     
+                    local old_depth_counter=${depth_counter:-0}
+                    local depth_counter=$((${depth_counter:-1}+1))
+                    # Save the current counter and increase the pile of counter units
                     . "$abs_file"
-
-
-                    if [ "$chainload" ] ; then
-                        verbose "$file: $chainload"
-                        "$chainload" "$abs_file"
-                        chainload_stat=$?
+                    if [ $depth_counter -eq $old_depth_counter ] ; then
+                        # Ok it seams that the current counter unit pile is the same again
+                        # Lets execute our chain load
+                        if [ "$chainload" ] ; then
+                            verbose "$file: $chainload"
+                            "$chainload" "$abs_file"
+                        fi
                         reset_job_funcs
                     fi
-                    
-                    return $chainload_stat
+                    return 0
                 else
                     IFS=:
                 fi
@@ -89,6 +102,6 @@ depend()
 
 
     HADK_FILE_NOT_FOUND="$file"
-    
+
     return 1
 }
