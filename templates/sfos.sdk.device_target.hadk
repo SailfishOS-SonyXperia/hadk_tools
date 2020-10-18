@@ -5,18 +5,5 @@ build_sfos()
                --tooling SailfishOS-latest \
                --tooling-url \
                http://releases.sailfishos.org/sdk/targets/Sailfish_OS-$RELEASE-Sailfish_SDK_Tooling-i486.tar.7z || true
-
-    sb2 -t $VENDOR-$DEVICE-$PORT_ARCH -m sdk-install \
-        -R ssu release $RELEASE
-    sb2 -t $VENDOR-$DEVICE-$PORT_ARCH -m sdk-install \
-        -R zypper ref
-    sb2 -t $VENDOR-$DEVICE-$PORT_ARCH -m sdk-install \
-        -R zypper -n rm bluez5-configs-mer || true
-    yes 1 |sb2 -t $VENDOR-$DEVICE-$PORT_ARCH -m sdk-install  \
-        -R zypper -n dup
-    
-   sb2 -t $VENDOR-$DEVICE-$PORT_ARCH -m sdk-install \
-        -R ssu ar home_thaodan_test_mw \
-        http://repo.merproject.org/obs/home:/Thaodan:/testing:/mw/sailfishos_latest/
-    sb2 -t  $VENDOR-$DEVICE-$PORT_ARCH -m sdk-install -R zypper ref 
+    sdk-assistant update $VENDOR-$DEVICE-$PORT_ARCH
 }
