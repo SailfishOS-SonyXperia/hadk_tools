@@ -33,7 +33,7 @@ git_clone_or_update()
     if [ -e "$git_name" ] ; then
         (
             cd "$git_name" || return 1
-            git pull
+            git pull --recurse-submodules
         )
     else
         git clone --recursive "$git_url" "$git_name" "$@"
