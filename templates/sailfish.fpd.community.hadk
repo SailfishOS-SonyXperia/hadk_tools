@@ -6,8 +6,6 @@ sync()
 }
 build()
 {
-    export ANDROID_ROOT
-    cd $ANDROID_ROOT
     source build/envsetup.sh
     export USE_CCACHE=1
     lunch aosp_$DEVICE-user (or appropriate name)

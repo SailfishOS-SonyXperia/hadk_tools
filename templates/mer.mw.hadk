@@ -1,8 +1,6 @@
 # -*- sh -*-
 build_sfos()
 {
-    export ANDROID_ROOT
-    cd $ANDROID_ROOT
 
     if [ -e "$ANDROID_ROOT"/external/libhybris ] ; then
         _hybris_path="$ANDROID_ROOT/external/libhybris"

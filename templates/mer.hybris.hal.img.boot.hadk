@@ -7,8 +7,6 @@
 
 build_sfos()
 {
-    export ANDROID_ROOT
-    cd $ANDROID_ROOT
 
     sb2 -t $VENDOR-$DEVICE-$PORT_ARCH -m sdk-install \
         -R zypper -n in droid-hal-$HABUILD_DEVICE-kernel

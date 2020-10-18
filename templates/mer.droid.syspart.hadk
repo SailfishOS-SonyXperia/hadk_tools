@@ -21,7 +21,6 @@ build()
     # Current limitation is that Android 9 systemimage does not build in HABUILD_SDK, you will need to build it on your host
     # It built fine on Ubuntu 16.04, your Linux host OS in most cases should be compatible too
 
-    cd $ANDROID_ROOT-syspart
     source build/envsetup.sh
     export USE_CCACHE=1
     lunch aosp_${DEVICE_KERNEL_NUM:-$DEVICE_NUM}-userdebug
@@ -37,7 +36,6 @@ build()
 
 build_sfos()
 {
-    cd $ANDROID_ROOT-syspart
     sudo mkdir -p $ANDROID_ROOT-mnt
     # ensure your /tmp has ~4GB available
     simg2img out/target/product/$HABUILD_DEVICE/system.img /tmp/system.img.raw

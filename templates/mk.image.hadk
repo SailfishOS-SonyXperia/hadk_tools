@@ -9,7 +9,6 @@ check()
 
 build_sfos()
 {
-    cd "$ANDROID_ROOT"
     ./hybris/droid-configs/droid-configs-device/helpers/process_patterns.sh
 
 
