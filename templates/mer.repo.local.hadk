@@ -1,7 +1,6 @@
 build_sfos()
 {
-    set -x
-    cd "$ANDROID_ROOT"/hybris/droid-configs
+    cd hybris/droid-configs
     rm -rf installroot
     mkdir installroot
     cd installroot

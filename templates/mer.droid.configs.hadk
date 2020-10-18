@@ -1,7 +1,6 @@
 
 build_sfos()
 {
-    cd "$ANDROID_ROOT"
     if [ -z "$(grep community_adaptation $ANDROID_ROOT/hybris/droid-configs/rpm/droid-config-$DEVICE_NUM.spec)" ]; then
         sed -i '/%include droid-configs-device/i%define community_adaptation 1\n' $ANDROID_ROOT/hybris/droid-configs/rpm/droid-config-$DEVICE_NUM.spec
     fi
