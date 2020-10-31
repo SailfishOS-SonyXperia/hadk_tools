@@ -37,20 +37,27 @@ build_sfos()
     
     mkdir -p hybris/mw/droidmedia-localbuild/rpm
     cp rpm/dhd/helpers/droidmedia-localbuild.spec hybris/mw/droidmedia-localbuild/rpm/droidmedia.spec
-    sed -ie "s/0.0.0/$DROIDMEDIA_VERSION/" hybris/mw/droidmedia-localbuild/rpm/droidmedia.spec
+    sed -e "s/@DEVICE@/$HABUILD_DEVICE/" \
+        -e "s/0.0.0/$DROIDMEDIA_VERSION/" \
+        -e "s/@PORT_ARCH@/$PORT_ARCH/" \
+        -i hybris/mw/droidmedia-localbuild/rpm/droidmedia.spec
     mv hybris/mw/droidmedia-$DROIDMEDIA_VERSION.tgz hybris/mw/droidmedia-localbuild
-    rpm/dhd/helpers/build_packages.sh --build=hybris/mw/droidmedia-localbuild
+    rpm/dhd/helpers/build_packages.sh --no-auto-version \
+                                      --build=hybris/mw/droidmedia-localbuild
     rpm/dhd/helpers/build_packages.sh --mw=https://github.com/sailfishos/gst-droid.git
 
     mkdir -p hybris/mw/audioflingerglue-localbuild/rpm
-    cp rpm/dhd/helpers/audioflingerglue-localbuild.spec hybris/mw/audioflingerglue-localbuild/rpm/audioflingerglue.spec
-    sed -ie "s/0.0.0/$AUDIOFINGERGLUE_VERSION/" hybris/mw/audioflingerglue-localbuild/rpm/audioflingerglue.spec
+    cp rpm/dhd/helpers/audioflingerglue-localbuild.spec \
+       hybris/mw/audioflingerglue-localbuild/rpm/audioflingerglue.spec
+    sed -e "s/@DEVICE@/$HABUILD_DEVICE/" \
+        -e "s/0.0.0/$AUDIOFINGERGLUE_VERSION/" \
+        -e "s/@PORT_ARCH@/$PORT_ARCH/" \
+        -i hybris/mw/audioflingerglue-localbuild/rpm/audioflingerglue.spec
     mv hybris/mw/audioflingerglue-$AUDIOFINGERGLUE_VERSION.tgz \
        hybris/mw/audioflingerglue-localbuild/audioflingerglue-$AUDIOFINGERGLUE_VERSION.tgz
-    rpm/dhd/helpers/build_packages.sh --build=hybris/mw/audioflingerglue-localbuild
-    rpm/dhd/helpers/build_packages.sh --mw=https://github.com/mer-hybris/pulseaudio-modules-droid-glue.git
+    rpm/dhd/helpers/build_packages.sh --no-auto-version \
+                                      --build=hybris/mw/audioflingerglue-localbuild
+
+
+     buildmw "https://github.com/sailfishos/gmp-droid.git"
 }
-
-
-
-
