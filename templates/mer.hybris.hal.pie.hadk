@@ -41,6 +41,6 @@ sync()
                 ln -sf ../../../droid-hal-$VENDOR-$FAMILY/kernel/$VENDOR/$sub_dir/"$base_file" kernel/$VENDOR/$sub_dir/"$base_file"
             done
         fi
-    ln -sf droid-hal-$VENDOR-$FAMILY/dhd rpm/dhd
+    ln -sf ../dhd rpm/dhd
     ./setup-sources.sh --mb
 }
