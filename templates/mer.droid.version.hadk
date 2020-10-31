@@ -5,11 +5,13 @@ build_sfos()
     mkdir -p hybris/droid-configs/installroot/installroot
     (
         cd hybris/droid-configs/installroot
-        rpm2cpio $ANDROID_ROOT/droid-local-repo/$HABUILD_DEVICE/droid-configs/droid-config-$DEVICE_NUM-ssu-kickstarts-1-1.armv7hl.rpm | cpio -idv &> /dev/null
+        rpm2cpio \
+$ANDROID_ROOT/droid-local-repo/$DEVICE_NUM/droid-configs/droid-config-$DEVICE_NUM-ssu-kickstarts-1-1.armv7hl.rpm \
+            | cpio -idv &> /dev/null
     )
 
     ./rpm/dhd/helpers/build_packages.sh \
-        -b "$ANDROID_ROOT"/hybris/droid-hal-version-$VENDOR-$FAMILY \
+            -b "$ANDROID_ROOT"/hybris/droid-hal-version-$VENDOR-$FAMILY \
         -s rpm/droid-hal-version-$DEVICE_NUM.spec \
         --do-not-install
 }
