@@ -1,0 +1,10 @@
+* BUILDING
+#+BEGIN_SRC sh
+make PREFIX=$HOME/.local
+#+END_SRC
+* INSTALLING
+#+BEGIN_SRC sh
+make install PREFIX=$HOME/.local
+#+END_SRC
+
+Then add '$HOME/.local/bin' to $PATH'

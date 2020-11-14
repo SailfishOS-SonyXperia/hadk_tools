@@ -11,3 +11,12 @@ These are:
 + hadk.build :: Build adaption
 
 For more information see [[./doc/.]]
+
+* Dependencies
+  + [[https://github.com/Thaodan/shpp][SHPP]]
+  + Bash
+  + Curl
+  + tar
+
+*  BUILD AND INSTALL
+See [[./INSTALL.org][INSTALL]]
