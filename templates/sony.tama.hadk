@@ -1,0 +1,19 @@
+# -*- sh -*-
+
+RELEASE=3.4.0.22
+
+HYBRIS_ANDROID_BRANCH=sony-aosp-pie
+HYBRIS_SYSPART_BRANCH="$HYBRIS_ANDROID_BRANCH"
+HYBRIS_REMOTE=https://github.com/sailfishos-sony-tama
+HYBRIS_ANDROID_URL=https://github.com/sailfishos-sony-tama/android.git
+ANDROID_FLAVOUR=pie
+export FLAVOUR=pie
+export VENDOR=sony
+export FAMILY=tama
+export PORT_ARCH="armv7hl"
+
+export SOURCE_ROOT="$SOURCE_ROOT/tama"
+
+mkdir -p "$SOURCE_ROOT"
+
+depend mer.bluez4_remove.hadk

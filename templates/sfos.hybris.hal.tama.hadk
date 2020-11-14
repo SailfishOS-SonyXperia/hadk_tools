@@ -1,0 +1,39 @@
+# -*- sh -*-
+sync()
+{
+    mkdir -p .repo/local_manifests
+    cat > .repo/local_manifests/droid-src-tama.xml <<EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest>
+  <remote fetch="https://github.com/sailfishos-sony-tama" name="hybris-tama"/>
+  <project name="droid-src-sony-tama-pie" path="droid-src" remote="hybris-tama" revision="master"/>
+</manifest>
+EOF
+    mkdir -p "$ANDROID_ROOT-syspart"
+    cd "$ANDROID_ROOT-syspart"
+    mkdir -p .repo/local_manifests
+    cat > .repo/local_manifests/droid-src-tama.xml <<EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest>
+  <remote fetch="https://github.com/sailfishos-sony-tama" name="hybris-tama"/>
+  <project name="droid-src-sony-tama-pie" path="droid-src" remote="hybris-tama" revision="master"/>
+</manifest>
+EOF
+}
+
+build()
+{
+    source build/envsetup.sh
+    export USE_CCACHE=1
+    lunch  aosp_${DEVICE_KERNEL_NUM:-$DEVICE_NUM}-userdebug
+    make verity_key
+}
+
+build_sfos()
+{
+    buildmw https://github.com/sailfishos-sony-tama/pkg-fsarchiver
+}
+
+depend mer.hybris.hal.pie.hadk
+
+

@@ -5,12 +5,13 @@ sync()
 
     cd "$ANDROID_ROOT-syspart"
     repo init -u "$HYBRIS_ANDROID_URL" \
-         -b "$HYBRIS_ANDROID_BRANCH" \
-         -m default.xml
+         -b "$HYBRIS_SYSPART_BRANCH" \
+         -m default.xml \
+         --platform=linux
     repo forall -c git reset --hard HEAD
     repo forall -c git am --abort
     repo forall -c git clean -d -x -f
-    repo  sync -j8 --fetch-submodules
+    repo  sync -j20 --fetch-submodules
 
     rm -rf patches
     ln -sf droid-src/patches patches
@@ -18,13 +19,23 @@ sync()
 }
 build()
 {
+    cd "$ANDROID_ROOT-syspart"
     # Current limitation is that Android 9 systemimage does not build in HABUILD_SDK, you will need to build it on your host
     # It built fine on Ubuntu 16.04, your Linux host OS in most cases should be compatible too
 
-    cd $ANDROID_ROOT-syspart
     source build/envsetup.sh
     export USE_CCACHE=1
-    lunch aosp_${DEVICE_KERNEL_NUM:-$DEVICE_NUM}-userdebug
+    export LC_ALL=C
+    lunch aosp_${DEVICE_NUM}-userdebug
+
+    # mkdir -p out/target/product/${HABUILD_DEVICE:-$DEVICE}
+
+    # cp "$SOURCE_ROOT"/out/target/product/${HABUILD_DEVICE:-$DEVICE}/dtbo.img \
+    #    out/target/product/${HABUILD_DEVICE:-$DEVICE}/.
+
+    # cp "$SOURCE_ROOT"/out/target/product/${HABUILD_DEVICE:-$DEVICE}/kernel \
+    #    out/target/product/${HABUILD_DEVICE:-$DEVICE}/.
+
     # Ensure the middlware in the previous terminal window has finished building
     # Change $(nproc --all) to your building capabilities, it will be very heavy on RAM if you go for more cores, proceed with care:
     make -j$(nproc --all) systemimage vendorimage
@@ -32,48 +43,61 @@ build()
     #  ,--.
     # C|  |
     #  `=='
-}
 
+    ./out/host/linux-x86/bin/simg2img \
+        out/target/product/$HABUILD_DEVICE/system.img \
+        $ANDROID_ROOT/system.img.raw
+    ./out/host/linux-x86/bin/simg2img \
+        out/target/product/$HABUILD_DEVICE/vendor.img \
+        $ANDROID_ROOT/vendor.img.raw
+}
 
 build_sfos()
 {
-    cd $ANDROID_ROOT-syspart
     sudo mkdir -p $ANDROID_ROOT-mnt
     # ensure your /tmp has ~4GB available
-    simg2img out/target/product/$HABUILD_DEVICE/system.img /tmp/system.img.raw
-    sudo mount /tmp/system.img.raw $ANDROID_ROOT-mnt
-    git_clone_or_update "$HYBRIS_REMOTE"/$droid-system-$VENDOR-q-template \
-                        $ANDROID_ROOT/hybris/mw/droid-system-$VENDOR-q-template
-    cd $ANDROID_ROOT/hybris/mw/droid-system-$VENDOR-q-template
-    sudo ./droid-system-device/helpers/copy_system.sh \
-         $ANDROID_ROOT-mnt/system rpm/droid-system-$HABUILD_DEVICE.spec
-    # please do not commit the binaries nor push them to github repo,
-    # because the licence has not been determined,
-    # thus they have to be built manually
-    sudo chown -R $USER .
-    sudo umount $ANDROID_ROOT-mnt
-    rm /tmp/system.img.raw
+    # simg2img out/target/product/$HABUILD_DEVICE/system.img system.img.raw
+    sudo mount system.img.raw $ANDROID_ROOT-mnt
+    git_clone_or_update \
+        "$HYBRIS_REMOTE"/droid-system-$VENDOR-$FLAVOUR-template \
+        $ANDROID_ROOT/hybris/mw/droid-system-$VENDOR-$FLAVOUR-template
+    (
+        cd $ANDROID_ROOT/hybris/mw/droid-system-$VENDOR-$FLAVOUR-template
+        sudo ./droid-system-device/helpers/copy_system.sh \
+             $ANDROID_ROOT-mnt/system rpm/droid-system-$HABUILD_DEVICE.spec
+        # please do not commit the binaries nor push them to github repo,
+        # because the licence has not been determined,
+        # thus they have to be built manually
+        sudo chown -R $USER .
+        sudo umount $ANDROID_ROOT-mnt
+    )
+    rm system.img.raw
 
-    cd $ANDROID_ROOT-syspart
-    simg2img out/target/product/$HABUILD_DEVICE/vendor.img /tmp/vendor.img.raw
-    sudo mount /tmp/vendor.img.raw $ANDROID_ROOT-mnt
-    git_clone_or_update  https://github.com/thaodan/droid-vendor-$VENDOR-q-template \
-                         $ANDROID_ROOT/hybris/mw/droid-vendor-$VENDOR-q-template
-    cd $ANDROID_ROOT/hybris/mw/droid-vendor-$VENDOR-q-template
-    sudo droid-system-device/helpers/copy_vendor.sh \
-         $ANDROID_ROOT-mnt \
-         rpm/droid-system-vendor-$HABUILD_DEVICE.spec
-    sudo chown -R $USER .
-    sudo umount $ANDROID_ROOT-mnt
-    rm /tmp/vendor.img.raw
+
+    sudo mount vendor.img.raw $ANDROID_ROOT-mnt
+    git_clone_or_update  \
+        "$HYBRIS_REMOTE"/droid-vendor-$VENDOR-$FLAVOUR-template \
+        $ANDROID_ROOT/hybris/mw/droid-vendor-$VENDOR-$FLAVOUR-template
+    (
+        cd $ANDROID_ROOT/hybris/mw/droid-vendor-$VENDOR-$FLAVOUR-template
+        sudo droid-system-device/helpers/copy_vendor.sh \
+             $ANDROID_ROOT-mnt \
+             rpm/droid-system-vendor-$HABUILD_DEVICE.spec
+        sudo chown -R $USER .
+        sudo umount $ANDROID_ROOT-mnt
+    )
+    rm vendor.img.raw
 
     cd "$ANDROID_ROOT"
-    rpm/dhd/helpers/build_packages.sh -b hybris/mw/droid-system-sony-q-template \
-                                     --do-not-install --spec=rpm/droid-system-$HABUILD_DEVICE.spec \
-                                     --spec=rpm/droid-system-$HABUILD_DEVICE-$DEVICE_NUM.spec
+    rpm/dhd/helpers/build_packages.sh \
+        -b hybris/mw/droid-system-$VENDOR-$FLAVOUR-template \
+        --do-not-install --spec=rpm/droid-system-$HABUILD_DEVICE.spec \
+        --spec=rpm/droid-system-$HABUILD_DEVICE-$DEVICE_NUM.spec \
+        --no-auto-version
 
-    rpm/dhd/helpers/build_packages.sh -b hybris/mw/droid-vendor-sony-q-template \
-                                      --do-not-install --spec=rpm/droid-system-vendor-$HABUILD_DEVICE.spec \
-                                      --spec=rpm/droid-system-vendor-$HABUILD_DEVICE-$DEVICE_NUM.spec
-
+    rpm/dhd/helpers/build_packages.sh \
+        -b hybris/mw/droid-vendor-$VENDOR-$FLAVOUR-template \
+        --do-not-install --spec=rpm/droid-system-vendor-$HABUILD_DEVICE.spec \
+        --spec=rpm/droid-system-vendor-$HABUILD_DEVICE-$DEVICE_NUM.spec \
+        --no-auto-version
 }

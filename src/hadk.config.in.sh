@@ -31,17 +31,47 @@ reset_job_funcs()
           host
 }
 
+#\\include var.in.sh
 
 depend()
+# usage: depend <file> [<chainload>]
+# desc:  Load file an execute chainload if defend
+#        Chainload is executed for all following depends.
+#        The chainload is tried to be executed by the next dependend
+#        if there is none its executed in the same depend is ince.
 {
+    if [ "$chainload" ] ; then
+        file=$(var self/file)
+        abs_file=$(var self/abs_file)
+        verbose "$file: $chainload"
+        "$chainload" "$abs_file"
+        # Ok so we had something to execute lets blow up a counter unit
+        var self/chainload/executed=t
+    fi
+    reset_job_funcs
+
+    # New IID
+    # if we got no $tmp_dir/self we are at main instance, so init it
+    if [ ! -e "$tmp_dir"/self ] ; then
+	# init InstanceID to use if we can't use $tmp_dir/self
+	# if we are the first instance our id is 1
+	instance_create 1
+	#echo "$tmp_dir" > "$tmp_dir"/self/clean_files
+                        # else gen rnd var and move old self to new instance and create new self
+    else
+        instance_create
+    fi
+    instance_enter
+
     local file=$1; shift
+    var self/file=$file
     if [ $1 ] ; then
-        chainload=$1
+        local chainload=$1
         shift
     fi
-    
-    local IFS dir chainload_stat abs_file
-    
+
+    local IFS dir
+
     case $file in
         ./*)
             depend_path=$depend_path:"$PWD"
@@ -63,24 +93,35 @@ depend()
                 unset IFS
 
                 if [ -e "$dir/$file" ] ;then
-                    abs_file="$dir/$file"
-                    
+                    local abs_file="$dir/$file"
+                    var self/abs_file="$abs_file"
+                    local check \
+                          build \
+                          build_sfos \
+                          sync \
+                          host
+
                     verbose "Loading $file"
-                    if [ $chainload ] ; then
-                        reset_job_funcs
-                    fi
-                     
+                    # Save the current counter and increase the pile of counter units
                     . "$abs_file"
 
-
-                    if [ "$chainload" ] ; then
-                        verbose "$file: $chainload"
-                        "$chainload" "$abs_file"
-                        chainload_stat=$?
+                    # Restore IID
+                    if [  ! -e self/chainload/executed ] ; then
+                        # Ok it seams that the current counter unit pile is the same again
+                        # Lets execute our chain load
+                        if [ "$chainload" ] ; then
+                            file=$(var self/file)
+                            abs_file=$(var self/abs_file)
+                            verbose "$file: $chainload"
+                            "$chainload" "$abs_file"
+                        fi
                         reset_job_funcs
                     fi
-                    
-                    return $chainload_stat
+
+                    if [ ! $IID = 1 ] ; then
+                        instance_leave
+                    fi
+                    return 0
                 else
                     IFS=:
                 fi
@@ -89,6 +130,10 @@ depend()
 
 
     HADK_FILE_NOT_FOUND="$file"
-    
+
+    cleanup
+    #FIXME Bad error handling bash forces us to using this last result
+    exit 1
+
     return 1
 }

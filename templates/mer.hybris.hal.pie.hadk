@@ -9,7 +9,7 @@ sync()
     cd "$ANDROID_ROOT"
 
     git_clone_or_update \
-        $HYBRIS_REMOTE/droid-hal-$VENDOR-$FAMILY \
+        $HYBRIS_REMOTE/droid-hal-$VENDOR-$FAMILY${ANDROID_FLAVOUR+-$ANDROID_FLAVOUR} \
         droid-hal-$VENDOR-$FAMILY \
         --recursive
     rm -rf patches
@@ -41,5 +41,6 @@ sync()
                 ln -sf ../../../droid-hal-$VENDOR-$FAMILY/kernel/$VENDOR/$sub_dir/"$base_file" kernel/$VENDOR/$sub_dir/"$base_file"
             done
         fi
+    ln -sf ../dhd rpm/dhd
     ./setup-sources.sh --mb
 }

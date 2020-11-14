@@ -98,10 +98,12 @@ run_job()
 # desc: run target job for the current instance
 {
     if [ "$1" = "$job_target"  ] ; then
-        verbose "$1: $job_func : begin"
-        "$job_func"
-        verbose "$1: $job_func : end"
-        exit 0
+        if is_function $job_func ; then
+            cd_source_root
+            verbose "$1: $job_func : begin"
+            "$job_func"
+            verbose "$1: $job_func : end"
+        fi
     fi
 }
 

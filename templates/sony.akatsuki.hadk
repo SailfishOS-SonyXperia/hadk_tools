@@ -1,0 +1,4 @@
+export HABUILD_DEVICE=akatsuki
+export DEVICE_KERNEL_NUM=h9436
+
+depend sony.tama.hadk

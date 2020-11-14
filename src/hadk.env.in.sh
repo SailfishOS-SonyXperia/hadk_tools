@@ -81,6 +81,11 @@ init_sfos()
         sfossdk_src_url="$SFOSSDK_DIR/${SFOSSDK_URL##*/}"
     fi
     sudo tar --numeric-owner -p -xjf "$sfossdk_src_url" -C "$SFOSSDK_DIR"
+    case ${SFOSSDK_URL##*/} in
+        *devel*)
+            sfos_sdk_run sudo ssu r
+            ;;
+    esac
 }
 
 init_ubu()
@@ -97,7 +102,7 @@ init_ubu()
 
 update_sfos()
 {
-    sfos_sdk_run sudo zypper in android-tools
+    sfos_sdk_run sudo zypper -n in android-tools
     
     echo c | sfos_sdk_run sudo zypper -n in android-tools-hadk \
                           createrepo_c \
@@ -111,12 +116,9 @@ update_sfos()
                           rpm-python   # not auto-installed dep of mic
     
 
-    #FIXME#
-    #sfos_sdk_run sdk-assistant update tooling SailfishOS-latest
     sfos_sdk_run sudo ssu re $RELEASE
     sfos_sdk_run sudo zypper ref
     echo c| sfos_sdk_run sudo zypper -n dup
-    yes y| sfos_sdk_run sdk-assistant tooling update  SailfishOS-latest
 }
 
 update_ubu()
@@ -196,7 +198,7 @@ case $1 in
                                ${@EXPORT_VAR_PREFIX@_DEPEND_PATH+ -t "${@EXPORT_VAR_PREFIX@_DEPEND_PATH}"} \
                                enter_shell ;;
             host)
-                cd "$ANDROID_ROOT"
+                cd "${SOURCE_ROOT:-$ANDROID_ROOT}"
                 "${SHELL:-/bin/sh}"
         esac
         ;;
@@ -205,7 +207,7 @@ case $1 in
         export LC_NUMERIC=POSIX
         [ -e /parentroot/usr/share/ubu-chroot/mer-ubusdk-bash-setup ] && \
             shellrc=/parentroot/usr/share/ubu-chroot/mer-ubusdk-bash-setup
-        [ "$ANDROID_ROOT" ] && cd "$ANDROID_ROOT"
+        [ "${SOURCE_ROOT:-$ANDROID_ROOT}" ] && cd "${SOURCE_ROOT:-$ANDROID_ROOT}"
         bash --init-file ${shellrc:-/mer-bash-setup} -i
         ;;
     *) error 'No mode suplied'; show_help; exit 1;;

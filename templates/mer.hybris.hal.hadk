@@ -42,26 +42,25 @@ check()
 sync()
 {
     mkdir -p "$ANDROID_ROOT"
-
-    cd "$ANDROID_ROOT"
     repo init -u "$HYBRIS_ANDROID_URL" \
          -b "$HYBRIS_ANDROID_BRANCH" \
-         -m default.xml
+         -m default.xml \
+         --platform=linux
 
     repo forall -c git reset --hard HEAD > /dev/null 2>&1 || true
-    repo forall -c git am --abort true > /dev/null 2>&1 ||  true
+    repo forall -c git am --abort > /dev/null 2>&1 ||  true
     repo forall -c git clean -d -x -f   > /dev/null 2>&1 || true
     repo forall -c git rebase --abort  > /dev/null 2>&1  || true
-    repo  sync -j8 --fetch-submodules
+    repo sync -j20 --fetch-submodules   --fail-fast
     mkdir -p hybris
     git_clone_or_update \
-        $HYBRIS_REMOTE/droid-config-$VENDOR-$FAMILY \
+        $HYBRIS_REMOTE/droid-config-$VENDOR-$FAMILY${ANDROID_FLAVOUR+-$ANDROID_FLAVOUR} \
         hybris/droid-configs -b master
     git_clone_or_update \
-        $HYBRIS_REMOTE/droid-hal-img-boot-$VENDOR-$FAMILY \
+        $HYBRIS_REMOTE/droid-hal-img-boot-$VENDOR-$FAMILY${ANDROID_FLAVOUR+-$ANDROID_FLAVOUR} \
         hybris/mw/droid-hal-img-boot-$VENDOR-$FAMILY -b master
     git_clone_or_update \
-        $HYBRIS_REMOTE/droid-hal-version-$VENDOR-$FAMILY \
+        $HYBRIS_REMOTE/droid-hal-version-$VENDOR-$FAMILY${ANDROID_FLAVOUR+-$ANDROID_FLAVOUR} \
         hybris/droid-hal-version-$VENDOR-$FAMILY -b master
 }
 
@@ -80,8 +79,6 @@ build()
 
 build_sfos()
 {
-    export ANDROID_ROOT
-    cd $ANDROID_ROOT
 
     #DEVICE=$HABUILD_DEVICE
     ./rpm/dhd/helpers/build_packages.sh --droid-hal

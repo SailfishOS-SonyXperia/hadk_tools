@@ -1,8 +1,6 @@
 # -*- sh -*-
 build_sfos()
 {
-    export ANDROID_ROOT
-    cd $ANDROID_ROOT
 
     if [ -e "$ANDROID_ROOT"/external/libhybris ] ; then
         _hybris_path="$ANDROID_ROOT/external/libhybris"
@@ -11,6 +9,9 @@ build_sfos()
                 _hybris_path="$ANDROID_ROOT/hybris/mw/libhybris"
             fi
     fi
+
+    sb2 -t $VENDOR-$DEVICE-$PORT_ARCH -m sdk-install \
+        -R zypper -n in droid-hal-$HABUILD_DEVICE-devel
 
     ./rpm/dhd/helpers/build_packages.sh \
         -b "$_hybris_path" \
@@ -24,5 +25,9 @@ build_sfos()
     buildmw "https://git.sailfishos.org/mer-core/qtscenegraph-adaptation.git" rpm/qtscenegraph-adaptation-droid.spec || die
     buildmw "https://git.sailfishos.org/mer-core/sensorfw.git" rpm/sensorfw-qt5-binder.spec || die
     buildmw geoclue-providers-hybris rpm/geoclue-providers-hybris-binder.spec || die
-#wa    buildmw nfcd-binder-plugin
+
+    ./rpm/dhd/helpers/build_packages.sh \
+        --mw=https://github.com/mer-hybris/audiosystem-passthrough
+    ./rpm/dhd/helpers/build_packages.sh \
+        --mw=https://github.com/mer-hybris/pulseaudio-modules-droid-hidl.git
 }
