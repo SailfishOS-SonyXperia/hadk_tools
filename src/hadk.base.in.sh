@@ -52,3 +52,6 @@ if ! depend "./$device_file" ; then
         exit 1
     fi
 fi
+# After we checked if every dependcy is found we need to reset var.db
+unset IID
+reset_job_funcs
