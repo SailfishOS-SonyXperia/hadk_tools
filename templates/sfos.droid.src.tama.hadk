@@ -1,0 +1,13 @@
+# -*- sh -*-
+sync()
+{
+    cat > .repo/local_manifests <<EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest>
+  <remote fetch="https://github.com/sailfishos-sony-tama" name="hybris-tama"/>
+  <project name="droid-src-sony-tama-pie" path="droid-src" remote="hybris-tama" revision="master"/>
+</manifest>
+EOF
+}
+
+depend mer.hybris.hal.pie.hadk
