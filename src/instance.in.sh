@@ -7,7 +7,7 @@ tmp_dir="$(mktemp -u "${TMPDIR:-/tmp}/${appname}.XXXXXXX")"
 cleanup() {
     if [ ! $keep ] ; then
         local clean_files
-        read -r clean_files < "@VAR_DIR@/$IID/clean_files"
+        read -r clean_files < "@VARDB_DIR@/$IID/clean_files"
 	rm -rf "$clean_files"
     fi
 }
