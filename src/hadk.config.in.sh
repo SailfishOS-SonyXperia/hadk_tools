@@ -31,7 +31,7 @@ reset_job_funcs()
           host
 }
 
-#\\include var.in.sh
+#\\include instance.in.sh
 
 depend()
 # usage: depend <file> [<chainload>]
