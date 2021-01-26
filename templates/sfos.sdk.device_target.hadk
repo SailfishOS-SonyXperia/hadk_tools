@@ -6,6 +6,12 @@ build_sfos()
                    --tooling SailfishOS-latest \
                    --tooling-url \
                    ${SFOSTOOLING_URL:=http://releases.sailfishos.org/sdk/targets/Sailfish_OS-$RELEASE-Sailfish_SDK_Tooling-i486.tar.7z}
+
+        case ${SFOSTARGET_URL##*/} in
+            *devel*)
+                sdk-assistant register $VENDOR-$DEVICE-$PORT_ARCH
+                ;;
+        esac
     else
         sdk-assistant update $VENDOR-$DEVICE-$PORT_ARCH
     fi
