@@ -2,10 +2,10 @@ build_sfos()
 {
     if [ ! -e /srv/mer/targets/$VENDOR-$DEVICE-$PORT_ARCH ] ; then
         sdk-manage --target --install $VENDOR-$DEVICE-$PORT_ARCH \
-                   http://releases.sailfishos.org/sdk/targets/Sailfish_OS-$RELEASE-Sailfish_SDK_Target-armv7hl.tar.7z \
+                   ${SFOSTARGET_URL:=http://releases.sailfishos.org/sdk/targets/Sailfish_OS-$RELEASE-Sailfish_SDK_Target-armv7hl.tar.7z} \
                    --tooling SailfishOS-latest \
                    --tooling-url \
-                   http://releases.sailfishos.org/sdk/targets/Sailfish_OS-$RELEASE-Sailfish_SDK_Tooling-i486.tar.7z
+                   ${SFOSTOOLING_URL:=http://releases.sailfishos.org/sdk/targets/Sailfish_OS-$RELEASE-Sailfish_SDK_Tooling-i486.tar.7z}
     else
         sdk-assistant update $VENDOR-$DEVICE-$PORT_ARCH
     fi
