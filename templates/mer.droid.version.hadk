@@ -6,7 +6,7 @@ build_sfos()
     (
         cd hybris/droid-configs/installroot
         rpm2cpio \
-$ANDROID_ROOT/droid-local-repo/$DEVICE_NUM/droid-configs/droid-config-$DEVICE_NUM-ssu-kickstarts-1-1.armv7hl.rpm \
+$ANDROID_ROOT/droid-local-repo/$DEVICE_NUM/droid-configs/droid-config-$DEVICE_NUM-ssu-kickstarts-*.armv7hl.rpm \
             | cpio -idv &> /dev/null
     )
 
