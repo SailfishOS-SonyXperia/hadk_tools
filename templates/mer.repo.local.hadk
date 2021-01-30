@@ -4,7 +4,7 @@ build_sfos()
     rm -rf installroot
     mkdir installroot
     cd installroot
-    rpm2cpio $ANDROID_ROOT/droid-local-repo/$DEVICE/droid-configs/droid-config-$DEVICE_NUM-ssu-kickstarts-1-1.$PORT_ARCH.rpm | cpio -idv &> /dev/null
+    rpm2cpio $ANDROID_ROOT/droid-local-repo/$DEVICE/droid-configs/droid-config-$DEVICE_NUM-ssu-kickstarts-*.$PORT_ARCH.rpm | cpio -idv &> /dev/null
     cd ../../../
     HA_REPO="repo --name=adaptation-community-common-$DEVICE_NUM-@RELEASE@"
     HA_DEV="repo --name=adaptation-community-$DEVICE_NUM-@RELEASE@"
