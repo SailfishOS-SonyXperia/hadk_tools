@@ -54,37 +54,37 @@ build()
 
 build_sfos()
 {
-    sudo mkdir -p $ANDROID_ROOT-mnt
+    sudo mkdir -p $ANDROID_ROOT-mnt/{system,vendor}
     # ensure your /tmp has ~4GB available
     # simg2img out/target/product/$HABUILD_DEVICE/system.img system.img.raw
-    sudo mount system.img.raw $ANDROID_ROOT-mnt
+    sudo mount system.img.raw $ANDROID_ROOT-mnt/system
     git_clone_or_update \
         "$HYBRIS_REMOTE"/droid-system-$VENDOR-$FLAVOUR-template \
         $ANDROID_ROOT/hybris/mw/droid-system-$VENDOR-$FLAVOUR-template
     (
         cd $ANDROID_ROOT/hybris/mw/droid-system-$VENDOR-$FLAVOUR-template
-        sudo ./droid-system-device/helpers/copy_system.sh \
-             $ANDROID_ROOT-mnt/system rpm/droid-system-$HABUILD_DEVICE.spec
+        ./droid-system-device/helpers/copy_system.sh \
+             $ANDROID_ROOT-mnt/system/system rpm/droid-system-$HABUILD_DEVICE.spec
         # please do not commit the binaries nor push them to github repo,
         # because the licence has not been determined,
         # thus they have to be built manually
         sudo chown -R $USER .
-        sudo umount $ANDROID_ROOT-mnt
+        sudo umount $ANDROID_ROOT-mnt/system
     )
     rm system.img.raw
 
 
-    sudo mount vendor.img.raw $ANDROID_ROOT-mnt
+    sudo mount vendor.img.raw $ANDROID_ROOT-mnt/vendor
     git_clone_or_update  \
         "$HYBRIS_REMOTE"/droid-vendor-$VENDOR-$FLAVOUR-template \
         $ANDROID_ROOT/hybris/mw/droid-vendor-$VENDOR-$FLAVOUR-template
     (
         cd $ANDROID_ROOT/hybris/mw/droid-vendor-$VENDOR-$FLAVOUR-template
-        sudo droid-system-device/helpers/copy_vendor.sh \
-             $ANDROID_ROOT-mnt \
+        droid-system-device/helpers/copy_vendor.sh \
+             $ANDROID_ROOT-mnt/vendor \
              rpm/droid-system-vendor-$HABUILD_DEVICE.spec
         sudo chown -R $USER .
-        sudo umount $ANDROID_ROOT-mnt
+        sudo umount $ANDROID_ROOT-mnt/vendor
     )
     rm vendor.img.raw
 
