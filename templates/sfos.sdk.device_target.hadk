@@ -13,6 +13,7 @@ build_sfos()
                 ;;
         esac
     else
-        sdk-assistant update $VENDOR-$DEVICE-$PORT_ARCH
+        sdk-assistant update $VENDOR-$DEVICE-$PORT_ARCH \
+                      --non-interactive
     fi
 }
