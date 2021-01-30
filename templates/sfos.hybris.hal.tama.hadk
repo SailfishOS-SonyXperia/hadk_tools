@@ -29,11 +29,6 @@ build()
     make verity_key
 }
 
-build_sfos()
-{
-    buildmw https://github.com/sailfishos-sony-tama/pkg-fsarchiver
-}
-
 depend mer.hybris.hal.pie.hadk
 
 
