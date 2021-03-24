@@ -60,7 +60,7 @@ sync()
         $HYBRIS_REMOTE/droid-hal-img-boot-$VENDOR-$FAMILY${ANDROID_FLAVOUR+-$ANDROID_FLAVOUR} \
         hybris/mw/droid-hal-img-boot-$VENDOR-$FAMILY -b master
     git_clone_or_update \
-        $HYBRIS_REMOTE/droid-hal-version-$VENDOR-$FAMILY${ANDROID_FLAVOUR+-$ANDROID_FLAVOUR} \
+        $HYBRIS_REMOTE/droid-hal-version-$VENDOR-$FAMILY \
         hybris/droid-hal-version-$VENDOR-$FAMILY -b master
 }
 

@@ -8,7 +8,7 @@ export DEVICE=$DEVICE_NUM
 depend sony.akatsuki.hadk
 depend sfos.hybris.hal.tama.hadk
 depend mer.hybris.hal.dtbo.hadk
-depend mer.hybris.hal.img.boot.hadk
+depend mer.hybris.hal.img.boot.tama.hadk
 depend mer.droid.configs.hadk
 depend mer.mw.hadk
 depend mer.droidmedia.hadk
