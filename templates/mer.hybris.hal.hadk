@@ -1,6 +1,7 @@
 # -*- sh -*-
 [ -z $HYBRIS_ANDROID_URL ] && HYBRIS_ANDROID_URL=git://github.com/mer-hybris/android.git
 [ -z $HYBRIS_REMOTE ] && HYBRIS_REMOTE=https://github.com/mer-hybris
+[ -z $HYBRIS_ANDROID_MANIFEST ] && HYBRIS_ANDROID_MANIFEST=default.xml
 
 depend sfos.sdk.device_target.hadk
 
@@ -44,7 +45,7 @@ sync()
     mkdir -p "$ANDROID_ROOT"
     repo init -u "$HYBRIS_ANDROID_URL" \
          -b "$HYBRIS_ANDROID_BRANCH" \
-         -m default.xml \
+         -m "$HYBRIS_ANDROID_MANIFEST" \
          --platform=linux
 
     repo forall -c git reset --hard HEAD > /dev/null 2>&1 || true
