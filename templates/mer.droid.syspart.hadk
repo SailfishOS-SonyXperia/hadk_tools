@@ -1,4 +1,7 @@
 # -*- sh -*-
+[ -z $HYBRIS_ANDROID_URL ] && HYBRIS_ANDROID_URL=https://github.com/mer-hybris/android.git
+[ -z $HYBRIS_REMOTE ] && HYBRIS_REMOTE=https://github.com/mer-hybris
+
 sync()
 {
     mkdir -p "$ANDROID_ROOT-syspart"
