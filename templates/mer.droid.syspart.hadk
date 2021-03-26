@@ -1,6 +1,7 @@
 # -*- sh -*-
 [ -z $HYBRIS_ANDROID_URL ] && HYBRIS_ANDROID_URL=https://github.com/mer-hybris/android.git
 [ -z $HYBRIS_REMOTE ] && HYBRIS_REMOTE=https://github.com/mer-hybris
+[ -z $HYBRIS_ANDROID_MANIFEST ] && HYBRIS_ANDROID_MANIFEST=default.xml
 
 sync()
 {
@@ -9,7 +10,7 @@ sync()
     cd "$ANDROID_ROOT-syspart"
     repo init -u "$HYBRIS_ANDROID_URL" \
          -b "$HYBRIS_SYSPART_BRANCH" \
-         -m default.xml \
+         -m "$HYBRIS_ANDROID_MANIFEST" \
          --platform=linux
     repo forall -c git reset --hard HEAD
     repo forall -c git am --abort
