@@ -1,6 +1,7 @@
 # -*- sh -*-
 [ -z $HYBRIS_ANDROID_URL ] && HYBRIS_ANDROID_URL=https://github.com/mer-hybris/android.git
 [ -z $HYBRIS_REMOTE ] && HYBRIS_REMOTE=https://github.com/mer-hybris
+[ -z $HYBRIS_REMOTE_DEVICE ] && HYBRIS_REMOTE_DEVICE=$HYBRIS_REMOTE
 [ -z $HYBRIS_ANDROID_MANIFEST ] && HYBRIS_ANDROID_MANIFEST=default.xml
 
 sync()
@@ -66,10 +67,10 @@ build_sfos()
     # simg2img out/target/product/$HABUILD_DEVICE/system.img system.img.raw
     sudo mount system.img.raw $ANDROID_ROOT-mnt/system
     git_clone_or_update \
-        "$HYBRIS_REMOTE"/droid-system-$VENDOR-$FLAVOUR-template \
-        $ANDROID_ROOT/hybris/mw/droid-system-$VENDOR-$FLAVOUR-template
+        "$HYBRIS_REMOTE_DEVICE"/droid-system-$VENDOR-${FLAVOUR+$FLAVOUR-}template \
+        $ANDROID_ROOT/hybris/mw/droid-system-$VENDOR-${FLAVOUR+$FLAVOUR-}template
     (
-        cd $ANDROID_ROOT/hybris/mw/droid-system-$VENDOR-$FLAVOUR-template
+        cd $ANDROID_ROOT/hybris/mw/droid-system-$VENDOR-${FLAVOUR+$FLAVOUR-}template
         ./droid-system-device/helpers/copy_system.sh \
              $ANDROID_ROOT-mnt/system/system rpm/droid-system-$HABUILD_DEVICE.spec
         # please do not commit the binaries nor push them to github repo,
@@ -83,7 +84,7 @@ build_sfos()
 
     sudo mount vendor.img.raw $ANDROID_ROOT-mnt/vendor
     git_clone_or_update  \
-        "$HYBRIS_REMOTE"/droid-vendor-$VENDOR-$FLAVOUR-template \
+        "$HYBRIS_REMOTE_DEVICE"/droid-vendor-$VENDOR-$FLAVOUR-template \
         $ANDROID_ROOT/hybris/mw/droid-vendor-$VENDOR-$FLAVOUR-template
     (
         cd $ANDROID_ROOT/hybris/mw/droid-vendor-$VENDOR-$FLAVOUR-template

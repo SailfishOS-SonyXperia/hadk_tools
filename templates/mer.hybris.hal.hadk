@@ -1,6 +1,7 @@
 # -*- sh -*-
 [ -z $HYBRIS_ANDROID_URL ] && HYBRIS_ANDROID_URL=git://github.com/mer-hybris/android.git
 [ -z $HYBRIS_REMOTE ] && HYBRIS_REMOTE=https://github.com/mer-hybris
+[ -z $HYBRIS_REMOTE_DEVICE ] && HYBRIS_REMOTE_DEVICE=$HYBRIS_REMOTE
 [ -z $HYBRIS_ANDROID_MANIFEST ] && HYBRIS_ANDROID_MANIFEST=default.xml
 
 depend sfos.sdk.device_target.hadk
@@ -55,13 +56,13 @@ sync()
     repo sync -j20 --fetch-submodules   --fail-fast
     mkdir -p hybris
     git_clone_or_update \
-        $HYBRIS_REMOTE/droid-config-$VENDOR-$FAMILY${ANDROID_FLAVOUR+-$ANDROID_FLAVOUR} \
+        $HYBRIS_REMOTE_DEVICE/droid-config-$VENDOR-$FAMILY${ANDROID_FLAVOUR+-$ANDROID_FLAVOUR} \
         hybris/droid-configs -b master
     git_clone_or_update \
-        $HYBRIS_REMOTE/droid-hal-img-boot-$VENDOR-$FAMILY${ANDROID_FLAVOUR+-$ANDROID_FLAVOUR} \
+        $HYBRIS_REMOTE_DEVICE/droid-hal-img-boot-$VENDOR-$FAMILY${ANDROID_FLAVOUR+-$ANDROID_FLAVOUR} \
         hybris/mw/droid-hal-img-boot-$VENDOR-$FAMILY -b master
     git_clone_or_update \
-        $HYBRIS_REMOTE/droid-hal-version-$VENDOR-$FAMILY \
+        $HYBRIS_REMOTE_DEVICE/droid-hal-version-$VENDOR-$FAMILY \
         hybris/droid-hal-version-$VENDOR-$FAMILY -b master
 }
 
