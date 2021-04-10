@@ -137,3 +137,9 @@ depend()
 
     return 1
 }
+
+for signal in TERM HUP QUIT; do
+    trap "IID=1 cleanup; exit 1" $signal
+done
+unset signal
+trap "IID=1 cleanup; exit 130" INT
