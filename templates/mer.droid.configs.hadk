@@ -2,11 +2,13 @@
 build_sfos()
 {
     if [ -z "$(grep community_adaptation $ANDROID_ROOT/hybris/droid-configs/rpm/droid-config-$DEVICE_NUM.spec)" ]; then
-        sed -i '/%include droid-configs-device/i%define community_adaptation 1\n' $ANDROID_ROOT/hybris/droid-configs/rpm/droid-config-$DEVICE_NUM.spec
+        sed -i '/%include droid-configs-device/i%define community_adaptation 1\n' \
+            $ANDROID_ROOT/hybris/droid-configs/rpm/droid-config-$DEVICE_NUM.spec
     fi
-    if [ -z "$(grep patterns-sailfish-consumer-generic $ANDROID_ROOT/hybris/droid-configs/patterns/jolla-configuration-$DEVICE_NUM.yaml)" ]; then
-        sed -i "/Summary: Jolla Configuration $DEVICE_NUM/i- patterns-sailfish-consumer-generic\n- patterns-sailfish-store-applications\n- pattern:sailfish-porter-tools\n" $ANDROID_ROOT/hybris/droid-configs/patterns/jolla-configuration-$DEVICE_NUM.yaml
-    fi
+    if [ -z "$(grep patterns-sailfish-consumer-generic $ANDROID_ROOT/hybris/droid-configs/patterns/patterns-sailfish-device-configuration-$DEVICE.inc)" ]; then
+        sed -e "/Summary: Jolla Configuration $DEVICE/aRequires: patterns-sailfish-consumer-generic\n\n# Early stages of porting benefit from these:\nRequires: patterns-sailfish-device-tools\n- patterns-sailfish-store-applications" -i \
+        $ANDROID_ROOT/hybris/droid-configs/patterns/patterns-sailfish-device-configuration-$DEVICE.inc
+fi
 
 # avoid a SIGSEGV on exit of libhybris client
   #  sb2 -t $VENDOR-$DEVICE-$PORT_ARCH -m sdk-install -R ls /system/build.prop > /dev/null
