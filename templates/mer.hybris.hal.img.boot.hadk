@@ -26,6 +26,19 @@ build_sfos()
         openssh-clients
 
 
+    local ret=0
+
+    sb2 -t $VENDOR-$DEVICE-$PORT_ARCH -m sdk-install \
+        -R zypper se -i busybox-symlinks-cpio || ret=$?
+
+    if [ $ret -eq 104 ]; then
+            sb2 -t $VENDOR-$DEVICE-$PORT_ARCH -R -m sdk-install \
+                zypper --non-interactive install --force-resolution \
+                cpio
+    elif [ ! $ret -eq 0 ] ; then
+        return $ret
+    fi
+
 
     buildmw $HYBRIS_REMOTE/droid-hal-img-boot-$VENDOR-$FAMILY \
         rpm/droid-hal-$HABUILD_DEVICE-img-boot.spec --do-not-install
