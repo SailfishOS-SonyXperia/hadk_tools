@@ -1,0 +1,16 @@
+# -*- sh -*-
+
+
+build()
+{
+    source build/envsetup.sh
+    export USE_CCACHE=1
+    lunch aosp_${DEVICE_KERNEL_NUM:-$DEVICE_NUM}-user
+    cd kernel/sony/msm-4.14/common-kernel
+    ./build-kernels-clang.sh \
+     -d $HABUILD_DEVICE \
+     -O $ANDROID_ROOT/out/target/product/$HABUILD_DEVICE/obj/kernel
+    # FIXME after this is merged: https://github.com/sonyxperiadev/kernel-sony-msm-4.14-common/pull/14
+    cp dtbo-$HABUILD_DEVICE.img \
+       $ANDROID_ROOT/out/target/product/$HABUILD_DEVICE/dtbo.img
+}

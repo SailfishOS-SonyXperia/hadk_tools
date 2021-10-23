@@ -1,0 +1,18 @@
+# -*- sh -*-
+
+build_sfos()
+{
+    cd "$ANDROID_ROOT"
+    buildmw initrd-logos-sailfish
+}
+
+host()
+{
+    cd "$ANDROID_ROOT"
+    export ANDROID_ROOT
+    source build/envsetup.sh
+    export USE_CCACHE=1
+    lunch aosp_${DEVICE_KERNEL_NUM:-$DEVICE_NUM}-userdebug
+
+    ./dhd/helpers/build_kernel.sh
+}

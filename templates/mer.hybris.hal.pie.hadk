@@ -9,10 +9,14 @@ sync()
     cd "$ANDROID_ROOT"
 
     git_clone_or_update \
-        $HYBRIS_REMOTE/droid-hal-$VENDOR-$FAMILY${ANDROID_FLAVOUR+-$ANDROID_FLAVOUR} \
+        $HYBRIS_REMOTE_DEVICE/droid-hal-$VENDOR-$FAMILY${ANDROID_FLAVOUR+-$ANDROID_FLAVOUR} \
         droid-hal-$VENDOR-$FAMILY \
         --recursive
     rm -rf patches
+
+    [ ! -e droid-src ] && \
+        git_clone_or_update $HYBRIS_REMOTE/droid-src-$VENDOR droid-src
+
     ln -sf droid-src/patches patches
     droid-src/apply-patches.sh --mb
 

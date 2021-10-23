@@ -4,7 +4,7 @@
 sync()
 {
     cd "$ANDROID_ROOT"
-    git_clone_or_update https://github.com/mer-hybris/audioflingerglue external/audioflingerglue
+  #  git_clone_or_update https://github.com/mer-hybris/audioflingerglue external/audioflingerglue
     git_clone_or_update https://github.com/sailfishos/droidmedia external/droidmedia
 
 
@@ -14,11 +14,11 @@ build()
 {
     cd "$ANDROID_ROOT"
     source build/envsetup.sh
-    lunch aosp_${DEVICE_KERNEL_NUM:-$DEVICE_NUM}-userdebug
-    make -j8 $(external/droidmedia/detect_build_targets.sh $PORT_ARCH $(gettargetarch) ) \
-         $(external/audioflingerglue/detect_build_targets.sh $PORT_ARCH $(gettargetarch))
+    lunch aosp_${DEVICE_KERNEL_NUM:-$DEVICE_NUM}-user
+    #make -j8  \
+    #     $(external/audioflingerglue/detect_build_targets.sh $PORT_ARCH $(gettargetarch))
 
-    make -j4 libdroidmedia_32 minimediaservice minisfservice libaudioflingerglue_32 miniafservice
+    make -j4 droidmedia
 }
 
 
@@ -26,12 +26,12 @@ build_sfos()
 {
     cd "$ANDROID_ROOT"
     DROIDMEDIA_VERSION=$(git --git-dir external/droidmedia/.git describe --tags | sed -r "s/\-/\+/g")
-    AUDIOFINGERGLUE_VERSION=$(git --git-dir external/audioflingerglue/.git describe --tags | sed -r "s/\-/\+/g")
+    #AUDIOFINGERGLUE_VERSION=$(git --git-dir external/audioflingerglue/.git describe --tags | sed -r "s/\-/\+/g")
 
     ./rpm/dhd/helpers/pack_source_droidmedia-localbuild.sh $DROIDMEDIA_VERSION
     
     
-    ./rpm/dhd/helpers/pack_source_audioflingerglue-localbuild.sh $AUDIOFINGERGLUE_VERSION
+   # ./rpm/dhd/helpers/pack_source_audioflingerglue-localbuild.sh $AUDIOFINGERGLUE_VERSION
 
 
     
@@ -46,17 +46,17 @@ build_sfos()
                                       --build=hybris/mw/droidmedia-localbuild
     rpm/dhd/helpers/build_packages.sh --mw=https://github.com/sailfishos/gst-droid.git
 
-    mkdir -p hybris/mw/audioflingerglue-localbuild/rpm
-    cp rpm/dhd/helpers/audioflingerglue-localbuild.spec \
-       hybris/mw/audioflingerglue-localbuild/rpm/audioflingerglue.spec
-    sed -e "s/@DEVICE@/$HABUILD_DEVICE/" \
-        -e "s/0.0.0/$AUDIOFINGERGLUE_VERSION/" \
-        -e "s/@PORT_ARCH@/$PORT_ARCH/" \
-        -i hybris/mw/audioflingerglue-localbuild/rpm/audioflingerglue.spec
-    mv hybris/mw/audioflingerglue-$AUDIOFINGERGLUE_VERSION.tgz \
-       hybris/mw/audioflingerglue-localbuild/audioflingerglue-$AUDIOFINGERGLUE_VERSION.tgz
-    rpm/dhd/helpers/build_packages.sh --no-auto-version \
-                                      --build=hybris/mw/audioflingerglue-localbuild
+    # mkdir -p hybris/mw/audioflingerglue-localbuild/rpm
+    # cp rpm/dhd/helpers/audioflingerglue-localbuild.spec \
+    #    hybris/mw/audioflingerglue-localbuild/rpm/audioflingerglue.spec
+    # sed -e "s/@DEVICE@/$HABUILD_DEVICE/" \
+    #     -e "s/0.0.0/$AUDIOFINGERGLUE_VERSION/" \
+    #     -e "s/@PORT_ARCH@/$PORT_ARCH/" \
+    #     -i hybris/mw/audioflingerglue-localbuild/rpm/audioflingerglue.spec
+    # mv hybris/mw/audioflingerglue-$AUDIOFINGERGLUE_VERSION.tgz \
+    #    hybris/mw/audioflingerglue-localbuild/audioflingerglue-$AUDIOFINGERGLUE_VERSION.tgz
+    # rpm/dhd/helpers/build_packages.sh --no-auto-version \
+    #                                   --build=hybris/mw/audioflingerglue-localbuild
 
 
      buildmw "https://github.com/sailfishos/gmp-droid.git"
