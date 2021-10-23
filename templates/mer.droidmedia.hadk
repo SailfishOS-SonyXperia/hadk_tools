@@ -14,12 +14,11 @@ build()
 {
     cd "$ANDROID_ROOT"
     source build/envsetup.sh
-    lunch aosp_${DEVICE_KERNEL_NUM:-$DEVICE_NUM}-userdebug
-    make -j8 $(external/droidmedia/detect_build_targets.sh $PORT_ARCH $(gettargetarch) ) \
-         $(external/audioflingerglue/detect_build_targets.sh $PORT_ARCH $(gettargetarch))
+    lunch aosp_${DEVICE_KERNEL_NUM:-$DEVICE_NUM}-user
+    #make -j8  \
+    #     $(external/audioflingerglue/detect_build_targets.sh $PORT_ARCH $(gettargetarch))
 
-    #libaudioflingerglue_32
-    make -j4 libdroidmedia_32 minimediaservice minisfservice  miniafservice
+    make -j4 droidmedia
 }
 
 

@@ -73,7 +73,7 @@ build()
     export ANDROID_ROOT
     source build/envsetup.sh
     export USE_CCACHE=1
-    lunch aosp_${DEVICE_KERNEL_NUM:-$DEVICE_NUM}-userdebug
+    lunch aosp_${DEVICE_KERNEL_NUM:-$DEVICE_NUM}-user
     # Adjust XX to your building capabilities
     make -j15 hybris-hal
 }

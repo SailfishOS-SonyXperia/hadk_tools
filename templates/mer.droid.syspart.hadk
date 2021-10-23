@@ -34,7 +34,7 @@ build()
     source build/envsetup.sh
     export USE_CCACHE=1
     export LC_ALL=C
-    lunch aosp_${DEVICE_NUM}-userdebug
+    lunch aosp_${DEVICE_NUM}-user
 
     # mkdir -p out/target/product/${HABUILD_DEVICE:-$DEVICE}
 
