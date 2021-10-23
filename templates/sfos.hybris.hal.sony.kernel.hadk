@@ -5,7 +5,7 @@ build()
 {
     source build/envsetup.sh
     export USE_CCACHE=1
-    lunch aosp_${DEVICE_KERNEL_NUM:-$DEVICE_NUM}-userdebug
+    lunch aosp_${DEVICE_KERNEL_NUM:-$DEVICE_NUM}-user
     cd kernel/sony/msm-4.14/common-kernel
     ./build-kernels-clang.sh \
      -d $HABUILD_DEVICE \
