@@ -1,0 +1,4 @@
+export HABUILD_DEVICE=griffin
+export DEVICE_KERNEL_NUM=j9110
+
+depend sony.kumano.hadk

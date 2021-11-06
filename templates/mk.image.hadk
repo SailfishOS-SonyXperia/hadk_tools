@@ -1,5 +1,6 @@
 # -*- sh -*-
-depend mer.repo.local.hadk
+[ -z "$SFOS_ADAPTION0_URL"] && SFOS_ADAPTION0_URL=nil
+
 check()
 {
     if [ ! $RELEASE ] ; then
@@ -9,14 +10,99 @@ check()
 
 build_sfos()
 {
-    ./hybris/droid-configs/droid-configs-device/helpers/process_patterns.sh
+    srcks="$ANDROID_ROOT/hybris/droid-configs/installroot/usr/share/kickstarts"
+    ks="Jolla-@RELEASE@-$DEVICE-@ARCH@.ks"
+
+    sb2 -t $VENDOR-$DEVICE-$PORT_ARCH -m sdk-install -R zypper ref
+
+    (
+        cd hybris/droid-configs
+        rm -rf installroot
+        mkdir installroot
+        cd installroot
+        rpm2cpio \
+            $ANDROID_ROOT/droid-local-repo/$DEVICE/droid-configs/droid-config-$DEVICE_NUM-ssu-kickstarts-*.$PORT_ARCH.rpm \
+            | cpio -idv &> /dev/null
+    )
+
+    if [ "$SFOS_ADAPTION0_URL"  = "nil" ] ; then
+        ha_repo_url="file://$ANDROID_ROOT/droid-local-repo/$DEVICE"
+    else
+        ha_repo_url="$SFOS_ADAPTION0_URL"
+    fi
+
+    if sb2 -t $VENDOR-$DEVICE-$PORT_ARCH -m sdk-install -R ssu s 2>/dev/null\
+            | grep -q "Release (rnd): latest (devel)"
+    then
+        bleeding_edge_build_by_sailors=1
+    fi
 
 
-    sb2 -t $VENDOR-$DEVICE-armv7hl -m sdk-install -R zypper ref
 
 
-    sudo mic create loop --arch=$PORT_ARCH \
-         --tokenmap=ARCH:$PORT_ARCH,RELEASE:$RELEASE,EXTRA_NAME:$EXTRA_NAME,DEVICE:$DEVICE_NUM \
-         --record-pkgs=name,url     --outdir=sfe-$HABUILD_DEVICE-$RELEASE$EXTRA_NAME \
-         $ANDROID_ROOT/Jolla-@RELEASE@-$DEVICE_NUM-@ARCH@.ks
+    if [ "$bleeding_edge_build_by_sailors" -eq 1 ]; then
+        ks="Jolla-@RNDRELEASE@-@RNDFLAVOUR@-$DEVICE-@ARCH@.ks"
+        ha_repo="repo --name=adaptation0-$DEVICE-@RNDRELEASE@-@RNDFLAVOUR@"
+        if grep -q "$ha_repo" "$srcks/$ks"; then
+            sed -e "s|^$ha_repo.*$|$ha_repo --baseurl=$ha_repo_url|" \
+                "$srcks/$ks" > $ks
+        else
+            # Adaptation doesn't have its repo yet
+            repo_marker="repo --name=apps-@RNDRELEASE@-@RNDFLAVOUR@"
+            sed "\|$repo_marker|i$ha_repo --baseurl=$ha_repo_url" \
+                "$srcks/$ks" > "$ks"
+        fi
+    elif [ "$community_adaptation" -eq 1 ]; then
+        ha_repo="repo --name=adaptation-community-common-$DEVICE-@RELEASE@"
+        ha_dev="repo --name=adaptation-community-$DEVICE-@RELEASE@"
+        if ! grep -q "$ha_repo" "$srcks/$ks"; then
+            # aarch64 ports have no community-common repo for now
+            ha_repo="repo --name=apps-@RELEASE@"
+        fi
+        sed "\|$ha_repo|i$ha_dev --baseurl=$ha_repo_url" \
+            "$srcks/$ks" > "$ks"
+        community_build="community"
+    else
+        ha_repo="repo --name=adaptation0-$DEVICE-@RELEASE@"
+        sed -e "s|^$ha_repo.*$|$ha_repo --baseurl=$ha_repo_url|" \
+            "$srcks/$ks" > "$ks"
+    fi
+    if [ "$bleeding_edge_build_by_sailors" == "1" ]; then
+        tokenmap="ARCH:$PORT_ARCH,RELEASE:live,RNDRELEASE:latest,EXTRA_NAME:$EXTRA_NAME,RNDFLAVOUR:devel,RELEASEPATTERN::/live,RNDPATTERN::/devel,DEVICEMODEL:$DEVICE"
+        flavour=devel
+    else
+        tokenmap="ARCH:$PORT_ARCH,RELEASE:$RELEASE,EXTRA_NAME:$EXTRA_NAME:,DEVICEMODEL:$DEVICE"
+        flavour=release
+        # Clear out extra store repositories from kickstart if exist
+        sed -i "/store-repository.jolla.com/d" "$ks"
+    fi
+    if [ -n $RELEASE ]; then
+        release_version="-"$RELEASE
+    fi
+    imgname=SailfishOS"$community_build"-$flavour"$release_version"-$DEVICE"$EXTRA_NAME"
+    if [ -e hybris/droid-configs/droid-configs-device/helpers/process_patterns.sh ] ; then
+        ./hybris/droid-configs/droid-configs-device/helpers/process_patterns.sh
+    fi
+    # Check if we need to build loop or fs image
+    pattern_lookup=$(ls "$ANDROID_ROOT"/hybris/droid-configs/patterns/jolla-hw-adaptation-{$DEVICE,$HABUILD_DEVICE}.yaml 2>/dev/null | uniq)
+    metapackage_lookup=$(ls "$ANDROID_ROOT"/hybris/droid-configs/patterns/patterns-sailfish-device-adaptation-{$DEVICE,$HABUILD_DEVICE}.inc 2>/dev/null | uniq)
+
+    if grep -qsE "^- droid-hal-($DEVICE|$HABUILD_DEVICE)-kernel-modules" "$pattern_lookup" ||
+            grep -qsE "^Requires: droid-hal-($DEVICE|$HABUILD_DEVICE)-kernel-modules" "$metapackage_lookup"
+    then
+        mic create fs --arch=$PORT_ARCH \
+             -v\
+            --tokenmap=$tokenmap \
+            --record-pkgs=name,url \
+            --outdir=$imgname \
+            --pack-to=sfe-$DEVICE-$RELEASE"$EXTRA_NAME".tar.bz2 \
+            "$ANDROID_ROOT"/$ks
+    else
+        sudo mic create loop --arch=$PORT_ARCH \
+            --tokenmap=$tokenmap \
+            --record-pkgs=name,url \
+            --outdir=$imgname \
+            --copy-kernel \
+            "$ANDROID_ROOT"/$ks
+    fi
 }
