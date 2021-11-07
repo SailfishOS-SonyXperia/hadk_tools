@@ -1,0 +1,36 @@
+# -*- sh -*-
+
+RELEASE=4.3.0.12
+
+export SOURCE_ROOT="$SOURCE_ROOT/edo"
+mkdir -p "$SOURCE_ROOT"
+
+HYBRIS_REMOTE_DEVICE=https://github.com/SailfishOS-SonyXperia
+HYBRIS_ANDROID_BRANCH=sony-aosp-11
+HYBRIS_SYSPART_BRANCH=$HYBRIS_ANDROID_BRANCH
+HYBRIS_ANDROID_MANIFEST=localbuild.xml
+HYBRIS_ANDROID_SRC_BRANCH=hybris-sony-aosp-11
+
+export VENDOR=sony
+export FAMILY=edo
+export PORT_ARCH="aarch64"
+
+export DROID_TARGET_KERNEL_ARCH=arm64 # FIXME
+export KERNEL_DEFCONFIG=aosp_${DEVICE}_${HABUILD_DEVICE}_defconfig
+export KERNEL_SOURCE="$SOURCE_ROOT"/kernel/$VENDOR/msm-4.14/kernel
+#export CROSS_COMPILE=$SOURCE_ROOT/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/bin/aarch64-linux-android- #FIXME
+#export CROSS_COMPILE=$SOURCE_ROOT/gcc_build/toolchain/bin/aarch64-linux-gnu-
+#export CROSS_COMPILE_ARM32=$SOURCE_ROOT/gcc_build/toolchain/bin/arm-linux-androideabi-
+DROID_TARGET_KERNEL_DTB=t
+
+
+depend sfos.hybris.hal.sony.kernel.hadk
+depend mer.hybris.hal.pie.hadk
+depend sfos.hybris.hal.img.boot.hadk
+depend sfos.mw.hadk
+depend sfos.mw.pulseaudio.hadk
+depend sfos.droidmedia.hadk
+depend sfos.droid.syspart.hadk
+depend mer.droid.configs.hadk
+depend sfos.droid.version.hadk
+depend mk.image.hadk

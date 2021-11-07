@@ -1,0 +1,7 @@
+# -*- sh -*-
+depend local.base.hadk
+
+export DEVICE=xqat52
+export DEVICE_NUM=$DEVICE
+
+depend sony.pdx203.hadk

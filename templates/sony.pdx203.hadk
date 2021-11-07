@@ -1,0 +1,4 @@
+export HABUILD_DEVICE=pdx203
+export DEVICE_KERNEL_NUM=xqat52
+
+depend sony.edo.hadk
