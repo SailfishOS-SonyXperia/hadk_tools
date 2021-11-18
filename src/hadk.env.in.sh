@@ -207,7 +207,7 @@ case $1 in
         export LC_NUMERIC=POSIX
         [ -e /parentroot/usr/share/ubu-chroot/mer-ubusdk-bash-setup ] && \
             shellrc=/parentroot/usr/share/ubu-chroot/mer-ubusdk-bash-setup
-        [ "${SOURCE_ROOT:-$ANDROID_ROOT}" ] && cd "${SOURCE_ROOT:-$ANDROID_ROOT}"
+        [ "${SOURCE_ROOT:-$ANDROID_ROOT}" ] && cd_source_root
         bash --init-file ${shellrc:-/mer-bash-setup} -i
         ;;
     *) error 'No mode suplied'; show_help; exit 1;;
