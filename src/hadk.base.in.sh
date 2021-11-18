@@ -14,12 +14,13 @@ $appname - help
 -f        Supply config via device config file
 -t        Add custom template path
 
+-x        Enable xtrace when executing unit
 -V        Be more verbose
 -h        Show this help
 EOF
 }
 
-while getopts f:c:hVt: arg ; do
+while getopts f:c:hxVt: arg ; do
     case $arg in
         f) device_file=$OPTARG;;
         t)
@@ -29,6 +30,7 @@ while getopts f:c:hVt: arg ; do
             @EXPORT_VAR_PREFIX@_DEPEND_PATH="$OPTARG":$@EXPORT_VAR_PREFIX@_DEPEND_PATH
             ;;
         h) show_help; exit 0;;
+        x) shell_opt_xtrace=t;;
         V) verbose=t;;
         *) : ;;
     esac
