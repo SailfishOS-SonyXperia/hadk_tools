@@ -14,6 +14,7 @@ $appname - help
 -f        Supply config via device config file
 -t        Add custom template path
 
+-V        Be more verbose
 -h        Show this help
 EOF
 }
