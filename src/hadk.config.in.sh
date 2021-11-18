@@ -56,9 +56,9 @@ depend()
 	# init InstanceID to use if we can't use $tmp_dir/self
 	# if we are the first instance our id is 1
 	instance_create 1
-	#echo "$tmp_dir" > "$tmp_dir"/self/clean_files
-                        # else gen rnd var and move old self to new instance and create new self
+	echo "$tmp_dir" > "$tmp_dir"/1/clean_files
     else
+        # else gen rnd var and move old self to new instance and create new self
         instance_create
     fi
     instance_enter
@@ -83,6 +83,7 @@ depend()
 
     case $file in
         /*)
+            var self/abs_file="$file"
             source "$file"
             return
             ;;
