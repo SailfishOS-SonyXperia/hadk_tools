@@ -84,6 +84,7 @@ depend()
     case $file in
         /*)
             source "$file"
+            return
             ;;
         *)
             IFS=:
@@ -132,8 +133,6 @@ depend()
     HADK_FILE_NOT_FOUND="$file"
 
     cleanup
-    #FIXME Bad error handling bash forces us to using this last result
-    exit 1
 
     return 1
 }
