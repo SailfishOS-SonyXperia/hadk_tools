@@ -19,7 +19,9 @@ sync()
     repo  sync -j20 --fetch-submodules
 
     [ ! -e droid-src ] && \
-        git_clone_or_update $HYBRIS_REMOTE/droid-src-$VENDOR droid-src
+        git_clone_or_update $HYBRIS_REMOTE/droid-src-$VENDOR \
+                            -b ${HYBRIS_ANDROID_SRC_BRANCH} \
+                            droid-src
 
     rm -rf patches
     ln -sf droid-src/patches patches
