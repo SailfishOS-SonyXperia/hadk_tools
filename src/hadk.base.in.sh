@@ -58,3 +58,18 @@ fi
 # After we checked if every dependcy is found we need to reset var.db
 unset IID
 reset_job_funcs
+
+mkdir "${XDG_CACHE_HOME:-$HOME/.cache}/$appname-$$"
+echo "${XDG_CACHE_HOME:-$HOME/.cache}/$appname-$$" > "$tmp_dir/1/clean_files"
+
+# Prepare temporary environment unit to pass any options down to slave instances
+tmp_unit="$HOME/.cache/$appname-$$/env.hadk"
+cat > $tmp_unit <<EOF
+${depend_path+ depend_path=$depend_path}
+${shell_opt_xtrace+ shell_opt_xtrace=t}
+${verbose+ verbose=t}
+
+depend "$device_file"
+EOF
+
+device_file="$tmp_unit"

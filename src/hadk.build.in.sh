@@ -67,21 +67,18 @@ seperate_chainload()
                                  -f "$device_file" \
                                  job \
                                  $job_func \
-                                 ${@EXPORT_VAR_PREFIX@_DEPEND_PATH+ -t "${@EXPORT_VAR_PREFIX@_DEPEND_PATH}"} \
                                  "$1"
                     ;;
                 build_sfos)
                     sfos_sdk_run "$0" \
                                  -f "$device_file" \
                                  job $job_func \
-                                 ${@EXPORT_VAR_PREFIX@_DEPEND_PATH+ -t "${@EXPORT_VAR_PREFIX@_DEPEND_PATH}"} \
                                  "$1"
                     ;;
                 host)
                     "$0" -f "$device_file" \
                          job \
                          $job_func \
-                         ${@EXPORT_VAR_PREFIX@_DEPEND_PATH+ -t "${@EXPORT_VAR_PREFIX@_DEPEND_PATH}"} \
                          "$1"
                     ;;
             esac
