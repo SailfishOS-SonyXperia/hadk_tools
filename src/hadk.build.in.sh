@@ -98,8 +98,10 @@ run_job()
         if is_function $job_func ; then
             cd_source_root
             verbose "$1: $job_func : begin"
+            [ "$shell_opt_xtrace" ] && set -x
             "$job_func"
             verbose "$1: $job_func : end"
+            [ "$shell_opt_xtrace" ] && set +x
         fi
     fi
 }
