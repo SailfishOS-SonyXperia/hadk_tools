@@ -1,4 +1,5 @@
 # -*- sh -*-
+[ -z $HYBRIS_DROID_SRC_BRANCH ] && HYBRIS_DROID_SRC_BRANCH=hybris-${HYBRIS_ANDROID_BRANCH}
 
 depend mer.hybris.hal.hadk
 
@@ -15,7 +16,9 @@ sync()
     rm -rf patches
 
     [ ! -e droid-src ] && \
-        git_clone_or_update $HYBRIS_REMOTE/droid-src-$VENDOR droid-src
+        git_clone_or_update $HYBRIS_REMOTE/droid-src-$VENDOR \
+                            -b ${HYBRIS_ANDROID_SRC_BRANCH} \
+                            droid-src
 
     ln -sf droid-src/patches patches
     droid-src/apply-patches.sh --mb
