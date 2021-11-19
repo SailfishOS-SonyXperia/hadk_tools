@@ -1,5 +1,5 @@
 # -*- sh -*-
-[ -z "$SFOS_ADAPTION0_URL"] && SFOS_ADAPTION0_URL=nil
+[ -z "$SFOS_ADAPTION0_URL" ] && SFOS_ADAPTION0_URL=nil
 
 check()
 {
