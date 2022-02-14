@@ -6,7 +6,10 @@ build()
     source build/envsetup.sh
     export USE_CCACHE=1
     lunch aosp_${DEVICE_KERNEL_NUM:-$DEVICE_NUM}-user
-    cd kernel/sony/msm-4.14/common-kernel
+    kernel_dir=$(for dir in kernel/sony/msm-*/kernel; do
+                     dirname $dir
+                 done)
+    cd $kernel_dir/common-kernel
     ./build-kernels-clang.sh \
      -d $HABUILD_DEVICE \
      -O $ANDROID_ROOT/out/target/product/$HABUILD_DEVICE/obj/kernel
