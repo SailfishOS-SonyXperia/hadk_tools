@@ -21,8 +21,7 @@ build_sfos()
         mkdir installroot
         cd installroot
         rpm2cpio \
-            $ANDROID_ROOT/droid-local-repo/$DEVICE/droid-configs/droid-config-$DEVICE_NUM-ssu-kickstarts-*.$PORT_ARCH.rpm \
-            | cpio -idv &> /dev/null
+            $ANDROID_ROOT/droid-local-repo/$DEVICE/droid-configs/droid-config-$DEVICE_NUM-ssu-kickstarts-*.$PORT_ARCH.rpm | cpio -idv &> /dev/null
     )
 
     if [ "$SFOS_ADAPTION0_URL"  = "nil" ] ; then
