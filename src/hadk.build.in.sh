@@ -67,21 +67,18 @@ seperate_chainload()
                                  -f "$device_file" \
                                  job \
                                  $job_func \
-                                 ${@EXPORT_VAR_PREFIX@_DEPEND_PATH+ -t "${@EXPORT_VAR_PREFIX@_DEPEND_PATH}"} \
                                  "$1"
                     ;;
                 build_sfos)
                     sfos_sdk_run "$0" \
                                  -f "$device_file" \
                                  job $job_func \
-                                 ${@EXPORT_VAR_PREFIX@_DEPEND_PATH+ -t "${@EXPORT_VAR_PREFIX@_DEPEND_PATH}"} \
                                  "$1"
                     ;;
                 host)
                     "$0" -f "$device_file" \
                          job \
                          $job_func \
-                         ${@EXPORT_VAR_PREFIX@_DEPEND_PATH+ -t "${@EXPORT_VAR_PREFIX@_DEPEND_PATH}"} \
                          "$1"
                     ;;
             esac
@@ -101,8 +98,10 @@ run_job()
         if is_function $job_func ; then
             cd_source_root
             verbose "$1: $job_func : begin"
+            [ "$shell_opt_xtrace" ] && set -x
             "$job_func"
             verbose "$1: $job_func : end"
+            [ "$shell_opt_xtrace" ] && set +x
         fi
     fi
 }
