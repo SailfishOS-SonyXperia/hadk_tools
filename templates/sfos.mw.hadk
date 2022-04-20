@@ -27,7 +27,5 @@ build_sfos()
     buildmw geoclue-providers-hybris rpm/geoclue-providers-hybris-binder.spec || die
 
     ./rpm/dhd/helpers/build_packages.sh \
-        --mw=https://github.com/mer-hybris/audiosystem-passthrough
-    ./rpm/dhd/helpers/build_packages.sh \
         --mw=https://github.com/mer-hybris/pulseaudio-modules-droid-hidl.git
 }
