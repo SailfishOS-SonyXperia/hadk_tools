@@ -56,9 +56,9 @@ depend()
 	# init InstanceID to use if we can't use $tmp_dir/self
 	# if we are the first instance our id is 1
 	instance_create 1
-	#echo "$tmp_dir" > "$tmp_dir"/self/clean_files
-                        # else gen rnd var and move old self to new instance and create new self
+	echo "$tmp_dir" > "$tmp_dir"/1/clean_files
     else
+        # else gen rnd var and move old self to new instance and create new self
         instance_create
     fi
     instance_enter
@@ -69,8 +69,6 @@ depend()
         local chainload=$1
         shift
     fi
-
-    local IFS dir
 
     case $file in
         ./*)
@@ -83,10 +81,12 @@ depend()
 
     case $file in
         /*)
+            var self/abs_file="$file"
             source "$file"
+            return
             ;;
         *)
-            IFS=:
+            local dir IFS=:
             # shellcheck disable=SC2145,SC2068
             # note: warnings not valid as it errors out because of the macro below
             for dir in $depend_path${@EXPORT_VAR_PREFIX@_DEPEND_PATH+:${@EXPORT_VAR_PREFIX@_DEPEND_PATH}} ; do
@@ -132,8 +132,6 @@ depend()
     HADK_FILE_NOT_FOUND="$file"
 
     cleanup
-    #FIXME Bad error handling bash forces us to using this last result
-    exit 1
 
     return 1
 }
