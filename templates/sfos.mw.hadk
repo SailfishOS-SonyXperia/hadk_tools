@@ -5,9 +5,9 @@ build_sfos()
     if [ -e "$ANDROID_ROOT"/external/libhybris ] ; then
         _hybris_path="$ANDROID_ROOT/external/libhybris"
     else
-            if [ -e "$ANDROID_ROOT"/hybris/mw/libhybris ] ; then
-                _hybris_path="$ANDROID_ROOT/hybris/mw/libhybris"
-            fi
+        if [ -e "$ANDROID_ROOT"/hybris/mw/libhybris ] ; then
+            _hybris_path="$ANDROID_ROOT/hybris/mw/libhybris"
+        fi
     fi
 
     sb2 -t $VENDOR-$DEVICE-$PORT_ARCH -m sdk-install \
@@ -18,11 +18,7 @@ build_sfos()
         --do-not-install
     buildmw "https://github.com/mer-hybris/pulseaudio-modules-droid.git" rpm/pulseaudio-modules-droid.spec
     buildmw "https://github.com/mer-hybris/mce-plugin-libhybris.git"
-    #buildmw ngfd-plugin-droid-vibrator rpm/ngfd-plugin-native-vibrator.spec
     buildmw qt5-qpa-hwcomposer-plugin
-    buildmw "https://git.sailfishos.org/mer-core/qtscenegraph-adaptation.git" rpm/qtscenegraph-adaptation-droid.spec
-    buildmw "https://git.sailfishos.org/mer-core/sensorfw.git" rpm/sensorfw-qt5-binder.spec
-    buildmw geoclue-providers-hybris rpm/geoclue-providers-hybris-binder.spec
 
     ./rpm/dhd/helpers/build_packages.sh \
         --mw=https://github.com/mer-hybris/pulseaudio-modules-droid-hidl.git

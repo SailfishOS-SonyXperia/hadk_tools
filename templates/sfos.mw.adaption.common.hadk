@@ -1,0 +1,8 @@
+# -*- sh -*-
+
+build_sfos() {
+    buildmw ngfd-plugin-droid-vibrator rpm/ngfd-plugin-native-vibrator.spec
+    buildmw "https://git.sailfishos.org/mer-core/qtscenegraph-adaptation.git" rpm/qtscenegraph-adaptation-droid.spec
+    buildmw "https://git.sailfishos.org/mer-core/sensorfw.git" rpm/sensorfw-qt5-binder.spec
+    buildmw geoclue-providers-hybris rpm/geoclue-providers-hybris-binder.spec
+}
