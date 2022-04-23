@@ -1,0 +1,7 @@
+# -*- sh -*-
+
+build_sfos()
+{
+    buildmw "https://github.com/mer-hybris/pulseaudio-modules-droid-jb2q.git" \
+            rpm/pulseaudio-modules-droid-jb2q.spec
+}
