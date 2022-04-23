@@ -5,15 +5,3 @@ export DEVICE=j9110
 export DEVICE_NUM=$DEVICE
 
 depend sony.griffin.hadk
-
-depend sfos.hybris.hal.sony.kernel.hadk
-depend mer.hybris.hal.pie.hadk
-depend sfos.sdk.device_target.repo.hadk
-depend mer.hybris.hal.img.boot.hadk
-depend mer.droid.configs.hadk
-depend sfos.mw.hadk
-depend sfos.mw.pulseaudio.jb2q.hadk
-depend mer.droidmedia.audiopolicy.hadk
-depend mer.droid.syspart.hadk
-depend mer.droid.version.hadk
-depend mk.image.hadk
