@@ -16,13 +16,13 @@ build_sfos()
     ./rpm/dhd/helpers/build_packages.sh \
         -b "$_hybris_path" \
         --do-not-install
-    buildmw "https://github.com/mer-hybris/pulseaudio-modules-droid.git" rpm/pulseaudio-modules-droid.spec || die
-    buildmw "https://github.com/mer-hybris/mce-plugin-libhybris.git" || die
-    #buildmw ngfd-plugin-droid-vibrator rpm/ngfd-plugin-native-vibrator.spec || die
-    buildmw qt5-qpa-hwcomposer-plugin || die
-    buildmw "https://git.sailfishos.org/mer-core/qtscenegraph-adaptation.git" rpm/qtscenegraph-adaptation-droid.spec || die
-    buildmw "https://git.sailfishos.org/mer-core/sensorfw.git" rpm/sensorfw-qt5-binder.spec || die
-    buildmw geoclue-providers-hybris rpm/geoclue-providers-hybris-binder.spec || die
+    buildmw "https://github.com/mer-hybris/pulseaudio-modules-droid.git" rpm/pulseaudio-modules-droid.spec
+    buildmw "https://github.com/mer-hybris/mce-plugin-libhybris.git"
+    #buildmw ngfd-plugin-droid-vibrator rpm/ngfd-plugin-native-vibrator.spec
+    buildmw qt5-qpa-hwcomposer-plugin
+    buildmw "https://git.sailfishos.org/mer-core/qtscenegraph-adaptation.git" rpm/qtscenegraph-adaptation-droid.spec
+    buildmw "https://git.sailfishos.org/mer-core/sensorfw.git" rpm/sensorfw-qt5-binder.spec
+    buildmw geoclue-providers-hybris rpm/geoclue-providers-hybris-binder.spec
 
     ./rpm/dhd/helpers/build_packages.sh \
         --mw=https://github.com/mer-hybris/pulseaudio-modules-droid-hidl.git
