@@ -70,8 +70,6 @@ depend()
         shift
     fi
 
-    local IFS dir
-
     case $file in
         ./*)
             depend_path=$depend_path:"$PWD"
@@ -88,7 +86,7 @@ depend()
             return
             ;;
         *)
-            IFS=:
+            local dir IFS=:
             # shellcheck disable=SC2145,SC2068
             # note: warnings not valid as it errors out because of the macro below
             for dir in $depend_path${@EXPORT_VAR_PREFIX@_DEPEND_PATH+:${@EXPORT_VAR_PREFIX@_DEPEND_PATH}} ; do
