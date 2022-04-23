@@ -5,6 +5,6 @@ depend local.base.hadk
 #depend mer.hybris.hal.hadk
 #depend sfos.mw.hadk
 depend sfos.mw.pulseaudio.jb2q.hadk
-#depend mer.droidmedia.hadk
+#depend sfos.droidmedia.hadk
 depend mer.droid.configs.hadk
 depend mk.image.hadk
