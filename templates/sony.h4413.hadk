@@ -2,7 +2,7 @@ depend sony.h4413.base.hadk
 depend local.base.hadk
 depend mer.droid.configs.hadk
 depend mer.hybris.hal.hadk
-depend mer.mw.hadk
+depend sfos.mw.hadk
 depend mer.droidmedia.hadk
 depend mer.droid_system.hadk
 depend mer.droid.version.hadk

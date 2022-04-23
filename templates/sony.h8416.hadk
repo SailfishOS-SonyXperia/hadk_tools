@@ -10,7 +10,7 @@ depend sfos.hybris.hal.tama.hadk
 depend mer.hybris.hal.dtbo.hadk
 depend mer.hybris.hal.img.boot.tama.hadk
 depend mer.droid.configs.hadk
-depend mer.mw.hadk
+depend sfos.mw.hadk
 depend mer.droidmedia.hadk
 depend mer.droid.syspart.hadk
 depend mer.droid.version.hadk
