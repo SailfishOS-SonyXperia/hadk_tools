@@ -3,4 +3,4 @@ build_sfos()
     buildmw https://github.com/sailfishos-sony-tama/pkg-fsarchiver
 }
 
-depend mer.hybris.hal.img.boot.hadk
+depend sfos.hybris.hal.img.boot.hadk

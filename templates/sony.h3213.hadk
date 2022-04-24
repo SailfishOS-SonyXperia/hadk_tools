@@ -2,7 +2,7 @@
 depend sony.h3213.base.hadk
 depend local.base.hadk
 depend mer.hybris.hal.hadk
-depend mer.hybris.hal.img.boot.hadk
+depend sfos.hybris.hal.img.boot.hadk
 depend mer.droid.configs.hadk
 depend sfos.mw.hadk
 depend sfos.mw.pulseaudio.jb2q.hadk
