@@ -15,15 +15,6 @@ build_sfos()
 
     sb2 -t $VENDOR-$DEVICE-$PORT_ARCH -m sdk-install -R zypper ref
 
-    (
-        cd hybris/droid-configs
-        rm -rf installroot
-        mkdir installroot
-        cd installroot
-        rpm2cpio \
-            $ANDROID_ROOT/droid-local-repo/$DEVICE/droid-configs/droid-config-$DEVICE_NUM-ssu-kickstarts-*.$PORT_ARCH.rpm | cpio -idv &> /dev/null
-    )
-
     if [ "$SFOS_ADAPTION0_URL"  = "nil" ] ; then
         ha_repo_url="file://$ANDROID_ROOT/droid-local-repo/$DEVICE"
     else
