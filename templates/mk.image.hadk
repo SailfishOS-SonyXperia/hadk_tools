@@ -38,6 +38,10 @@ build_sfos()
 
 
 
+    mkdir -p $ANDROID_ROOT/droid-local/$DEVICE/repo
+    createrepo_c \
+        --outputdir=$ANDROID_ROOT/droid-local-repo/$DEVICE/repo \
+        --location-prefix=../ $ANDROID_ROOT/droid-local-repo/$DEVICE
 
     if [ "$bleeding_edge_build_by_sailors" -eq 1 ]; then
         ks="Jolla-@RNDRELEASE@-@RNDFLAVOUR@-$DEVICE-@ARCH@.ks"

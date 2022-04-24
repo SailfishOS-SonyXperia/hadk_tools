@@ -25,9 +25,13 @@ build()
 build_sfos()
 {
     sb2 -t $VENDOR-$DEVICE-$PORT_ARCH -m sdk-install \
-        -R zypper -n in droid-hal-$HABUILD_DEVICE-kernel
+        -R zypper -n \
+         --plus-repo $ANDROID_ROOT/droid-local/repo \
+        in droid-hal-$HABUILD_DEVICE-kernel
     sb2 -t $VENDOR-$DEVICE-$PORT_ARCH -m sdk-install \
-        -R zypper -n in --force-resolution droid-hal-$HABUILD_DEVICE-kernel-modules \
+        -R zypper -n \
+        --plus-repo $ANDROID_ROOT/droid-local/repo \
+        in --force-resolution droid-hal-$HABUILD_DEVICE-kernel-modules \
         droid-hal-$HABUILD_DEVICE-tools
 
     mkdir -p hybris/mw/droid-hal-img-dtbo-sony-tama-pie
