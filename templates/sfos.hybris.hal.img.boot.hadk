@@ -18,11 +18,6 @@ build_sfos()
         in --force-resolution droid-hal-$HABUILD_DEVICE-kernel-modules \
         droid-hal-$HABUILD_DEVICE-tools
 
-    buildmw https://github.com/sailfishos/initrd-helpers
-    buildmw https://github.com/sailfishos/hw-ramdisk
-    buildmw https://github.com/sailfishos/yamui
-    buildmw https://github.com/mer-hybris/initrd-logos-sailfish
-
 
     sb2 -t $VENDOR-$DEVICE-$PORT_ARCH -m sdk-install \
         -R zypper -n in --force-resolution cryptsetup \
