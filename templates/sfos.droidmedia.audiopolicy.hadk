@@ -1,0 +1,8 @@
+# -*- sh -*-
+
+build()
+{
+    echo 'MINIMEDIA_AUDIOPOLICYSERVICE_ENABLE:=1' > external/droidmedia/env.mk
+}
+
+depend sfos.droidmedia.hadk

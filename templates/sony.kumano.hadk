@@ -33,7 +33,7 @@ depend sfos.hybris.hal.img.boot.hadk
 depend mer.droid.configs.hadk
 depend sfos.mw.hadk
 depend sfos.mw.pulseaudio.jb2q.hadk
-depend mer.droidmedia.audiopolicy.hadk
+depend sfos.droidmedia.audiopolicy.hadk
 depend mer.droid.syspart.hadk
 depend sfos.droid.version.hadk
 depend mk.image.hadk
