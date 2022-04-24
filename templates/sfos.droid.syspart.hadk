@@ -67,7 +67,7 @@ build_sfos()
     cd $ANDROID_ROOT
 
     git_clone_or_update \
-        "$HYBRIS_REMOTE_DEVICE"/droid-system-$VENDOR-${FLAVOUR+$FLAVOUR-}template \
+        "$HYBRIS_REMOTE"/droid-system-$VENDOR-${FLAVOUR+$FLAVOUR-}template \
         $ANDROID_ROOT/hybris/mw/droid-system-$VENDOR-template
 
     for tree in system vendor ; do
