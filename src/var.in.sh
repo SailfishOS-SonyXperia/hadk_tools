@@ -9,7 +9,7 @@ var()
 {
     case $1 in
 	*=|*=*)
-	    local __var_part1=$( echo "$1" | sed -e 's/=.*//' -e 's/^[+,-]//' )
+	    local __var_part1=$( echo "$1" | sed -e 's/[+-]*=.*//' -e 's/^[+,-]//' )
             local __var_part2=$( echo "$1" | cut -d '=' -f2- )
 	    local __var12="@VARDB_DIR@/$__var_part1"
 	    mkdir -p "${__var12%/*}"
