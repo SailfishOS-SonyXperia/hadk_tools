@@ -14,5 +14,5 @@ depend sfos.mw.hadk
 depend sfos.mw.pulseaudio.jb2q.hadk
 depend sfos.droidmedia.hadk
 depend mer.droid.syspart.hadk
-depend mer.droid.version.hadk
+depend sfos.droid.version.hadk
 depend mk.image.hadk

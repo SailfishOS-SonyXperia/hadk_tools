@@ -1,3 +1,5 @@
+# -*- sh -*-
+
 build_sfos()
 {
     if [ ! -e /srv/mer/targets/$VENDOR-$DEVICE-$PORT_ARCH ] ; then
@@ -13,6 +15,10 @@ build_sfos()
                 ;;
         esac
     else
+        # Try to remove loca-hal repo
+        # We use zypper --plus-local instead
+        ssu rr local-$DEVICE-hal || true
+
         sdk-assistant update $VENDOR-$DEVICE-$PORT_ARCH \
                       --non-interactive
     fi
