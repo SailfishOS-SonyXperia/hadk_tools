@@ -34,7 +34,9 @@ build_sfos()
         sb2 -t $VENDOR-$DEVICE-$PORT_ARCH -R -m sdk-install \
             zypper --non-interactive install --force-resolution \
             cpio
-    elif [ ! $ret -eq 104  ] || [ ! $ret -eq 0 ]; then
+    elif [ $ret -eq 104  ] ; then
+        true
+    elif [ ! $ret -eq 0 ]; then
         return $ret
     fi
 
