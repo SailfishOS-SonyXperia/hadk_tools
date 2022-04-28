@@ -41,10 +41,10 @@ depend()
 #        if there is none its executed in the same depend is ince.
 {
     if [ "$chainload" ] ; then
-        file=$(var self/file)
-        abs_file=$(var self/abs_file)
+        file=$(var self/file/rel)
+        file_abs=$(var self/file/abs)
         verbose "$file: $chainload"
-        "$chainload" "$abs_file"
+        "$chainload" "$file_abs"
         # Ok so we had something to execute lets blow up a counter unit
         var self/chainload/executed=t
     fi
@@ -64,7 +64,7 @@ depend()
     instance_enter
 
     local file=$1; shift
-    var self/file=$file
+    var self/file/rel=$file
     if [ $1 ] ; then
         local chainload=$1
         shift
@@ -81,7 +81,7 @@ depend()
 
     case $file in
         /*)
-            var self/abs_file="$file"
+            var self/file/abs="$file"
             source "$file"
             return
             ;;
@@ -93,8 +93,8 @@ depend()
                 unset IFS
 
                 if [ -e "$dir/$file" ] ;then
-                    local abs_file="$dir/$file"
-                    var self/abs_file="$abs_file"
+                    local file_abs="$dir/$file"
+                    var self/file/abs="$file_abs"
                     local check \
                           build \
                           build_sfos \
@@ -103,17 +103,17 @@ depend()
 
                     verbose "Loading $file"
                     # Save the current counter and increase the pile of counter units
-                    . "$abs_file"
+                    . "$file_abs"
 
                     # Restore IID
                     if [  ! -e self/chainload/executed ] ; then
                         # Ok it seams that the current counter unit pile is the same again
                         # Lets execute our chain load
                         if [ "$chainload" ] ; then
-                            file=$(var self/file)
-                            abs_file=$(var self/abs_file)
+                            file=$(var self/file/rel)
+                            file_abs=$(var self/file/abs)
                             verbose "$file: $chainload"
-                            "$chainload" "$abs_file"
+                            "$chainload" "$file_abs"
                         fi
                         reset_job_funcs
                     fi
