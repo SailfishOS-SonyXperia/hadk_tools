@@ -1,0 +1,7 @@
+# -*- sh -*-
+depend local.base.hadk
+
+export DEVICE=j8110
+export DEVICE_NUM=$DEVICE
+
+depend sony.griffin.hadk
