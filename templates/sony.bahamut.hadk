@@ -1,0 +1,4 @@
+export HABUILD_DEVICE=bahamut
+export DEVICE_KERNEL_NUM=j9210
+
+depend sony.kumano.hadk

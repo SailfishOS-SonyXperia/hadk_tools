@@ -1,0 +1,7 @@
+# -*- sh -*-
+depend local.base.hadk
+
+export DEVICE=j9210
+export DEVICE_NUM=$DEVICE
+
+depend sony.bahamut.hadk
