@@ -18,6 +18,12 @@ build_sfos()
         --mw="$_hybris_path" \
         --do-not-install
     buildmw "https://github.com/mer-hybris/mce-plugin-libhybris.git"
+    (
+        # Clean up old builds to make sure it will be rebuild against
+        # the our libhybris package we just build
+        cd hybris/mw/qt5-qpa-hwcomposer-plugin
+        git clean -dxf
+    )
     buildmw qt5-qpa-hwcomposer-plugin
 
     ./rpm/dhd/helpers/build_packages.sh \
