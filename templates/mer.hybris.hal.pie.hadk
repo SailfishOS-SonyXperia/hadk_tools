@@ -45,7 +45,7 @@ sync()
                 sub_dir=$(basename $sub_dir)
                 base_file=$(basename $file)
                 rm -rf kernel/$sub_dir/"$base_file"
-                ln -sf ../../../droid-hal-$VENDOR-$FAMILY/kernel/$VENDOR/$sub_dir/"$base_file" kernel/$VENDOR/$sub_dir/"$base_file"
+                ln -sfT ../../../droid-hal-$VENDOR-$FAMILY/kernel/$VENDOR/$sub_dir/"$base_file" kernel/$VENDOR/$sub_dir/"$base_file"
             done
         fi
     ln -sf ../dhd rpm/dhd
