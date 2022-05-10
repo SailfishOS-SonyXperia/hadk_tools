@@ -40,6 +40,8 @@ depend()
 #        The chainload is tried to be executed by the next dependend
 #        if there is none its executed in the same depend is ince.
 {
+    trap - EXIT
+
     if [ "$chainload" ] ; then
         file=$(var self/file/rel)
         file_abs=$(var self/file/abs)
@@ -82,7 +84,8 @@ depend()
     case $file in
         /*)
             var self/file/abs="$file"
-            source "$file"
+            var self/file/rel="$file"
+            . "$file"
             return
             ;;
         *)
@@ -130,6 +133,7 @@ depend()
 
 
     HADK_FILE_NOT_FOUND="$file"
+    trap 'IID=1 cleanup;error "$HADK_FILE_NOT_FOUND not found"' EXIT
 
     cleanup
 
