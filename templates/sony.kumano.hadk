@@ -23,7 +23,6 @@ export KERNEL_SOURCE="$SOURCE_ROOT"/kernel/$VENDOR/msm-4.14/kernel
 #export CROSS_COMPILE_ARM32=$SOURCE_ROOT/gcc_build/toolchain/bin/arm-linux-androideabi-
 DROID_TARGET_KERNEL_DTB=t
 
-depend sfos.sdk.device_target.repo.hadk
 
 
 depend sfos.hybris.hal.sony.kernel.hadk
