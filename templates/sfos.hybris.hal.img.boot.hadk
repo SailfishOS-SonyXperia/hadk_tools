@@ -7,6 +7,11 @@
 
 build_sfos()
 {
+    target_zypper_remove_if_installed droid-hal-img-boot \
+                                      droid-hal-img-recovery \
+                                      droid-hal-kernel \
+                                      droid-hal-kernel-modules
+
     sb2 -t $VENDOR-${FAMILY:-$DEVICE}-$PORT_ARCH -m sdk-install \
         -R zypper -n \
         --plus-repo $ANDROID_ROOT/droid-local-repo/${FAMILY:-$DEVICE} \
