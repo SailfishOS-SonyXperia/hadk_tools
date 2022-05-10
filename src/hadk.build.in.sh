@@ -56,6 +56,26 @@ buildmw()
 
 }
 
+target_zypper_remove_if_installed()
+{
+    local ret=0
+    while [ ! $# -eq 0 ] ; do
+        sb2 -t $VENDOR-${FAMILY:-$DEVICE}-$PORT_ARCH -m sdk-install \
+            -R zypper se -ix --provides $1 ||ret=$?
+
+        if [ $ret -eq 0 ]; then
+            sb2 -t $VENDOR-${FAMILY:-$DEVICE}-$PORT_ARCH -R -m sdk-install \
+                zypper --non-interactive remove --force-resolution \
+                "$1" || ret=$?
+        elif [ $ret -eq 104 ]; then
+            ret=0
+        fi
+        shift
+    done
+    return $ret
+}
+
+
 seperate_chainload()
 # desc: seperate each chainload by running in a seperate instance for each job
 {
