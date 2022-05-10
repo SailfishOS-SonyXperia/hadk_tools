@@ -15,6 +15,9 @@ $ANDROID_ROOT/droid-local-repo/${FAMILY:-$DEVICE}/droid-config-$DEVICE_NUM-ssu-k
     if [ -e /srv/mer/targets/$VENDOR-${FAMILY:-$DEVICE}-$PORT_ARCH.default ] ; then
         sb2 -t $VENDOR-${FAMILY:-$DEVICE}-$PORT_ARCH.default -m sdk-install -R zypper ref
     fi
+    # Remove existing droid-system from previously build device if needed
+    target_zypper_remove_if_installed droid-system
+    target_zypper_remove_if_installed droid-hal
 
     ./rpm/dhd/helpers/build_packages.sh \
             -b "$ANDROID_ROOT"/hybris/droid-hal-version-$VENDOR-$FAMILY \
