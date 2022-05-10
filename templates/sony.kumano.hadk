@@ -6,7 +6,7 @@ RELEASE=4.3.0.12
 export SOURCE_ROOT="$SOURCE_ROOT/kumano"
 mkdir -p "$SOURCE_ROOT"
 
-HYBRIS_REMOTE_DEVICE=https://github.com/Thaodan
+HYBRIS_REMOTE_DEVICE=https://github.com/SailfishOS-SonyXperia
 HYBRIS_ANDROID_BRANCH=sony-aosp-10
 HYBRIS_SYSPART_BRANCH=$HYBRIS_ANDROID_BRANCH
 HYBRIS_ANDROID_MANIFEST=tagged-localbuild.xml
