@@ -7,19 +7,18 @@
 
 build_sfos()
 {
-
-    sb2 -t $VENDOR-$DEVICE-$PORT_ARCH -m sdk-install \
+    sb2 -t $VENDOR-${FAMILY:-$DEVICE}-$PORT_ARCH -m sdk-install \
         -R zypper -n \
-        --plus-repo $ANDROID_ROOT/droid-local-repo/${DEVICE} \
+        --plus-repo $ANDROID_ROOT/droid-local-repo/${FAMILY:-$DEVICE} \
         in droid-hal-$HABUILD_DEVICE-kernel
-    sb2 -t $VENDOR-$DEVICE-$PORT_ARCH -m sdk-install \
+    sb2 -t $VENDOR-${FAMILY:-$DEVICE}-$PORT_ARCH -m sdk-install \
         -R zypper -n \
-        --plus-repo $ANDROID_ROOT/droid-local-repo/${DEVICE} \
+        --plus-repo $ANDROID_ROOT/droid-local-repo/${FAMILY:-$DEVICE} \
         in --force-resolution droid-hal-$HABUILD_DEVICE-kernel-modules \
         droid-hal-$HABUILD_DEVICE-tools
 
 
-    sb2 -t $VENDOR-$DEVICE-$PORT_ARCH -m sdk-install \
+    sb2 -t $VENDOR-${FAMILY:-$DEVICE}-$PORT_ARCH -m sdk-install \
         -R zypper -n in --force-resolution cryptsetup \
         openssh-server \
         openssh-clients
@@ -27,11 +26,11 @@ build_sfos()
 
     local ret=0
 
-    sb2 -t $VENDOR-$DEVICE-$PORT_ARCH -m sdk-install \
+    sb2 -t $VENDOR-${FAMILY:-$DEVICE}-$PORT_ARCH -m sdk-install \
         -R zypper se -i busybox-symlinks-cpio ||ret=$?
 
     if [ $ret -eq 0 ]; then
-        sb2 -t $VENDOR-$DEVICE-$PORT_ARCH -R -m sdk-install \
+        sb2 -t $VENDOR-${FAMILY:-$DEVICE}-$PORT_ARCH -R -m sdk-install \
             zypper --non-interactive install --force-resolution \
             cpio
     elif [ $ret -eq 104  ] ; then

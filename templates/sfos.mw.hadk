@@ -11,7 +11,7 @@ build_sfos()
         fi
     fi
 
-    sb2 -t $VENDOR-$DEVICE-$PORT_ARCH -m sdk-install \
+    sb2 -t $VENDOR-${FAMILY:-$DEVICE}-$PORT_ARCH -m sdk-install \
         -R zypper -n in droid-hal-$HABUILD_DEVICE-devel
 
     ./rpm/dhd/helpers/build_packages.sh \

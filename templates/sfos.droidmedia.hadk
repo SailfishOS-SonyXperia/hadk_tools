@@ -33,7 +33,7 @@ build_sfos()
     
    # ./rpm/dhd/helpers/pack_source_audioflingerglue-localbuild.sh $AUDIOFINGERGLUE_VERSION
 
-    sb2 -t $VENDOR-$DEVICE-$PORT_ARCH -m sdk-install -R zypper install ccache
+    sb2 -t $VENDOR-${FAMILY:-$DEVICE}-$PORT_ARCH -m sdk-install -R zypper -n install ccache
 
     
     mkdir -p hybris/mw/droidmedia-localbuild/rpm

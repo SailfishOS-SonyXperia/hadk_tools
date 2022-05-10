@@ -2,8 +2,8 @@
 
 build_sfos()
 {
-    if [ ! -e /srv/mer/targets/$VENDOR-$DEVICE-$PORT_ARCH ] ; then
-        sdk-manage --target --install $VENDOR-$DEVICE-$PORT_ARCH \
+    if [ ! -e /srv/mer/targets/$VENDOR-${FAMILY:-$DEVICE}-$PORT_ARCH ] ; then
+        sdk-manage --target --install $VENDOR-${FAMILY:-$DEVICE}-$PORT_ARCH \
                    ${SFOSTARGET_URL:=http://releases.sailfishos.org/sdk/targets/Sailfish_OS-$RELEASE-Sailfish_SDK_Target-$PORT_ARCH.tar.7z} \
                    --tooling SailfishOS-latest \
                    --tooling-url \
@@ -11,16 +11,17 @@ build_sfos()
 
         case ${SFOSTARGET_URL##*/} in
             *devel*)
-                sdk-assistant register $VENDOR-$DEVICE-$PORT_ARCH
+                sdk-assistant register $VENDOR-${FAMILY:-$DEVICE}-$PORT_ARCH
                 ;;
         esac
     else
         # Try to remove loca-hal repo
         # We use zypper --plus-local instead
-        sb2 -t $VENDOR-$DEVICE-$PORT_ARCH -m sdk-install \
-            -R ssu rr local-$DEVICE-hal || true
+        sb2 -t $VENDOR-${FAMILY:-$DEVICE}-$PORT_ARCH -m sdk-install \
+            -R \
+            ssu rr local-$DEVICE-hal || true
 
-        sdk-assistant update $VENDOR-$DEVICE-$PORT_ARCH \
+        sdk-assistant update $VENDOR-${FAMILY:-$DEVICE}-$PORT_ARCH \
                       --non-interactive
     fi
 }

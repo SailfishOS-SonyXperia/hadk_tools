@@ -7,13 +7,13 @@ build_sfos()
     (
         cd hybris/droid-configs/installroot
         rpm2cpio \
-$ANDROID_ROOT/droid-local-repo/$DEVICE_NUM/droid-config-$DEVICE_NUM-ssu-kickstarts-*.$PORT_ARCH.rpm \
+$ANDROID_ROOT/droid-local-repo/${FAMILY:-$DEVICE}/droid-config-$DEVICE_NUM-ssu-kickstarts-*.$PORT_ARCH.rpm \
             | cpio -idv &> /dev/null
     )
 
-    sb2 -t $VENDOR-$DEVICE-$PORT_ARCH -m sdk-install -R zypper ref
-    if [ -e /srv/mer/targets/$VENDOR-$DEVICE-$PORT_ARCH.default ] ; then
-        sb2 -t $VENDOR-$DEVICE-$PORT_ARCH.default -m sdk-install -R zypper ref
+    sb2 -t $VENDOR-${FAMILY:-$DEVICE}-$PORT_ARCH -m sdk-install -R zypper ref
+    if [ -e /srv/mer/targets/$VENDOR-${FAMILY:-$DEVICE}-$PORT_ARCH.default ] ; then
+        sb2 -t $VENDOR-${FAMILY:-$DEVICE}-$PORT_ARCH.default -m sdk-install -R zypper ref
     fi
 
     ./rpm/dhd/helpers/build_packages.sh \
