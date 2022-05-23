@@ -12,7 +12,9 @@ build_sfos()
     fi
 
     sb2 -t $VENDOR-${FAMILY:-$DEVICE}-$PORT_ARCH -m sdk-install \
-        -R zypper -n in droid-hal-$HABUILD_DEVICE-devel
+        -R zypper -n \
+        --plus-repo $ANDROID_ROOT/droid-local-repo/${FAMILY:-$DEVICE} \
+        in droid-hal-$HABUILD_DEVICE-devel
 
     ./rpm/dhd/helpers/build_packages.sh \
         --mw="$_hybris_path" \
