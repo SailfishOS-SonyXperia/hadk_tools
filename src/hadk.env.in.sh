@@ -198,7 +198,7 @@ case $1 in
                                ${@EXPORT_VAR_PREFIX@_DEPEND_PATH+ -t "${@EXPORT_VAR_PREFIX@_DEPEND_PATH}"} \
                                enter_shell ;;
             host)
-                cd "${SOURCE_ROOT:-$ANDROID_ROOT}"
+                [ "${SOURCE_ROOT:-$ANDROID_ROOT}" ] && cd_source_root
                 try_zsh_vendor_workaround
                 "${SHELL:-/bin/sh}"
         esac
