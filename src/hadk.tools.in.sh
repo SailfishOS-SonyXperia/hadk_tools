@@ -53,3 +53,16 @@ cd_source_root()
     export ANDROID_ROOT="$SOURCE_ROOT"
     cd "$SOURCE_ROOT" || exit $?
 }
+
+try_zsh_vendor_workaround()
+# desc: ZSH overrides VENDOR but we wanto keep it as it, this workarounds that
+{
+    case ${SHELL} in
+        *zsh*)
+            if grep -q VENDOR ${ZDOTDIR:-${HOME}}/.zshenv; then
+                sed -i ${ZDOTDIR:-${HOME}}/.zshenv -e "s/VENDOR=.*/VENDOR=$VENDOR/"
+            else
+                echo "VENDOR=$VENDOR" > ${ZDOTDIR:-${HOME}}/.zshenv
+            fi
+    esac
+}

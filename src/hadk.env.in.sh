@@ -199,6 +199,7 @@ case $1 in
                                enter_shell ;;
             host)
                 cd "${SOURCE_ROOT:-$ANDROID_ROOT}"
+                try_zsh_vendor_workaround
                 "${SHELL:-/bin/sh}"
         esac
         ;;
