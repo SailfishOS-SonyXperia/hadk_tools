@@ -8,19 +8,24 @@
 show_help()
 {
     cat <<EOF
-$appname - help
+Usage: $appname [<options>] mode [<SDK>]
+Apply <mode> on SDK
 
-usage: $appname [<options>] mode
+-h --help               Show help
+-f                      Custom environment
+-t                      Add custom template path
+-s                      Supply custom hadk file when initialising the SDKs
 
--h --help show help
--f        custom environment
--t        add custom template path
--s        Supply custom hadk file when initialising the sdk
+modes:
+init                    Download env and initialise
+update                  Update SDK against latest changes
+verify                  Check env (NYI)
+shell|enter <SDK>       Enter SDK with environment
 
-modes: 
-init - download env and initialise
-update - update sdk against latest changes
-verify - check env (NYI)
+SDKs:
+sfos                    Sailfish OS Platform SDK
+ubu                     Ubuntu Change root
+host                    Not really an SDK but used during the shell mode to enter
 EOF
 }
 
