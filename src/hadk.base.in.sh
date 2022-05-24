@@ -10,10 +10,10 @@ set -e
 show_help()
 {
     cat <<EOF
-Usage:    $appname -f <device file>
+Usage:    $appname -f <device file> [other <options>]
 @HELP_DESCRIPTION@
 
--f        Supply config via device config file
+-f        Device file
 -t        Add custom template path
 
 -x        Enable xtrace when executing unit
