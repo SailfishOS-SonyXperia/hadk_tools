@@ -1,0 +1,25 @@
+#+TITLE: hadk-build
+#+LANGUAGE: en
+#+OPTIONS: ^:{}
+
+* SYNOPSIS
+
+  *hadk.build* /-f <device file> [other <options>]/
+
+* DESCRIPTION
+
+  hadk.build builds the instructions in <device file>.
+
+  For deeper information read *hadk_depends*(1)
+
+* OPTIONS
+
+  - -f                 ::  Device file
+  - -t                 ::  Add custom template path
+  - -x                 ::  Enable xtrace when executing unit
+  - -V                 ::  Be more verbose
+  - -h                 ::  Show help
+
+* SEE ALSO
+
+  *hadk.tools*(1) *hadk.env*(1) *hadk.source*(1)

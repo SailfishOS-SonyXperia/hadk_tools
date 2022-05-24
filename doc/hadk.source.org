@@ -1,0 +1,24 @@
+#+TITLE: hadk-source
+#+LANGUAGE: en
+#+OPTIONS: ^:{}
+
+* SYNOPSIS
+
+  *hadk.source* /-f <device file> [other <options>]/
+
+* DESCRIPTION
+
+  hadk.env sets up the sources in <device file>.
+  After doing so /hadk.build/ can be executed.
+
+* OPTIONS
+
+  - -f                 ::  Device file
+  - -t                 ::  Add custom template path
+  - -x                 ::  Enable xtrace when executing unit
+  - -V                 ::  Be more verbose
+  - -h                 ::  Show help
+
+* SEE ALSO
+
+  *hadk.tools*(1) *hadk.env*(1) *hadk.build*(1)

@@ -1,0 +1,47 @@
+#+TITLE: hadk-tools
+#+LANGUAGE: en
+#+OPTIONS: ^:{}
+
+* SYNOPSIS
+
+  *hadk.<tool>* /-f <device file> options/
+
+* DESCRIPTION
+
+  HADK-tools is a collection helper scripts around the Sailfish SDK mainly focused
+  on setup an environment for development and executing actions into thes.
+
+  The most common task is to build a hardware adaptation or to execute any command
+  in that environment.
+
+  These tools are:
+  + hadk.env :: Create, Update and enter the given SDK
+  + hadk.source :: Sync and setup adaption sources
+  + hadk.build :: Build adaption
+
+
+* BASIC SETUP
+
+  Most of the device files will first load a file that contains the paths to the most
+  basic settings.
+  This file is usually called /local.base.hadk/ and contains these contents:
+  #+begin_src sh
+  # Root of the sources used during development
+  SOURCE_ROOT=$HOME/dev/sailfish/hadk
+
+  # Path for the change roots containing the SDKs
+  CHRTDIR=$HOME/dev/vms/sfos
+  # Sailfish OS SDK directory
+  SFOSSDK_DIR="$CHRTDIR"/sdks/sfossdk
+
+  # Ubuntu change root directory
+  UBUCHRT_DIR="$CHRTDIR"/sdks/ubuchrt
+  #+end_src
+
+  Save this file in $HOME/.local/hadk/local.base.hadk.
+
+  After saving the configuration the basic setup is done and the SDKs can be setup with /hadk.env/.
+
+* SEE ALSO
+
+  *hadk.env*(1) *hadk.source*(1) *hadk.build*(1)
