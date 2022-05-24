@@ -10,7 +10,9 @@ set -e
 show_help()
 {
     cat <<EOF
-$appname - help
+Usage:    $appname -f <device file>
+@HELP_DESCRIPTION@
+
 -f        Supply config via device config file
 -t        Add custom template path
 

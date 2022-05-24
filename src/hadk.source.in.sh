@@ -1,5 +1,7 @@
 #!/bin/sh
 
+#\\define HELP_DESCRIPTION "Setup sources in <device file>"
+
 #\\include hadk.base.in.sh
 
 

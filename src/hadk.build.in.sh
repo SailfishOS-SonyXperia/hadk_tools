@@ -1,4 +1,7 @@
 #!/bin/bash -e
+
+#\\define HELP_DESCRIPTION "Build <device file>"
+
 #\\include hadk.base.in.sh
 
 buildmw()
