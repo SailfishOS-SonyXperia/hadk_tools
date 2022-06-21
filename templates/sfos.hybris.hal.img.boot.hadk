@@ -10,11 +10,11 @@ build_sfos()
 
     sb2 -t $VENDOR-$DEVICE-$PORT_ARCH -m sdk-install \
         -R zypper -n \
-        --plus-repo $ANDROID_ROOT/droid-local/repo \
+        --plus-repo $ANDROID_ROOT/droid-local-repo/${DEVICE} \
         in droid-hal-$HABUILD_DEVICE-kernel
     sb2 -t $VENDOR-$DEVICE-$PORT_ARCH -m sdk-install \
         -R zypper -n \
-        --plus-repo $ANDROID_ROOT/droid-local/repo \
+        --plus-repo $ANDROID_ROOT/droid-local-repo/${DEVICE} \
         in --force-resolution droid-hal-$HABUILD_DEVICE-kernel-modules \
         droid-hal-$HABUILD_DEVICE-tools
 
