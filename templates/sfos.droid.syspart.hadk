@@ -3,6 +3,8 @@
 [ -z $HYBRIS_REMOTE ] && HYBRIS_REMOTE=https://github.com/mer-hybris
 [ -z $HYBRIS_REMOTE_DEVICE ] && HYBRIS_REMOTE_DEVICE=$HYBRIS_REMOTE
 [ -z $HYBRIS_ANDROID_MANIFEST ] && HYBRIS_ANDROID_MANIFEST=default.xml
+[ -z $HYBRIS_ANDROID_SRC_BRANCH ] && \
+    HYBRIS_ANDROID_SRC_BRANCH=hybris-${HYBRIS_ANDROID_BRANCH}
 
 sync()
 {
@@ -18,10 +20,10 @@ sync()
     repo forall -c git clean -d -x -f
     repo  sync -j20 --fetch-submodules
 
-    [ ! -e droid-src ] && \
+    [ ! -e droid-src ] || [ -e droid-src/.git ] && \
         git_clone_or_update $HYBRIS_REMOTE/droid-src-$VENDOR \
-                            -b ${HYBRIS_ANDROID_SRC_BRANCH} \
-                            droid-src
+                            droid-src \
+                            -b ${HYBRIS_ANDROID_SRC_BRANCH}
 
     rm -rf patches
     ln -sf droid-src/patches patches
