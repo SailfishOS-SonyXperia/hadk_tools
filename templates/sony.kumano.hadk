@@ -1,6 +1,6 @@
 # -*- sh -*-
 
-RELEASE=4.3.0.12
+RELEASE=4.4.0.68
 
 
 export SOURCE_ROOT="$SOURCE_ROOT/kumano"
