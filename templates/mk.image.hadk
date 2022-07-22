@@ -16,7 +16,7 @@ build_sfos()
     sb2 -t $VENDOR-$DEVICE-$PORT_ARCH -m sdk-install -R zypper ref
 
     if [ "$SFOS_ADAPTION0_URL"  = "nil" ] ; then
-        ha_repo_url="file://$ANDROID_ROOT/droid-local-repo/$DEVICE"
+        ha_repo_url="file://$ANDROID_ROOT/droid-local-repo/$DEVICE/repo"
     else
         ha_repo_url="$SFOS_ADAPTION0_URL"
     fi
