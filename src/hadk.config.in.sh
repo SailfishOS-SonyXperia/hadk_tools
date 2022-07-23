@@ -43,8 +43,10 @@ depend()
     if [ "$chainload" ] ; then
         file=$(var self/file/rel)
         file_abs=$(var self/file/abs)
-        verbose "$file: $chainload"
-        "$chainload" "$file_abs"
+        if [ ! -e "$tmp_dir"/chainload/dry_run ] ; then
+            verbose "$file: $chainload"
+            "$chainload" "$file_abs"
+        fi
         # Ok so we had something to execute lets blow up a counter unit
         var self/chainload/executed=t
     fi
@@ -117,8 +119,10 @@ depend()
                         if [ "$chainload" ] ; then
                             file=$(var self/file/rel)
                             file_abs=$(var self/file/abs)
-                            verbose "$file: $chainload"
-                            "$chainload" "$file_abs"
+                            if [ ! -e "$tmp_dir"/chainload/dry_run ] ; then
+                                verbose "$file: $chainload"
+                                "$chainload" "$file_abs"
+                            fi
                         fi
                         reset_job_funcs
                     fi
