@@ -118,7 +118,9 @@ depend()
                             file=$(var self/file/rel)
                             file_abs=$(var self/file/abs)
                             verbose "$file: $chainload"
-                            "$chainload" "$file_abs"
+                            if [ ! -e "$tmp_dir"/chainload/dry_run ] ; then
+                                "$chainload" "$file_abs"
+                            fi
                         fi
                         reset_job_funcs
                     fi
