@@ -72,7 +72,12 @@ depend()
 
     case $file in
         ./*)
-            depend_path=$depend_path:"$PWD"
+            # Check if file is in $PWD or in a subfolder that is in $PWD
+            local file_dirname=$(dirname "$file")
+            case $file_dirname in
+                .) depend_path=$depend_path:"$PWD" ;;
+                ./*) depend_path=$depend_path:"$PWD/$file_dirname"
+            esac
             ;;
         */*)
             depend_path=$depend_path:$(dirname $file)
