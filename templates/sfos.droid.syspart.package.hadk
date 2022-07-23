@@ -1,0 +1,14 @@
+# -*- sh -*-
+depend sfos.droid.syspart.hadk
+
+build_sfos()
+{
+
+    cd "$ANDROID_ROOT"
+    rpm/dhd/helpers/build_packages.sh \
+        -b hybris/mw/droid-system-$VENDOR-$HABUILD_DEVICE \
+        --do-not-install --spec=rpm/droid-system-$HABUILD_DEVICE.spec \
+        --spec=rpm/droid-system-$HABUILD_DEVICE-$DEVICE_NUM.spec \
+        --no-auto-version
+
+}
