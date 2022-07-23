@@ -64,7 +64,10 @@ build()
     ./out/host/linux-x86/bin/simg2img \
         out/target/product/$HABUILD_DEVICE/vendor.img \
         $ANDROID_ROOT/vendor.img.raw.$DEVICE
+}
 
+build_sfos() {
+    local tree_dirs
     for tree in system vendor ; do
         tree_dir=$ANDROID_ROOT-mnt/$tree
         mkdir -p $tree_dir
@@ -75,16 +78,16 @@ build()
         if [ -e $tree_dir/$tree ] ; then
            tree_dir=$tree_dir/$tree
         fi
-        local tree_dirs+=(${tree_dir})
+        tree_dirs+=(${tree_dir})
     done
 
 
     git_clone_or_update \
         ${HYBRIS_ANDROID_SYSTEM_URL} \
-        $ANDROID_ROOT/hybris/mw/droid-system-$VENDOR-$HABUILD_DEVICE
+        $ANDROID_ROOT/hybris/mw/droid-system-$VENDOR-${FAMILY+$FAMILY-}$HABUILD_DEVICE
 
     (
-        cd $ANDROID_ROOT/hybris/mw/droid-system-$VENDOR-$HABUILD_DEVICE
+        cd $ANDROID_ROOT/hybris/mw/droid-system-$VENDOR-${FAMILY+$FAMILY-}$HABUILD_DEVICE
 
         sudo ./droid-system-device/helpers/copy_tree.sh \
              "${tree_dirs[@]}" rpm/droid-system-$HABUILD_DEVICE.spec
