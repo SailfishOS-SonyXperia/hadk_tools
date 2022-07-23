@@ -5,6 +5,8 @@
 [ -z $HYBRIS_ANDROID_MANIFEST ] && HYBRIS_ANDROID_MANIFEST=default.xml
 [ -z $HYBRIS_ANDROID_SRC_BRANCH ] && \
     HYBRIS_ANDROID_SRC_BRANCH=hybris-${HYBRIS_ANDROID_BRANCH}
+[ -z $HYBRIS_ANDROID_SYSTEM_URL ] && \
+    HYBRIS_ANDROID_SYSTEM_URL="$HYBRIS_REMOTE"/droid-system-$VENDOR-${FLAVOUR+$FLAVOUR-}template
 
 sync()
 {
@@ -58,26 +60,17 @@ build()
 
     ./out/host/linux-x86/bin/simg2img \
         out/target/product/$HABUILD_DEVICE/system.img \
-        $ANDROID_ROOT/system.img.raw
+        $ANDROID_ROOT/system.img.raw.$DEVICE
     ./out/host/linux-x86/bin/simg2img \
         out/target/product/$HABUILD_DEVICE/vendor.img \
-        $ANDROID_ROOT/vendor.img.raw
-}
-
-build_sfos()
-{
-    cd $ANDROID_ROOT
-
-    git_clone_or_update \
-        "$HYBRIS_REMOTE"/droid-system-$VENDOR-${FLAVOUR+$FLAVOUR-}template \
-        $ANDROID_ROOT/hybris/mw/droid-system-$VENDOR-template
+        $ANDROID_ROOT/vendor.img.raw.$DEVICE
 
     for tree in system vendor ; do
         tree_dir=$ANDROID_ROOT-mnt/$tree
         mkdir -p $tree_dir
         # ensure your /tmp has ~4GB available
         # simg2img out/target/product/$HABUILD_DEVICE/system.img system.img.raw
-        sudo mount -o loop $ANDROID_ROOT/$tree.img.raw $tree_dir
+        sudo mount -o loop $ANDROID_ROOT/$tree.img.raw.$DEVICE $tree_dir
         # no system as root
         if [ -e $tree_dir/$tree ] ; then
            tree_dir=$tree_dir/$tree
@@ -85,8 +78,13 @@ build_sfos()
         local tree_dirs+=(${tree_dir})
     done
 
+
+    git_clone_or_update \
+        ${HYBRIS_ANDROID_SYSTEM_URL} \
+        $ANDROID_ROOT/hybris/mw/droid-system-$VENDOR-$HABUILD_DEVICE
+
     (
-        cd $ANDROID_ROOT/hybris/mw/droid-system-$VENDOR-template
+        cd $ANDROID_ROOT/hybris/mw/droid-system-$VENDOR-$HABUILD_DEVICE
 
         sudo ./droid-system-device/helpers/copy_tree.sh \
              "${tree_dirs[@]}" rpm/droid-system-$HABUILD_DEVICE.spec
