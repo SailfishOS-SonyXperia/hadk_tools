@@ -13,13 +13,30 @@ build_sfos()
     srcks="$ANDROID_ROOT/hybris/droid-configs/installroot/usr/share/kickstarts"
     ks="Jolla-@RELEASE@-$DEVICE-@ARCH@.ks"
 
-    sb2 -t $VENDOR-$DEVICE-$PORT_ARCH -m sdk-install -R zypper ref
+    bleeding_edge_build_by_sailors=0
+    community_adaptation=0
 
-    if [ "$SFOS_ADAPTION0_URL"  = "nil" ] ; then
-        ha_repo_url="file://$ANDROID_ROOT/droid-local-repo/$DEVICE/repo"
+    if [ "$SFOS_ADAPTION0_URL" = "nil" ] ; then
+        ha_repo_url="file://$ANDROID_ROOT/droid-local-repo/$DEVICE"
     else
         ha_repo_url="$SFOS_ADAPTION0_URL"
     fi
+
+    case "$ha_repo_url" in
+        file://*)
+            local ha_repo_url_wURI
+            ha_repo_url_wURI=$(echo "$ha_repo_url"|sed -e 's|^file://||')
+
+            sb2 -t $VENDOR-$DEVICE-$PORT_ARCH -m sdk-install -R zypper ref
+
+            mkdir -p "$ha_repo_url_wURI/repo"
+            createrepo_c \
+                --outputdir="$ha_repo_url_wURI/repo" \
+                --location-prefix=../ "$ha_repo_url_wURI"
+
+            ha_repo_url="$ha_repo_url/repo"
+            ;;
+    esac
 
     if sb2 -t $VENDOR-$DEVICE-$PORT_ARCH -m sdk-install -R ssu s 2>/dev/null\
             | grep -q "Release (rnd): latest (devel)"
@@ -27,12 +44,6 @@ build_sfos()
         bleeding_edge_build_by_sailors=1
     fi
 
-
-
-    mkdir -p $ANDROID_ROOT/droid-local-repo/$DEVICE/repo
-    createrepo_c \
-        --outputdir=$ANDROID_ROOT/droid-local-repo/$DEVICE/repo \
-        --location-prefix=../ $ANDROID_ROOT/droid-local-repo/$DEVICE
 
     if [ "$bleeding_edge_build_by_sailors" -eq 1 ]; then
         ks="Jolla-@RNDRELEASE@-@RNDFLAVOUR@-$DEVICE-@ARCH@.ks"
