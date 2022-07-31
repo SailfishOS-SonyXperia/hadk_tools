@@ -1,5 +1,6 @@
 # -*- sh -*-
 [ -z "$SFOS_ADAPTION0_URL" ] && SFOS_ADAPTION0_URL=nil
+[ -z "$SRCKS_DIR" ] && SRCKS_DIR=nil
 
 check()
 {
@@ -10,7 +11,7 @@ check()
 
 build_sfos()
 {
-    srcks="$ANDROID_ROOT/hybris/droid-configs/installroot/usr/share/kickstarts"
+    default_srcks_dir="$ANDROID_ROOT/hybris/droid-configs/installroot/usr/share/kickstarts"
     ks="Jolla-@RELEASE@-$DEVICE-@ARCH@.ks"
 
     bleeding_edge_build_by_sailors=0
@@ -20,6 +21,11 @@ build_sfos()
         ha_repo_url="file://$ANDROID_ROOT/droid-local-repo/$DEVICE"
     else
         ha_repo_url="$SFOS_ADAPTION0_URL"
+    fi
+    if [ "$SRCKS_DIR" = nil ] ; then
+        srcks_dir="$default_srcks_dir"
+    else
+        srcks_dir="$SRCKS_DIR"
     fi
 
     case "$ha_repo_url" in
@@ -48,29 +54,29 @@ build_sfos()
     if [ "$bleeding_edge_build_by_sailors" -eq 1 ]; then
         ks="Jolla-@RNDRELEASE@-@RNDFLAVOUR@-$DEVICE-@ARCH@.ks"
         ha_repo="repo --name=adaptation0-$DEVICE-@RNDRELEASE@-@RNDFLAVOUR@"
-        if grep -q "$ha_repo" "$srcks/$ks"; then
+        if grep -q "$ha_repo" "$srcks_dir/$ks"; then
             sed -e "s|^$ha_repo.*$|$ha_repo --baseurl=$ha_repo_url|" \
-                "$srcks/$ks" > $ks
+                "$srcks_dir/$ks" > $ks
         else
             # Adaptation doesn't have its repo yet
             repo_marker="repo --name=apps-@RNDRELEASE@-@RNDFLAVOUR@"
             sed "\|$repo_marker|i$ha_repo --baseurl=$ha_repo_url" \
-                "$srcks/$ks" > "$ks"
+                "$srcks_dir/$ks" > "$ks"
         fi
     elif [ "$community_adaptation" -eq 1 ]; then
         ha_repo="repo --name=adaptation-community-common-$DEVICE-@RELEASE@"
         ha_dev="repo --name=adaptation-community-$DEVICE-@RELEASE@"
-        if ! grep -q "$ha_repo" "$srcks/$ks"; then
+        if ! grep -q "$ha_repo" "$srcks_dir/$ks"; then
             # aarch64 ports have no community-common repo for now
             ha_repo="repo --name=apps-@RELEASE@"
         fi
         sed "\|$ha_repo|i$ha_dev --baseurl=$ha_repo_url" \
-            "$srcks/$ks" > "$ks"
+            "$srcks_dir/$ks" > "$ks"
         community_build="community"
     else
         ha_repo="repo --name=adaptation0-$DEVICE-@RELEASE@"
         sed -e "s|^$ha_repo.*$|$ha_repo --baseurl=$ha_repo_url|" \
-            "$srcks/$ks" > "$ks"
+            "$srcks_dir/$ks" > "$ks"
     fi
     if [ "$bleeding_edge_build_by_sailors" == "1" ]; then
         tokenmap="ARCH:$PORT_ARCH,RELEASE:live,RNDRELEASE:latest,EXTRA_NAME:$EXTRA_NAME,RNDFLAVOUR:devel,RELEASEPATTERN::/live,RNDPATTERN::/devel,DEVICEMODEL:$DEVICE"
