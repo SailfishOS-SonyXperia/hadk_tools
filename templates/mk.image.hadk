@@ -1,6 +1,7 @@
 # -*- sh -*-
 [ -z "$SFOS_ADAPTION0_URL" ] && SFOS_ADAPTION0_URL=nil
 [ -z "$SRCKS_DIR" ] && SRCKS_DIR=nil
+[ -z "$KS_INSERT_EXTRA_PACKAGES" ] && KS_INSERT_EXTRA_PACKAGES=nil
 
 check()
 {
@@ -78,6 +79,13 @@ build_sfos()
         sed -e "s|^$ha_repo.*$|$ha_repo --baseurl=$ha_repo_url|" \
             "$srcks_dir/$ks" > "$ks"
     fi
+
+    if [ ! $KS_INSERT_EXTRA_PACKAGES = nil ] ; then
+        for package in $KS_INSERT_EXTRA_PACKAGES ; do
+            sed "s/%packages/%packages\\n$package/" -i "$ks"
+        done
+    fi
+
     if [ "$bleeding_edge_build_by_sailors" == "1" ]; then
         tokenmap="ARCH:$PORT_ARCH,RELEASE:live,RNDRELEASE:latest,EXTRA_NAME:$EXTRA_NAME,RNDFLAVOUR:devel,RELEASEPATTERN::/live,RNDPATTERN::/devel,DEVICEMODEL:$DEVICE"
         flavour=devel
