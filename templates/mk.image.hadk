@@ -2,6 +2,8 @@
 [ -z "$SFOS_ADAPTION0_URL" ] && SFOS_ADAPTION0_URL=nil
 [ -z "$SRCKS_DIR" ] && SRCKS_DIR=nil
 [ -z "$KS_INSERT_EXTRA_PACKAGES" ] && KS_INSERT_EXTRA_PACKAGES=nil
+# repos separated by newlines
+[ -z "$KS_INSERT_EXTRA_REPOS" ] && KS_INSERT_EXTRA_REPOS=nil
 
 check()
 {
@@ -61,8 +63,22 @@ build_sfos()
             community_build="community"
         fi
     fi
+    repo_instert_str="$ha_repo --baseurl=$ha_repo_url"
+
+    if [ ! "$KS_INSERT_EXTRA_REPOS" = "nil" ]; then
+        IFS='
+'
+        for repo in "$KS_INSERT_EXTRA_REPOS" ; do
+            IFS=
+            repo_instert_str="${repo_instert_str}\\n$repo"
+            IFS='
+'
+        done
+        IFS=
+    fi
+
     if grep -q "$ha_repo" "$srcks_dir/$ks"; then
-        sed -e "s|^$ha_repo.*$|$ha_repo --baseurl=$ha_repo_url|" \
+        sed -e "s|^$ha_repo.*$|${repo_instert_str}|" \
             "$srcks_dir/$ks" > $ks
     else
         # Adaptation doesn't have its repo yet
@@ -73,7 +89,7 @@ build_sfos()
             repo_marker="repo --name=apps-@RELEASE@"
         fi
 
-        sed "\|$repo_marker|i$ha_repo --baseurl=$ha_repo_url" \
+        sed "\|$repo_marker|i${repo_instert_str}" \
             "$srcks_dir/$ks" > "$ks"
     fi
 
