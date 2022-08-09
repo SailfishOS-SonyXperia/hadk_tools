@@ -13,7 +13,6 @@ check()
 build_sfos()
 {
     default_srcks_dir="$ANDROID_ROOT/hybris/droid-configs/installroot/usr/share/kickstarts"
-    ks="Jolla-@RELEASE@-$DEVICE-@ARCH@.ks"
 
     bleeding_edge_build_by_sailors=0
     community_adaptation=0
@@ -55,28 +54,26 @@ build_sfos()
     if [ "$bleeding_edge_build_by_sailors" -eq 1 ]; then
         ks="Jolla-@RNDRELEASE@-@RNDFLAVOUR@-$DEVICE-@ARCH@.ks"
         ha_repo="repo --name=adaptation0-$DEVICE-@RNDRELEASE@-@RNDFLAVOUR@"
-        if grep -q "$ha_repo" "$srcks_dir/$ks"; then
-            sed -e "s|^$ha_repo.*$|$ha_repo --baseurl=$ha_repo_url|" \
-                "$srcks_dir/$ks" > $ks
-        else
-            # Adaptation doesn't have its repo yet
-            repo_marker="repo --name=apps-@RNDRELEASE@-@RNDFLAVOUR@"
-            sed "\|$repo_marker|i$ha_repo --baseurl=$ha_repo_url" \
-                "$srcks_dir/$ks" > "$ks"
-        fi
-    elif [ "$community_adaptation" -eq 1 ]; then
-        ha_repo="repo --name=adaptation-community-common-$DEVICE-@RELEASE@"
-        ha_dev="repo --name=adaptation-community-$DEVICE-@RELEASE@"
-        if ! grep -q "$ha_repo" "$srcks_dir/$ks"; then
-            # aarch64 ports have no community-common repo for now
-            ha_repo="repo --name=apps-@RELEASE@"
-        fi
-        sed "\|$ha_repo|i$ha_dev --baseurl=$ha_repo_url" \
-            "$srcks_dir/$ks" > "$ks"
-        community_build="community"
     else
+        ks="Jolla-@RELEASE@-$DEVICE-@ARCH@.ks"
         ha_repo="repo --name=adaptation0-$DEVICE-@RELEASE@"
+        if [ "$community_adaptation" -eq 1 ]; then
+            community_build="community"
+        fi
+    fi
+    if grep -q "$ha_repo" "$srcks_dir/$ks"; then
         sed -e "s|^$ha_repo.*$|$ha_repo --baseurl=$ha_repo_url|" \
+            "$srcks_dir/$ks" > $ks
+    else
+        # Adaptation doesn't have its repo yet
+
+        if [ "$bleeding_edge_build_by_sailors" -eq 1 ]; then
+            repo_marker="repo --name=apps-@RNDRELEASE@-@RNDFLAVOUR@"
+        else
+            repo_marker="repo --name=apps-@RELEASE@"
+        fi
+
+        sed "\|$repo_marker|i$ha_repo --baseurl=$ha_repo_url" \
             "$srcks_dir/$ks" > "$ks"
     fi
 
