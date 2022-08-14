@@ -100,13 +100,16 @@ build_sfos()
     fi
 
     if [ "$bleeding_edge_build_by_sailors" == "1" ]; then
-        tokenmap="ARCH:$PORT_ARCH,RELEASE:live,RNDRELEASE:latest,EXTRA_NAME:$EXTRA_NAME,RNDFLAVOUR:devel,RELEASEPATTERN::/live,RNDPATTERN::/devel,DEVICEMODEL:$DEVICE"
+        tokenmap="ARCH:$PORT_ARCH,RELEASE:live,RNDRELEASE:latest,RNDFLAVOUR:devel,RELEASEPATTERN::/live,RNDPATTERN::/devel,DEVICEMODEL:$DEVICE"
         flavour=devel
     else
-        tokenmap="ARCH:$PORT_ARCH,RELEASE:$RELEASE,EXTRA_NAME:$EXTRA_NAME:,DEVICEMODEL:$DEVICE"
+        tokenmap="ARCH:$PORT_ARCH,RELEASE:$RELEASE,DEVICEMODEL:$DEVICE"
         flavour=release
         # Clear out extra store repositories from kickstart if exist
         sed -i "/store-repository.jolla.com/d" "$ks"
+    fi
+    if [ -n "$EXTRA_NAME" ] ; then
+        tokenmap="$tokenmap,EXTRA_NAME:$EXTRA_NAME:"
     fi
     if [ -n $RELEASE ]; then
         release_version="-"$RELEASE
