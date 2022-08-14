@@ -46,10 +46,22 @@ build_sfos()
             ;;
     esac
 
-    if sb2 -t $VENDOR-$DEVICE-$PORT_ARCH -m sdk-install -R ssu s 2>/dev/null\
-            | grep -q "Release (rnd): latest (devel)"
-    then
-        bleeding_edge_build_by_sailors=1
+    for ks in "$srcks_dir"/*.ks ; do
+        case $ks in
+             *RND*) bleeding_edge_build_by_sailors=1 ;;
+             *) : ;;
+        esac
+        break
+    done
+
+    if [ "$bleeding_edge_build_by_sailors" = "1" ]; then
+        tokenmap="ARCH:$PORT_ARCH,RELEASE:live,RNDRELEASE:latest,RNDFLAVOUR:devel,RELEASEPATTERN::/live,RNDPATTERN::/devel,DEVICEMODEL:$DEVICE"
+        flavour=devel
+    else
+        tokenmap="ARCH:$PORT_ARCH,RELEASE:$RELEASE,DEVICEMODEL:$DEVICE"
+        flavour=release
+        # Clear out extra store repositories from kickstart if exist
+        sed -i "/store-repository.jolla.com/d" "$ks"
     fi
 
 
