@@ -53,7 +53,7 @@ sync()
     repo forall -c git am --abort > /dev/null 2>&1 ||  true
     repo forall -c git clean -d -x -f   > /dev/null 2>&1 || true
     repo forall -c git rebase --abort  > /dev/null 2>&1  || true
-    repo sync -j20 --fetch-submodules   --fail-fast
+    repo sync ${MAKE_JOBS+-j$MAKE_JOBS} --fetch-submodules   --fail-fast
     mkdir -p hybris
     git_clone_or_update \
         $HYBRIS_REMOTE_DEVICE/droid-config-$VENDOR-$FAMILY${ANDROID_FLAVOUR+-$ANDROID_FLAVOUR} \
@@ -75,7 +75,7 @@ build()
     export USE_CCACHE=1
     lunch aosp_${DEVICE_KERNEL_NUM:-$DEVICE_NUM}-user
     # Adjust XX to your building capabilities
-    make -j15 hybris-hal
+    make ${MAKE_JOBS+-j$MAKE_JOBS} hybris-hal
 }
 
 
