@@ -15,6 +15,11 @@ Usage:    $appname -f <device file> [other <options>]
 
 -f        Device file
 -t        Add custom template path
+-j        Specifies  the  number  of jobs (commands) to run simultaneously.
+          If the -j option is given without an argument,
+          $appname will not limit the number of jobs that can
+          run simultaneously.
+
 
 -x        Enable xtrace when executing unit
 -V        Be more verbose
@@ -22,7 +27,7 @@ Usage:    $appname -f <device file> [other <options>]
 EOF
 }
 
-while getopts f:c:hxVt: arg ; do
+while getopts f:c:hxVt:j: arg ; do
     case $arg in
         f) device_file=$OPTARG;;
         t)
@@ -32,6 +37,7 @@ while getopts f:c:hxVt: arg ; do
             @EXPORT_VAR_PREFIX@_DEPEND_PATH="$OPTARG":$@EXPORT_VAR_PREFIX@_DEPEND_PATH
             ;;
         h) show_help; exit 0;;
+        j) MAKE_JOBS=$OPTARG;;
         x) shell_opt_xtrace=t;;
         V) verbose=t;;
         *) : ;;
@@ -47,6 +53,9 @@ fi
 
 
 
+if [ -z "$MAKE_FLAGS" ] ; then
+   MAKE_FLAGS=$(($(nproc)/2))
+fi
 
 # first load each depend to check if every depend was found
 # try witn $PWD/$device_file first
@@ -70,6 +79,7 @@ cat > $tmp_unit <<EOF
 ${depend_path+ depend_path=$depend_path}
 ${shell_opt_xtrace+ shell_opt_xtrace=t}
 ${verbose+ verbose=t}
+${MAKE_JOBS+ MAKE_JOBS}
 
 depend "$device_file"
 EOF
