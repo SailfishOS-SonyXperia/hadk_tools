@@ -20,7 +20,7 @@ sync()
     repo forall -c git reset --hard HEAD
     repo forall -c git am --abort
     repo forall -c git clean -d -x -f
-    repo  sync -j20 --fetch-submodules
+    repo sync ${MAKE_JOBS+-j$MAKE_JOBS} --fetch-submodules
 
     [ ! -e droid-src ] || [ -e droid-src/.git ] && \
         git_clone_or_update $HYBRIS_REMOTE/droid-src-$VENDOR \
@@ -52,7 +52,7 @@ build()
 
     # Ensure the middlware in the previous terminal window has finished building
     # Change $(nproc --all) to your building capabilities, it will be very heavy on RAM if you go for more cores, proceed with care:
-    make -j$(nproc --all) systemimage vendorimage
+    make ${MAKE_JOBS+-j$MAKE_JOBS} systemimage vendorimage
     # Go and have a cuppa, as this is going to take some time :)
     #  ,--.
     # C|  |
