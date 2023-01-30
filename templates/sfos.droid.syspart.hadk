@@ -20,7 +20,11 @@ sync()
     repo forall -c git reset --hard HEAD
     repo forall -c git am --abort
     repo forall -c git clean -d -x -f
-    repo sync ${MAKE_JOBS+-j$MAKE_JOBS} --fetch-submodules
+    repo sync ${MAKE_JOBS+-j$MAKE_JOBS} \
+         --fetch-submodules \
+         --force-remove-dirty \
+         --detach
+
 
     [ ! -e droid-src ] || [ -e droid-src/.git ] && \
         git_clone_or_update $HYBRIS_REMOTE/droid-src-$VENDOR \
