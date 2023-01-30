@@ -79,7 +79,7 @@ cat > $tmp_unit <<EOF
 ${depend_path+ depend_path=$depend_path}
 ${shell_opt_xtrace+ shell_opt_xtrace=t}
 ${verbose+ verbose=t}
-${MAKE_JOBS+ MAKE_JOBS}
+${MAKE_JOBS+ MAKE_JOBS=$MAKE_JOBS}
 
 depend "$device_file"
 EOF
