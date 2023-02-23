@@ -1,0 +1,4 @@
+export HABUILD_DEVICE=pdx223
+export DEVICE_KERNEL_NUM=xqct54
+
+depend sony.nagara.hadk

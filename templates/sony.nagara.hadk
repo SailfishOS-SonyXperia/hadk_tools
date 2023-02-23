@@ -1,0 +1,28 @@
+# -*- sh -*-
+
+RELEASE=4.5.0.18
+
+export SOURCE_ROOT="$SOURCE_ROOT/nagara"
+mkdir -p "$SOURCE_ROOT"
+
+HYBRIS_REMOTE_DEVICE=https://github.com/SailfishOS-SonyXperia
+HYBRIS_ANDROID_BRANCH=sony-aosp-13
+HYBRIS_SYSPART_BRANCH=$HYBRIS_ANDROID_BRANCH
+HYBRIS_ANDROID_MANIFEST=tagged-localbuild.xml
+HYBRIS_ANDROID_SRC_BRANCH=hybris-sony-aosp-13
+
+export VENDOR=sony
+export FAMILY=nagara
+export PORT_ARCH="aarch64"
+
+
+depend sfos.hybris.hal.sony.kernel.hadk
+depend mer.hybris.hal.pie.hadk
+depend sfos.hybris.hal.img.boot.hadk
+depend sfos.mw.hadk
+depend sfos.mw.pulseaudio.hadk
+depend sfos.droidmedia.hadk
+depend sfos.droid.syspart.hadk
+depend mer.droid.configs.hadk
+depend sfos.droid.version.hadk
+depend mk.image.hadk
