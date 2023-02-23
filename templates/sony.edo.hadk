@@ -8,7 +8,7 @@ mkdir -p "$SOURCE_ROOT"
 HYBRIS_REMOTE_DEVICE=https://github.com/SailfishOS-SonyXperia
 HYBRIS_ANDROID_BRANCH=sony-aosp-11
 HYBRIS_SYSPART_BRANCH=$HYBRIS_ANDROID_BRANCH
-HYBRIS_ANDROID_MANIFEST=localbuild.xml
+HYBRIS_ANDROID_MANIFEST=tagged-localbuild.xml
 HYBRIS_ANDROID_SRC_BRANCH=hybris-sony-aosp-11
 
 export VENDOR=sony
