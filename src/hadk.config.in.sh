@@ -78,7 +78,10 @@ depend()
             local file_dirname=$(dirname "$file")
             case $file_dirname in
                 .) depend_path=$depend_path:"$PWD" ;;
-                ./*) depend_path=$depend_path:"$PWD/$file_dirname"
+                ./*)
+                    if [ -e "$PWD/$file_dirname" ] ; then
+                        depend_path=$depend_path:"$PWD/$file_dirname"
+                    fi
             esac
             ;;
         */*)
