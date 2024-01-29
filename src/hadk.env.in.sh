@@ -20,7 +20,7 @@ modes:
 init                    Download env and initialise
 update                  Update SDK against latest changes
 verify                  Check env (NYI)
-shell|enter <SDK>       Enter SDK with environment
+shell|enter <SDK> [CMD] Enter SDK with environment
 
 SDKs:
 sfos                    Sailfish OS Platform SDK
@@ -196,16 +196,18 @@ case $1 in
             ubuntu) ubu_chrt_run "$0" \
                                  -f "${env_config}" \
                                  ${@EXPORT_VAR_PREFIX@_DEPEND_PATH+ -t "${@EXPORT_VAR_PREFIX@_DEPEND_PATH}"} \
-                                 enter_shell
+                                 enter_shell "$@"
                     ;;
             sfos) sfos_sdk_run "$0" \
                                -f "${env_config}" \
                                ${@EXPORT_VAR_PREFIX@_DEPEND_PATH+ -t "${@EXPORT_VAR_PREFIX@_DEPEND_PATH}"} \
-                               enter_shell ;;
+                               enter_shell "$@" ;;
             host)
                 [ "${SOURCE_ROOT:-$ANDROID_ROOT}" ] && cd_source_root
+                shift 2
+                ${@EXPORT_VAR_PREFIX@_DEPEND_PATH+ shift}
                 try_zsh_vendor_workaround
-                "${SHELL:-/bin/sh}"
+                "${SHELL:-/bin/sh}" "$@"
         esac
         ;;
     enter_shell)
@@ -216,7 +218,13 @@ case $1 in
         [ -e /mer-bash-setup ] && \
             shellrc=/mer-bash-setup
         [ "${SOURCE_ROOT:-$ANDROID_ROOT}" ] && cd_source_root
-        bash --init-file ${shellrc:-~/.bashrc} -i
+        shift 3
+        ${@EXPORT_VAR_PREFIX@_DEPEND_PATH+ shift}
+        if [ $# -gt 1 ] ; then
+            "$@"
+        else
+            bash --init-file ${shellrc:-~/.bashrc}  -i
+        fi
         ;;
     *) error 'No mode suplied'; show_help; exit 1;;
 esac
