@@ -80,7 +80,7 @@ build_sfos()
     if [ ! "$KS_INSERT_EXTRA_REPOS" = "nil" ]; then
         IFS='
 '
-        for repo in "$KS_INSERT_EXTRA_REPOS" ; do
+        for repo in $KS_INSERT_EXTRA_REPOS ; do
             IFS=
             repo_instert_str="${repo_instert_str}\\n$repo"
             IFS='
