@@ -106,8 +106,9 @@ build_sfos()
     fi
 
     if [ ! $KS_INSERT_EXTRA_PACKAGES = nil ] ; then
+        IFS=" "
         for package in $KS_INSERT_EXTRA_PACKAGES ; do
-            sed "s/%packages/%packages\\n$package/" -i "$ks"
+            IFS= sed "s/%packages/%packages\\n$package/" -i "$ks"
         done
     fi
 
